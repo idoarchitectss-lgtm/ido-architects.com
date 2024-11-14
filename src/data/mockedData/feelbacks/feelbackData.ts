@@ -1,0 +1,58 @@
+export const feelbackData = [
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Phú Việt",
+        jobOfAuthor: "Thiết kế",
+        scoreOfReview: "5",
+        commentOfAuthor: "Thiết kế quá tốt, mình hài lòng với bản dựng 3D với diện tích đất 80m2, Kiến trúc sư bố trí hợp lý, sử dụng được nhiều công năng và tính thẩm mỹ cao",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Tiến Trung",
+        jobOfAuthor: "Nhân viên ngân hàng",
+        scoreOfReview: "5",
+        commentOfAuthor: "Đội ngũ làm việc chuyên nghiệp, phản hồi nhanh và đúng trọng tâm",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Khánh Linh",
+        jobOfAuthor: "Nhân viên văn phòng",
+        scoreOfReview: "4.5",
+        commentOfAuthor: "Thiết kế quá tốt, mình hài lòng với bản dựng 3D với diện tích đất 80m2, Kiến trúc sư bố trí hợp lý, sử dụng được nhiều công năng và tính thẩm mỹ cao",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Hùng Văn",
+        jobOfAuthor: "Nhà đầu tư",
+        scoreOfReview: "5",
+        commentOfAuthor: "Tư vấn tận tình, giải đáp mọi thắc mắc, hài lòng khi làm việc cùng với đội ngũ IDO Architects",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Johny",
+        jobOfAuthor: "Developer",
+        scoreOfReview: "5",
+        commentOfAuthor: "Thiết kế quá tốt, mình hài lòng với bản dựng 3D với diện tích đất 80m2, Kiến trúc sư bố trí hợp lý, sử dụng được nhiều công năng và tính thẩm mỹ cao",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Hữu Đạt",
+        jobOfAuthor: "Kinh doanh",
+        scoreOfReview: "5",
+        commentOfAuthor: "Đội ngũ làm việc chuyên nghiệp, phản hồi nhanh và đúng trọng tâm",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Khánh Linh",
+        jobOfAuthor: "Nhân viên văn phòng",
+        scoreOfReview: "4.5",
+        commentOfAuthor: "Thiết kế quá tốt, mình hài lòng với bản dựng 3D với diện tích đất 80m2, Kiến trúc sư bố trí hợp lý, sử dụng được nhiều công năng và tính thẩm mỹ cao",
+    },
+    {
+        urlFeaturedImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        nameOfAuthor: "Hùng Văn",
+        jobOfAuthor: "Nhà đầu tư",
+        scoreOfReview: "5",
+        commentOfAuthor: "Tư vấn tận tình, giải đáp mọi thắc mắc, hài lòng khi làm việc cùng với đội ngũ IDO Architects",
+    },
+]

@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* 
+  color1: #002155
+  color2: #FF631B
+  */
+
+body {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.wp-block-heading {
+  font-size: 2rem;
+  color: #FF6D1B;
+}
+
+.dark {
+  color: white !important;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: #FF6D1B;
+  transform-origin: 0%;
+  z-index: 9999;
+}
