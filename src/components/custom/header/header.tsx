@@ -6,7 +6,7 @@ import SocialInfo from './socialInfo'
 import Logo from './logo'
 import ContactInfo from './contactInfo'
 import HambugerMenu from './hambugerMenu'
-import {Switchbtn} from '../Switchbtn'
+import { Switchbtn } from '../Switchbtn'
 import SearchComponent from './search/SearchComponent'
 
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
@@ -16,6 +16,7 @@ import { getAllPosts } from '@/lib/api'
 import { motion, useScroll } from "framer-motion"
 
 import { EdgesProps, PostsDataProps, PostsProps } from '@/types/typeForWordpressData'
+import ConsultantBtn from '../buttons/ConsultantBtn'
 
 
 interface HeaderProps {
@@ -25,65 +26,36 @@ interface HeaderProps {
 
 type Edges = PostsDataProps['posts']
 
-const Header: React.FC<HeaderProps> = ({ logo,posts }) => {
+const Header: React.FC<HeaderProps> = ({ logo, posts }) => {
   const [newPosts, setNewPosts] = useState<EdgesProps[number]['node'][]>([])
-  
-  /** Disabled fix menu according to scroll */
 
-  // const [scrollPositionY, setScrollPositionY] = useState({ top: 0 })
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const newScrollPositionY = {
-  //       top: window.scrollY || document.documentElement.scrollTop
-  //     };
-  //     setScrollPositionY(newScrollPositionY);
-  //     // console.log(newScrollPositionY)
-  //   }
-  //   window.addEventListener("scroll", handleScroll)
-  // }, [scrollPositionY])
-/**
- * Nếu dùng thì bỏ code này xuống section bên dưới
- *  ${scrollPositionY.top > 200 && scrollPositionY.top < 9000 ? "fixed scroll-smooth top-0 w-full z-50 duration-300  " : ""}
- * 
- */
   useEffect(() => {
     setNewPosts(posts)
-    // console.log("checknewposts",newPosts)
   }, [posts, newPosts])
 
-  const { scrollYProgress } = useScroll();
-
   return (
-    <section className={`relative shadow-md 
-    `}>
-      <div className=' bg-primary'>
-        <Container>
-          <div className='flex flex-row justify-between w-12/12 mx-auto'>
-            <SocialInfo isHorizontal />
-            <ContactInfo />
-          </div>
-        </Container>
-      </div>
-      <Container>
-        <div className='flex flex-row justify-between items-center gap-5 py-5'>
-          <Logo 
-          logo={logo}
-          />
-          <div className='flex flex-row items-center gap-2'>
-            <Navbar 
+    <section className={`relative shadow-xl bg-primary text-white h-[25px] md:h-[90px] flex flex-row justify-between items-center py-9 px-2`}>
+      <Container className='flex flex-row justify-between items-center w-full'>
+        <div className='flex flex-row justify-center md:justify-between items-center gap-5 w-full'>
+          <div className='flex-none w-[100px]'>
+            <Logo
+              className="w-full h-full"
+              logo={logo}
             />
-            <SearchComponent className={`mx-2`} posts={newPosts} />
-            <Switchbtn />
-            <div className='flex flex-row items-center gap-4 border-l-[1px]  pl-4 '>
+          </div>
+
+          <div className='flex-auto w-full flex flex-row justify-end
+           items-center gap-2 '>
+            <Navbar />
+            <SearchComponent className={`mx-2 `} posts={newPosts} />
+            {/* <Switchbtn /> */}
+            <div className='flex flex-row items-center gap-4 border-l-[1px] pl-10 '>
               <HambugerMenu />
+              <ConsultantBtn />
             </div>
           </div>
         </div>
       </Container>
-      <motion.div 
-            className="progress-bar"
-            style={{ scaleX: scrollYProgress }} />
     </section>
   )
 }

@@ -16,18 +16,19 @@ import { Textarea } from '@/components/ui/textarea'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { Mail } from 'lucide-react'
 
 interface ContactFromProps {
-  btnColor?:string
-} 
+  btnColor?: string;
+  labelOfForm:string
+}
 
-const ContactForm = ({btnColor}:ContactFromProps) => {
+const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
   const router = useRouter()
 
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
-  const [isSuccessLabel, setIsSuccessLabel] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
@@ -43,32 +44,47 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
     setError('')
     setSuccess('')
 
-    startTransition(() => {
-      console.log(values)
-      contact(values)
-        .then((data) => {
-          setError(data.error)
-          setSuccess(data.success)
+    startTransition(async () => {
+    console.log(values)
+    try {
+      const response = await fetch('https://ido-architects.io/wp-json/wp/v2/contact_submission', {
+        method:'POST',
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(values),
+      });
 
-          if(data.error === undefined) {
-            toast.success(data.success)
-          } else {
-            toast.warning(data.error)
-          }
-        })
-        .catch(() => setError('Đã có lỗi, vui lòng thử lại sau!'))
-        .finally (()=> {
-          setIsSuccessLabel(true)
-          form.reset();
-          router.refresh();
-        })
+      const result = await response.json();
+
+      if (response.ok) {
+        if (result?.success) {
+            setSuccess(result.success || 'Gửi thông tin thành công');
+            form.reset();
+            toast.success(result.success || 'Gửi yêu cầu thanh cong');
+        } else {
+          toast.error(result?.error || 'Gửi yêu cầu thất bại. Vui lòng thử lại!');
+            throw new Error(result?.error || 'Gửi yêu cầu đã xảy ra lỗi');
+        }
+    } else {
+        throw new Error('Failed to submit form. Please try again later.');
+    }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : String(error));
+    }
     })
   }
   return (
-    <div className=' bg-white w-full lg:w-10/12 h-[550px] p-5 rounded-md shadow-md flex flex-col justify-center gap-5'>
-      <h2 className='text-center font-[700] text-2xl text-primary'>Đăng ký tư vấn</h2>
+    <div className='bg-neutral-100 relative w-full lg:w-10/12 h-[550px] p-5  flex flex-col justify-center '>
+      <div className='absolute top-5 left-5 flex flex-row justify-center items-center gap-2 border-[1px] border-neutral-300 shadow-xl py-2 mx-auto bg-neutral-800  text-white w-11/12 '>
+        <h2 className='text-center font-[500] text-2xl '>{labelOfForm}</h2>
+      </div>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}
+        className=''
+        > 
+          {/* họ và tên */}
           <FormField
             control={form.control}
             name='name'
@@ -77,7 +93,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-neutral-100 border-none focus:ring-0 rounded-sm text-neutral-500'
+                      className='w-full bg-white border-none focus:ring-0 shadow-sm rounded-none text-neutral-500'
                       type='text'
                       placeholder='Họ và tên'
                       {...field}
@@ -89,6 +105,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
               </>
             )}
           />
+          {/* Email */}
           <FormField
             control={form.control}
             name='email'
@@ -97,7 +114,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-neutral-100 border-none focus:ring-0 rounded-sm text-neutral-500'
+                      className='w-full bg-white  border-none focus:ring-0 rounded-none shadow-xl text-neutral-500'
                       type='text'
                       placeholder='Email'
                       {...field}
@@ -108,6 +125,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
               </>
             )}
           />
+          {/* Phone */}
           <FormField
             control={form.control}
             name='phone'
@@ -116,7 +134,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-neutral-100 border-none focus:ring-0 rounded-sm text-neutral-500'
+                      className='w-full bg-white border-none focus:ring-0 rounded-none shadow-xl text-neutral-500'
                       type='text'
                       placeholder='Điện thoại'
                       {...field}
@@ -138,7 +156,7 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
                     <Textarea
                       {...field}
                       placeholder='Vui lòng để lại yêu cầu của bạn!'
-                      className='border-0 focus:ring-0 bg-neutral-100 text-neutral-500'
+                      className='border-0 focus:ring-0 shadow-xl rounded-none bg-white text-neutral-500'
                     />
 
                   </FormControl>
@@ -156,10 +174,9 @@ const ContactForm = ({btnColor}:ContactFromProps) => {
           <Button
             disabled={isPending}
             type='submit'
-            className={`mt-5 w-full h-[60px] bg-secondary rounded-sm hover:bg-primary text-white duration-500 ${btnColor}`}
-            
+            className='bg-secondary w-full text-white hover:bg-secondary/90 border-none '
           >
-            {isSuccessLabel ? "XIN CÁM ƠN!" : "GỬI YÊU CẦU"}
+            <span className='tracking-wide'>LIÊN HỆ TƯ VẤN</span>
           </Button>
         </form>
       </Form>

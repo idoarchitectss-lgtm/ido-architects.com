@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inconsolata, Montserrat } from 'next/font/google'
+import { Inconsolata, Montserrat,  } from 'next/font/google'
 import "./globals.css";
 
-import Head from "next/head";
+// import Head from "next/head";
 
 // import ThemeProvider from "./theme-provider";
 import Header from "@/components/custom/header/header";
@@ -20,7 +20,6 @@ import ContactFormIcon from "@/components/custom/ContactFormIcon";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { logoImg } from "@/actions/getDataFromWP";
 
 dotenv.config()
 
@@ -43,12 +42,10 @@ export default async function RootLayout({
 }>) {
   const res: Edges = await getAllPosts(100, 1)
   const posts = res.edges.map(edge => edge.node)
-  const logo =  await logoImg()
-  // console.log("check layout",posts)
   return (
     <html lang="en" suppressHydrationWarning>
 
-  <Head>
+  {/* <Head>
         <title>Công ty thiết kế xây dựng IDO-ARCHITECTS</title>
         <meta name="description" content="Công ty kiến trúc, tư vấn thiết kế thi công uy tín tại Đà Nẵng" />
         <meta name="keywords" content="dịch vụ thiết kế, tư vấn thi công, công ty kiến trúc Đà Nẵng" />
@@ -61,7 +58,7 @@ export default async function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta property="og:url" content="URL_to_page" />
         <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+      </Head> */}
       <body className={`${montserrat.className}, antialiased`}>
         <ThemeProvider
           attribute="class"
@@ -71,20 +68,17 @@ export default async function RootLayout({
         >
           <Suspense fallback={<Loading />}>
             <Header
-              logo={logo}
+              logo={'https://res.cloudinary.com/dskpdydeu/images/v1727843734/logo-nen-trong-suot/logo-nen-trong-suot.png'}
               posts={posts}
             />
           </Suspense>
           <ToastProvider>
-
             {children}
             <SpeedInsights />
             <ContactFormIcon />
-
           </ToastProvider>
           <Footer />
         </ThemeProvider>
-
       </body>
     </html>
   );

@@ -32,3 +32,26 @@ body {
   transform-origin: 0%;
   z-index: 9999;
 }
+
+.shadow-custom {
+  box-shadow: 0 4px 1px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3); */
+}
+
+.hiddenScrollBar::-webkit-scrollbar{
+  display:none;
+}
+.arrow{
+  animation: arrowMove 1.5s infinite;
+}
+@keyframes arrowMove {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

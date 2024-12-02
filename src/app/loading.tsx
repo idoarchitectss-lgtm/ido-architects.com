@@ -3,13 +3,12 @@ import Image from "next/image";
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <div className='fixed h-[100vh] w-[100vw] inset-0 flex flex-col items-center justify-center gap-5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-700 to-primary
+    <div className='fixed h-[100vh] w-[100vw] inset-0 flex flex-col items-center justify-center gap-5 bg-white z-50
     '>
       <p className="text-7xl font-bold text-secondary">
           IDO
         </p>
-      <p className="text-4xl font-bold text-white">
-        
+      <p className="text-4xl font-bold text-primary">
         ARCHITECT
       </p>
       <div>

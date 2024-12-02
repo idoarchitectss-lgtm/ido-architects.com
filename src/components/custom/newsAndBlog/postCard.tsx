@@ -7,6 +7,7 @@ import { DEFAULT_AUTHOR_NAME } from '@/lib/constants';
 import { motion } from "framer-motion"
 import { usePathname } from 'next/navigation';
 import { transcode } from 'buffer';
+import { Card } from '@/components/ui/card';
 
 
 interface PostCardProps {
@@ -32,40 +33,28 @@ const PostCard: React.FC<PostCardProps> = ({
   link
 }) => {
   return (
-    <div
-    className={`rounded-md group w-12/12 max-h-min flex flex-col justify-start overflow-hidden`}>
-      <Link 
-      href={link}
-      className='overflow-hidden w-full h-[250px]'>
-        <Image
-          src={srcOfImg || ''}
-          alt={titleOfPost}
-          width={1200}
-          height={800}
-          className='object-cover w-full scale-x-110 h-full group-hover:-translate-x-4 duration-300 cursor-pointer'
-        />
-      </Link>
-      <PostMeta
-        author={author || DEFAULT_AUTHOR_NAME}
-        publishedDate={publishedDate || "Đang cập nhật"}
-        tagsList={tagsList || [{ name: "Chưa phân loại", slug: "" }]}
-      />
-
-      <div className=' pb-4'>
+    <div className=' w-full h-full'>
+    <Card
+        className='w-full group rounded-none shadow-md h-full'>
+        <div className='relative w-full h-[200px]  overflow-hidden'>
+            <Link href={link}>
+            <Image
+                src={srcOfImg || "https://cdn.stocksnap.io/img-thumbs/960w/scenic-landscape_WPPJNTMEAX.jpg"}
+                alt={titleOfPost}
+                width={1200}
+                height={800}
+                className='w-full h-full object-cover  group-hover:scale-105 duration-500 cursor-pointer'
+                />
+              </Link>
+        </div>
+        <div className='  py-2 text-neutral-700 group-hover:text-secondary px-5 duration-500'>
         <Link href={link}>
-          <h2 className=' text font-[600] text-[18px] group-hover:text-secondary line-clamp-1 cursor-pointer duration-300'>{titleOfPost}</h2>
-        </Link>
-        {/* <div className='text-neutral-600 text-[16px] line-clamp-2' dangerouslySetInnerHTML={{ __html: subtitleOfPost || "" }} ></div> */}
-        <Link href={link}
-          className='hover:text-secondary'
-        >
-          <p className='mt-2 text-neutral-600  text-base group-hover:translate-x-2 duration-300'>
-            Đọc thêm
-          </p>
-        </Link>
-      </div>
+            <h3 className='line-clamp-2 text-lg font-[500] text-center'>{titleOfPost}</h3>
+            </Link>
+        </div>
 
-    </div>
+    </Card>
+</div>
   )
 }
 
