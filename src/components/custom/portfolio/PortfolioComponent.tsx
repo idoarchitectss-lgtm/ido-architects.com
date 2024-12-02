@@ -7,144 +7,143 @@ import Container from '@/components/custom/container';
 import Title from '@/components/custom/title';
 import PortfolioCate from './portfolioCate';
 
-import MainButton from '../mainButton';
 import { porfolioCategory, portfolios } from '@/types/typeForWordpressData';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { DEFAULT_IMG } from '@/lib/constants';
 
-import {motion} from "framer-motion";
-
+import MainButton from '../buttons/MainButton';
+import {motion} from 'framer-motion'
 interface PortfolioProps {
   portfoliosArray: portfolios[];
   porfolioCategoryArray: porfolioCategory[];
+  title: string;
+  subtitle: string;
+  islightBg?: boolean;
+  text?: string;
+  href: string,
+  labelOfButton: string
 }
 
 const PortfolioComponent: React.FC<PortfolioProps> = ({
   portfoliosArray,
-  porfolioCategoryArray
+  porfolioCategoryArray,
+  title,
+  subtitle,
+  islightBg,
+  text,
+  href,
+  labelOfButton
 }) => {
-
   const pathname = usePathname();
   const route = useRouter();
-  // const searchParams = useSearchParams();
-  // const createUrl = new URLSearchParams(`query=?${searchParams}`)
-
 
   const [seletedcategory, setSeletedCategory] = useState<string | null>("Tất cả")
 
   const portfolios = portfoliosArray;
-  const portfoliosByCategory = portfolios.filter(portfolio => portfolio?.project.generalInformation.propertyType === seletedcategory)
+  const portfoliosByCategory = portfolios?.filter(portfolio => portfolio?.project.generalInformation.propertyType === seletedcategory)
 
-  useEffect(()=> {
-    console.log("portfolio",portfolios)
+  useEffect(() => {
+    console.log("seletedcategory", seletedcategory)
+    console.log("portfolios", portfolios)
+    // console.log("category",porfolioCategoryArray)
+    // console.log("portfoliosByCategory", portfoliosByCategory)
+  }, [portfolios, seletedcategory, porfolioCategoryArray, portfoliosByCategory])
 
-    console.log("category",seletedcategory)
 
-  },[portfolios,seletedcategory])
-
-  
   return (
-    <section >
+    <section className=''>
       <div className='my-24'>
         <Container>
-          <motion.div
-          initial={{translateY:-300, opacity:0}}
-          whileInView={{translateY:0, opacity:1}}
-          viewport={{ once: true }}
-          transition={
-            {
-              duration:1.5,
-              type:"spring"
-            }
-          }
-          >
+          <div>
             <Title
-              title="Dự án nổi bật của IDO Architect"
-              subtitle="Portfolio"
-              islightBg
-              text="Xem chi tiết những dự án nổi bật của chúng tôi"
+              title={title}
+              islightBg={islightBg}
+              subtitle={subtitle}
+              text={text}
             />
-          </motion.div>
+          </div>
 
           {/* Dach sách category của các portfolios */}
-
-          <motion.div
-          initial={{scale:0.5, opacity:0}}
-          whileInView={{scale:1, opacity:1}}
+          <motion.div 
+          initial={{ opacity: 0,translateX:-100}}
+          whileInView={{ opacity: 1,translateX:0}}
           viewport={{ once: true }}
-          transition={
-            {
-              duration:3,
-              type:"spring",
-              ease:[0.6, 0.01, -0.05, 0.9]
-            }
-          }
-          className='text-center font-semibold grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-12/12 md:8/12 mx-auto my-10'>
-            <h3 className=
-              {` py-3 cursor-pointer rounded-md hover:-translate-y-2 duration-300 
-            ${seletedcategory === "Tất cả" ? "text-white bg-secondary" : ""}`}
-              onClick={() => setSeletedCategory('Tất cả')}
-            >
-              Tất cả
-            </h3>
-            {
-              porfolioCategoryArray.map((portfolioCategory) => (
-                <PortfolioCate
-                  key={portfolioCategory.slug}
-                  className= {` py-3 hover:-translate-y-2 duration-300 rounded-md cursor-pointer 
-                    ${seletedcategory === portfolioCategory.name ? "text-white bg-secondary" : ""} `}
-                  nameOfCategory={portfolioCategory.name}
-                  handleClick={() => setSeletedCategory(portfolioCategory.name)}
-                />
-              ))}
+          transition={{ duration: 1 }}
+          className='w-full overflow-x-scroll hiddenScrollBar'>
+            <div
+              className={` text-center font-semibold flex flex-row justify-center items-center gap-2 w-[1200px] md:w-10/12 mx-auto mb-5 border-neutral-500/30 border-b-[1px] 
+          ${pathname === "/du-an" ? "block" : "hidden"}
+          `}>
+              <div className=
+                {` w-[200px] px-5 py-3  cursor-pointer  text-neutral-500 border-neutral-500/30 border-[1px] border-b-[0px] rounded-none text-sm bg-neutral-100 hover:text-secondary duration-500 
+            ${seletedcategory === "Tất cả" ? "text-neutral-500 font-[700] bg-white border-t-secondary border-[1px]" : ""}`}
+                onClick={() => setSeletedCategory('Tất cả')}
+              >
+                Tất cả dự án
+              </div>
+              {
+                porfolioCategoryArray.map((portfolioCategory) => (
+                  <PortfolioCate
+                    key={portfolioCategory.slug}
+                    className={`w-[200px] px-5 py-3  cursor-pointer  text-neutral-500 border-neutral-500/30 border-[1px] border-b-[0px] rounded-none text-sm bg-neutral-100 hover:text-secondary duration-500
+                    ${seletedcategory === portfolioCategory.name ? "text-neutral-500 font-[700] bg-white border-t-secondary border-[1px]" : ""} `}
+                    nameOfCategory={portfolioCategory.name}
+                    handleClick={() => setSeletedCategory(portfolioCategory.name)}
+                  />
+                ))}
+            </div>
           </motion.div>
 
-          <motion.div
-          initial={{scale:0.2, opacity:0}}
-          whileInView={{scale:1, opacity:1}}
+          <motion.div 
+          initial={{ opacity: 0,translateX:100}}
+          whileInView={{ opacity: 1,translateX:0}}
           viewport={{ once: true }}
-          transition={
-            {
-              duration:3.5,
-              delay:0.5,
-              staggerChildren:0.5,
-              
-              type:"spring",
-              ease:[0.6, 0.01, -0.05, 0.9]
-            }
-          }
+          transition={{ duration: 2 }}
           >
             {/* Portfolio by Name of project */}
             {seletedcategory && seletedcategory !== "Tất cả" ?
               (
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
-                  {portfoliosByCategory.map((portfolio) => (
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+                  {portfoliosByCategory?.map((portfolio) => (
                     <Link
-                      className='relative w-full h-[250px] md:h-[500px] group overflow-hidden rounded-md'
-                      href={`portfolios/${portfolio.slug}`}
+                      className='relative w-full h-[300px] md:h-[350px] group overflow-hidden flex flex-col justify-center items-center'
+                      href={`du-an/${portfolio.slug}`}
                       key={portfolio.slug} >
-                      <Image
-                        src={portfolio.featuredImage?.node?.sourceUrl || DEFAULT_IMG}
-                        alt={portfolio.project?.nameOfProject}
-                        width={1200}
-                        height={800}
-                        className='object-cover h-full group-hover:scale-125 duration-300'
-                      />
-                      <div className='absolute top-0 left-0 w-full h-full bg-primary/40 translate-x-[100%] group-hover:translate-x-0 duration-300'></div>
-                      <div className='absolute left-10 bottom-5 text-white hover:text-secondary text-2xl opacity-0 group-hover:opacity-100 translate-y-[100%] group-hover:translate-y-0 duration-300'>
-                        <h3 >{portfolio.project.nameOfProject}</h3>
-                        <h3 >{portfolio.project.nameOfProject}</h3>
-                        <ul className='text-base'>
-                          <li>
-                            Diện tích: {portfolio.project.generalInformation.floorDimension} m²
-                          </li>
-                          <li>
-                            Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
-                          </li>
-                          <li>
-                            Loại công trình: {portfolio.project.generalInformation.propertyType}
-                          </li>
-                        </ul>
+                      <div className='relative flex-1  h-[200px] md:h-[250px] duration-300'>
+                        {/* icon dự án nổi bật */}
+                        <div className={`absolute z-10 w-10 h-10 top-7 right-7 ${(portfolio.project.isFeatured === true) ? "block" : "hidden"}`}>
+                          <Image
+                            src={'/image/star.png'}
+                            alt='featured icon'
+                            width={100}
+                            height={100}
+                            className='w-full h-full object-cover'
+                          />
+                        </div>
+                        <Image
+                          src={portfolio.featuredImage?.node.sourceUrl}
+                          alt={portfolio.project.nameOfProject}
+                          width={1200}
+                          height={800}
+                          className=' object-cover  h-full'
+                        />
+                        <div className='absolute bottom-0 left-0 w-full h-full bg-black/40 translate-x-[100%] group-hover:translate-x-0 duration-700 text-white flex justify-center items-center'>
+                          <ul className='text-base border-y-secondary border-y-[1px] py-2'>
+                            <li>
+                              Diện tích: {portfolio.project.generalInformation.floorDimension} m²
+                            </li>
+                            <li>
+                              Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
+                            </li>
+                            <li>
+                              Loại công trình: {portfolio.project.generalInformation.propertyType}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+
+                      <div className='h-[50px] md:h-[50px] text-neutral-700 hover:text-secondary text-base font-[700] group-hover:opacity-100  duration-300 mt-2'>
+                        <h3 className='group-hover:text-secondary duration-500 line-clamp-1'>{portfolio.project.nameOfProject}</h3>
                       </div>
                     </Link>
                   ))}
@@ -152,34 +151,48 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
               )
               :
               (
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
-
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
                   {portfolios?.map((portfolio) => (
                     <Link
-                      className='relative w-full h-[250px] md:h-[500px] group overflow-hidden rounded-md'
-                      href={`portfolios/${portfolio.slug}`}
+                      className='relative w-full h-[250px] md:h-[350px] group overflow-hidden flex flex-col justify-center items-center'
+                      href={`du-an/${portfolio.slug}`}
                       key={portfolio.slug} >
-                      <Image
-                        src={portfolio.featuredImage?.node.sourceUrl}
-                        alt={portfolio.project.nameOfProject}
-                        width={1200}
-                        height={800}
-                        className='object-cover h-full group-hover:scale-125 duration-300'
-                      />
-                      <div className='absolute top-0 left-0 w-full h-full bg-primary/40 translate-x-[100%] group-hover:translate-x-0 duration-300'></div>
-                      <div className='absolute left-10 bottom-5 text-white hover:text-secondary text-2xl opacity-0 group-hover:opacity-100 translate-y-[100%] group-hover:translate-y-0 duration-300'>
-                        <h3 >{portfolio.project.nameOfProject}</h3>
-                        <ul className='text-base'>
-                          <li>
-                            Diện tích: {portfolio.project.generalInformation.floorDimension} m²
-                          </li>
-                          <li>
-                            Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
-                          </li>
-                          <li>
-                            Loại công trình: {portfolio.project.generalInformation.propertyType}
-                          </li>
-                        </ul>
+                      <div className='relative flex-1  h-[200px] md:h-[250px] duration-300'>
+                        {/* icon dự án nổi bật */}
+                        <div className={`absolute w-10 h-10 top-7 right-7 ${(portfolio.project.isFeatured === true) ? "block" : "hidden"}`}>
+                          <Image
+                            src={'/image/star.png'}
+                            alt='featured icon'
+                            width={100}
+                            height={100}
+                            className='w-full h-full object-cover'
+                          />
+                        </div>
+                        <Image
+                          src={portfolio.featuredImage?.node.sourceUrl}
+                          alt={portfolio.project.nameOfProject}
+                          width={1200}
+                          height={800}
+                          className=' object-cover  h-full'
+                        />
+                        <div className='absolute bottom-0 left-0 w-full h-full bg-black/40 translate-x-[100%] group-hover:translate-x-0 duration-700 text-white flex justify-center items-center'>
+                          <ul className='text-base border-y-secondary border-y-[1px] py-2'>
+                            <li>
+                              Diện tích: {portfolio.project.generalInformation.floorDimension} m²
+                            </li>
+                            <li>
+                              Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
+                            </li>
+                            <li>
+                              Loại công trình: {portfolio.project.generalInformation.propertyType}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+
+                      <div className='h-[20px] md:h-[30px] text-neutral-700 hover:text-secondary text-base font-[700] group-hover:opacity-100  duration-300 mt-2 flex items-center justify-center'>
+                        <h3 className='group-hover:text-secondary duration-500 line-clamp-1'>{portfolio.project.nameOfProject}</h3>
                       </div>
                     </Link>
                   ))}
@@ -187,15 +200,13 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
               )
             }
             <div className=' flex flex-col justify-center items-center w-full mt-5'>
-
               {
-                pathname === "/portfolios" ?
+                pathname === "/du-an" ?
                   null
                   :
                   <MainButton
-                    className='w-[70%] md:w-[40%] lg:w-[35%] xl:w-[25%] 2xl:w-[20%] '
-                    slug={`/portfolios`}
-                    label='XEM THÊM'
+                    labelOfButton={labelOfButton}
+                    href={href}
                   />
               }
 

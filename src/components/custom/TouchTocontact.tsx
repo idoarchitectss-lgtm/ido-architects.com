@@ -4,41 +4,50 @@ import React from 'react'
 import ContactForm from './forms/ContactForm'
 import Container from './container'
 
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
+import Link from 'next/link'
 
-const TouchTocontact = () => {
+interface TouchToContactProps {
+    src: string;
+    labelOfForm: string;
+}
+const TouchToContact: React.FC<TouchToContactProps> = ({
+    src,
+    labelOfForm
+}) => {
 
-    const text = "Bạn đang cần đơn vị tư vấn thiết kế chuyên nghiệp tại Đà Nẵng?" 
-    const letters = text.split('')
+    const text = "Bạn đang cần đơn vị tư vấn thiết kế chuyên nghiệp tại Đà Nẵng?"
 
     return (
-        <section className='mt-20 h-[800px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-700 to-primary'>
-            <Container>
-                <div className='flex flex-row justify-around items-center gap-20 py-20 '>
-                    <div className='hidden w-5/12 lg:flex flex-row gap-10'>
-<h2>
-
-                    {letters.map((letter,index)=> (
-                        <motion.span 
-                        initial={{opacity:0}}
-                        whileInView={{opacity:1}}
-                        viewport={{once:true}}
-                        transition={{delay:index*0.1}}
-                        key={index}
-                        className='text-white text-6xl font-[600] leading-snug'>
-                            {letter}
-                        </motion.span>
-                    ))}
-                    </h2>
-                    </div>
+        <section
+            id='touch-to-contact'
+            className='mt-20 p-0 md:p-10 h-[750px] md:h-[1000px] lg:h-[600px] bg-neutral-100 flex justify-center items-center'>
+            <Container className='w-full flex justify-center items-center'>
+                <div className='w-full flex flex-col lg:flex-row justify-center items-center py-10 md:py-15 '>
                     <motion.div 
-                    initial={{opacity:0.5, translateY:500}}
-                    whileInView={{opacity:1, translateY:0}}
-                    
-                    viewport={{once:true}}
-                    transition={{duration:2,type:"spring"}}
-                    className='w-full lg:w-5/12 flex justify-center items-center hover:translate-y-2 duration-300 cursor-pointer'>
+                    initial={{ opacity: 0, translateX: -100 }}
+                    whileInView={{ opacity: 1, translateX: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 2 }}
+                    className='flex-1 w-full lg:w-5/12 lg:flex flex-row gap-10 cursor-pointer'>
+                        <Link href='/lien-he'>
+                            <Image
+                                src={src}
+                                alt='touch-to-contact'
+                                width={1000}
+                                height={800}
+                                className='w-full h-full object-cover '
+                            />
+                        </Link>
+                    </motion.div>
+                    <motion.div
+                    initial={{ opacity: 0, translateX: 100 }}
+                    whileInView={{ opacity: 1, translateX: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 2 }}
+                        className='flex-1 w-full lg:w-5/12 flex justify-center items-center  cursor-pointer mt-12'>
                         <ContactForm
+                            labelOfForm={labelOfForm}
                             btnColor='bg-primary hover:bg-primary/90'
                         />
                     </motion.div>
@@ -48,4 +57,4 @@ const TouchTocontact = () => {
     )
 }
 
-export default TouchTocontact
+export default TouchToContact

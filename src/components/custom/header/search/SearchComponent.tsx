@@ -1,6 +1,6 @@
 'use client'
 
-import { Search } from 'lucide-react'
+import { ChevronLeft, Search } from 'lucide-react'
 import SearchDialog from './SearchDialog'
 import {
   AlertDialog,
@@ -71,10 +71,10 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
     <AlertDialog open={open} onOpenChange={setOpen}>
       {/* open và onOpenChange sử dụng để tùy chỉnh trạng thái bật tắt của dialog */}
       <AlertDialogTrigger>
-        <Search className={`hover:text-secondary hover:-translate-y-2 duration-300 ${className}`} />
+        <Search className={`hover:text-secondary duration-300 text-neutral-500 ${className}`} />
         {/* <p>Tìm kiếm bài viết</p> */}
       </AlertDialogTrigger>
-      <AlertDialogContent className='bg-white dark:bg-neutral-900 dark:text-white w-full h-screen md:h-[60vh]  p-5 flex flex-col justify-start items-center'>
+      <AlertDialogContent className='bg-white dark:bg-neutral-900 dark:text-white w-full h-[70%] md:h-[60vh] rounded-md p-5 flex flex-col justify-start items-center'>
         <AlertDialogHeader className='w-full'>
           <AlertDialogTitle>Tìm kiếm</AlertDialogTitle>
           <Suspense fallback={<SkeletonForSearch />}>
@@ -95,7 +95,12 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
             </Suspense>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className='text-secondary'>Quay lại</AlertDialogCancel>
+          <AlertDialogCancel className='text-primary border-none hover:text-secondary duration-300'>
+            <ChevronLeft />
+            <span>
+            Quay lại
+            </span>
+            </AlertDialogCancel>
         </AlertDialogFooter>
         {/* <AlertDialogAction>Tìm kiếm</AlertDialogAction> */}
       </AlertDialogContent>

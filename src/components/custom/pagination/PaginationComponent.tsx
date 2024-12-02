@@ -35,7 +35,7 @@ const PaginationArrow: React.FC<PaginationArrowProps> = ({
     return (
         <Button
             onClick={() => router.push(href)}
-            className={`mx-5 bg-white dark:bg-black border-[1px] border-neutral-600 hover:bg-gray-200 ${disabledClassName}`}
+            className={`border-none mx-5 bg-white dark:bg-black border-[1px] border-neutral-600 hover:bg-gray-200 ${disabledClassName}`}
             aria-disabled={isDisabled}
             disabled={isDisabled}
         >
@@ -60,7 +60,7 @@ const PaginationComponent = ({ pageCount }: Readonly<PaginationProps>) => {
         <section>
             <Pagination>
                 <PaginationContent>
-                    <PaginationItem>
+                    <PaginationItem className="">
                         {/* <PaginationPrevious href="#" /> */}
                         <PaginationArrow
                             direction="left"
@@ -68,8 +68,8 @@ const PaginationComponent = ({ pageCount }: Readonly<PaginationProps>) => {
                             isDisabled={currentPage <= 1}
                         />
                     </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink href={createPageURL(currentPage)}> Trang {currentPage}</PaginationLink>
+                    <PaginationItem className="">
+                        <PaginationLink className="border-none" href={createPageURL(currentPage)}> Trang {currentPage}</PaginationLink>
                     </PaginationItem>
                     {/* <PaginationItem>
                         <PaginationEllipsis />

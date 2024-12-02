@@ -58,10 +58,7 @@ export async function generateMetadata({ params }: { params: Params }) {
 
 export default async function SingelPostPage({ params }: { params: Params }) {
     const post: NodeProps = await getSinglePost(params.post)
-
     const relevantPosts: PostsProps = await AllPosts();
-    // const test =process.env.NEXT_PUBLIC_BASE_URL
-    // logger.log("check",test)
     return (
         <main id='topPage'>
             <Suspense fallback={<Loading />}>
@@ -76,7 +73,6 @@ export default async function SingelPostPage({ params }: { params: Params }) {
                         </div>
                         {/* left side */}
                         <div className='relative col-span-1 hidden lg:block ml-5 w-full'>
-                            {/* <SideBarComponent></SideBarComponent> */}
                             <SideBarComponent />
                         </div>
                     </div>

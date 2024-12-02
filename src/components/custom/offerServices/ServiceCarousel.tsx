@@ -1,7 +1,5 @@
-import { MoveRight, Pickaxe, StepForward } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link';
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import {
     Carousel,
     CarouselContent,
@@ -21,22 +19,31 @@ interface ServiceCarouselProps {
 const ServiceCarousel:React.FC<ServiceCarouselProps> = ({
     servicesArr
 }) => {
+
+    const [newServicesArr,setNewServicesArr] = useState<ServicesNodeArr>(servicesArr)
+    // Đảo ngược mảng
+    useEffect(() => {
+        const reverServiceArr =  servicesArr.reverse()
+        setNewServicesArr(reverServiceArr)
+        // console.log("1",reverServiceArr)
+        // console.log("2",servicesArr)
+
+    },[servicesArr,])
     return (
 
-        <Carousel className='relative'>
-            <CarouselContent className='px-10'>
-                {servicesArr.map((service,index)=>(
+        <Carousel className='relative h-full'>
+            <CarouselContent className='px-10 h-full'>
+                {newServicesArr.map((service,index)=>(
                 <CarouselItem 
                 key={index}
-                className='basis-full md:basis-2/3 lg:basis-1/3'>
+                className='basis-full md:basis-2/3 lg:basis-1/3 h-full'>
                     <ServiceItem 
                     service={service}
                     />
                 </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselNext className='hidden md:block absolute right-[3rem] top-[25%] w-12 h-12 md:right-[0.5rem] md:top-[35%] border-[1px] border-primary bg-white'/>
-            <CarouselPrevious className='hidden md:block absolute left-10 top-[25%] w-12 h-12 md:left-5 md:top-[35%] border-[1px] border-primary bg-white' />
+            
             <div className='lg:hidden bg-gradient-to-l from-neutral-100 to-transparent h-full w-24 absolute top-0 right-0 translate-x-5'>
             </div>
         </Carousel>

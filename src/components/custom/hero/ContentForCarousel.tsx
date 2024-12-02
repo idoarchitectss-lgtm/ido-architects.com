@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 
 interface ContectForCarouselProps {
     heroTitle: string;
@@ -17,30 +18,23 @@ const ContentForCarousel = ({ heroTitle, subTitle, text }: ContectForCarouselPro
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
-            className=" w-[320px] absolute z-20 top-10 left-5 md:top-[20%] md:left-[12%] xl:left-[15%] 2xl:top-[10%] 2xl:left-[15%] 3xl:left-[50%]  ">
-            <div className=" w-full md:mx-auto flex flex-col gap-10 bg-transparent">
-                <div className="w-full flex flex-col items-start justify-center gap-16 ">
-                    <p className="text-sm font-semibold text-secondary border-l-[1px] border-secondary pl-2">
+            className=" w-full h-full md:w-[450px] lg:w-[600px] absolute z-20 top-0 left-0 md:top-[35%] md:left-[12%] xl:left-[15%] xl:top-[10%]  ">
+            <div className=" w-full h-full md:mx-auto flex flex-col gap-10 bg-transparent justify-between items-center py-36 px-24">
+                <div className="w-full flex flex-col items-start justify-center  ">
+                    {/* <p className="text-sm font-semibold text-white border-l-[1px] border-secondary pl-2 uppercase tracking-[2px]">
                         {subTitle}
-                    </p>
-                    <h2 className="text-[60px] font-[700] leading-[60px] text-white">{heroTitle}</h2>
+                    </p> */}
+                    <h2 className="text-[32px] md:text-[48px] font-[700] leading-[50px] text-white tracking-wider line-clamp-5">{heroTitle}</h2>
                     <p className="text-white font-semibold line-clamp-2">{text}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-4 w-full">
-                    {/* <Button
-                        onClick={() => router.push('/portfolios')}
-
-                        className="w-full hover:bg-primary duration-500 rounded-none h-12"
-                        variant="secondary">
-                        <span className="text-white">
-                            Danh Mục Dự Án
-                        </span>
-                    </Button> */}
+                <div className="group w-full cursor-pointer">
                     <Button
-                        onClick={() => router.push('/contact')}
+                        onClick={() => router.push('/lien-he')}
                         variant="outline"
-                        className="w-full h-12 rounded-sm text-white hover:bg-secondary hover:text-white duration-500 "
-                    >LIÊN HỆ
+                        className="border-neutral-50 rounded-none text-white group-hover:bg-secondary/80 hover:text-white duration-500 w-full py-7 hover:border-none cursor-pointer shadow-xl shadow-secondary/30 bg-black/30"
+                    >
+                        Liên hệ Ido Architects
+                        <ArrowRight className='w-5 h-5' />
                     </Button>
 
                 </div>

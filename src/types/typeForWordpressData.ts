@@ -85,7 +85,31 @@ export type Services = {
 }
 export type ServicesNodeArr = Services['edges'][number]['node'][]
 
-
+export type SingleServiceType = {
+    service: {
+      title:string;
+      excerpt:string;
+      content:string;
+      serviceFields:{
+        serviceName:string;
+        descriptionOfService:string;
+      }
+      slug:string;
+      featuredImage:{
+        node: {
+          altText:string;
+          sourceUrl:string;
+        }
+      }
+      seo:{
+        metaKeywords:string;
+        mateDesc:string;
+        canonical:string;
+        title:string;
+      }
+  
+    }
+  }
 
 export type PostMoreStoriesProps = {
     author: AuthorProps;
@@ -131,6 +155,8 @@ export type portfolios = {
             addressOfProperty: string;
             designedCompany:string;
         };
+        isCompleted:boolean;
+        isFeatured:boolean;
     };
     
     portfolioCategories: {
@@ -150,19 +176,61 @@ export type porfolioCategory={
 
 //   component hero type
   export type hero = {
-    edges: {
-      node: {
+    heros: {
+      nodes: {
         heros: {
-          heroTitle:string;
-          heroSubtitle:string;
-          heroBodyText:string;
-          heroBanner: {
-            node:{
-              sourceUrl:string;
+            hero: {
+                heroTitle:string;
+                heroSubtitle:string;
+                heroBodyText:string;
+                ctaButton:string;
+                banner_img: {
+                  node:{
+                    altText:string;
+                    sourceUrl:string;
+                  }
+                }
             }
-          }
+          
+        }
+      }[]
+    }
+  };
+
+  export type AboutType = {
+    abouts: {
+        nodes: {
+            aboutComponent: {
+                bodytext:string;
+                title:string;
+                subtitle:string;
+                image:{
+                    node: {
+                        altText:string;
+                        sourceUrl:string;
+                    }
+                };
+                button: {
+                    labelbtn:string;
+                    hrefbtn:string;
+                }
+               
+            }
+        }[]
+    }
+  };
+
+  export type DetailPageType = {
+    page: {
+      content :string;
+      slug:string;
+      title:String;
+      featuredImage:{
+        node:{
+          altText: string;
+          sourceUrl:string;
         }
       }
-    }[]
-  }
+    }
+};
 

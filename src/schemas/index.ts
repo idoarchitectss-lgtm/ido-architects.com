@@ -15,3 +15,6 @@ export const ContactSchema = z.object({
     phone: z.string().regex(/^\+\d{1,3}\s?\d{10,13}$/,{message:"Vui lòng điền đúng số điện thoại"}),
     message:z.string().optional()
 })
+
+
+
