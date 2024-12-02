@@ -25,11 +25,11 @@ const config = {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			primary: {
-  				DEFAULT: '#002155',
+  				DEFAULT: '#222222',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
-  				DEFAULT: '#FF631B',
+  				DEFAULT: '#F6821F',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
   			destructive: {

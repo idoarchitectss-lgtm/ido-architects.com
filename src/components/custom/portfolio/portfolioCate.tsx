@@ -10,13 +10,15 @@ interface PortfolioCateProps {
 const PortfolioCate:React.FC<PortfolioCateProps> = ({nameOfCategory, className,handleClick}) => {
 
   return (
-   <h3 
+   <div 
    onClick={handleClick}
    className={`
    ${className}
    `}>
+    <h3>
     {nameOfCategory}
     </h3>
+    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import {Menu} from 'lucide-react'
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
@@ -19,12 +20,12 @@ const mobileNavBarItem = [
     slug:'/'
   },
   {
-    name: "Portfolios",
-    slug:'/portfolios'
+    name: "Dự án",
+    slug:'/du-an'
   },
   {
     name:"Các dịch vụ",
-    slug:"/our-services"
+    slug:"/cac-dich-vu"
 
   },
   {
@@ -33,7 +34,7 @@ const mobileNavBarItem = [
   },
   {
     name: "Liên hệ",
-    slug: "/contact"
+    slug: "/lien-he"
   },
 
 ]
@@ -46,10 +47,10 @@ const handleClick = ()=> {
   console.log(isOpen)
 }
   return (
-    <>
+    <div className='md:hidden'>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger className=''>
-              <Menu className=' hover:text-secondary hover:-translate-y-2 duration-300' size={30}/>
+              <Menu className=' hover:text-secondary duration-500' size={40}/>
             </DialogTrigger>
             <DialogContent className=' h-[50vh] flex justify-center items-center border-none'>
               <div className='flex flex-col gap-5'>
@@ -71,7 +72,7 @@ const handleClick = ()=> {
             </DialogContent>
           </Dialog>
 
-    </>
+    </div>
 
   )
 }

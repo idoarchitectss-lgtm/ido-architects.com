@@ -8,20 +8,25 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { useBreadcrumbs } from '@/hooks/useBreadcrumbs';
+import { useEffect } from "react";
+import Container from "../container";
 
 
 const BreadcrumbComponent = () => {
   // Lấy dữ liệu breadcrumb thông qua pathname bằng hook useBreadcrumbs
   const breadcrumbItemArr = useBreadcrumbs();
+  useEffect(()=>{
+    console.log("check breadcrumbItemArr",breadcrumbItemArr)
+  },[breadcrumbItemArr])
 
   return (
-    <div className="my-5 border-b-[0.5px] border-neutral-200 pb-2">
-      <Breadcrumb>
-        <BreadcrumbList>
+    <div className=" my-5  pb-2 w-full overflow-x-scroll hiddenScrollBar">
+      <Breadcrumb className="">
+        <BreadcrumbList className="px-2">
           {/* xử lý name breadcrumb viết hoa chữ cái đầu */}
           <BreadcrumbItem>
             <BreadcrumbLink href="/" className="hover:text-secondary duration-300 font-semibold">
-              Home
+              Về trang chủ
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -41,7 +46,9 @@ const BreadcrumbComponent = () => {
                     className={`hover:text-secondary duration-300 font-semibold
                   ${isLastItem ? "text-secondary font-normal" : ""}
                   `}
-                    href={breadcrumb.link || "/"}>{name}</BreadcrumbLink>
+                    href={breadcrumb.link || "/"}>
+                      {name}
+                    </BreadcrumbLink>
                 </BreadcrumbItem>
                 {!isLastItem && <BreadcrumbSeparator />}
               </div>

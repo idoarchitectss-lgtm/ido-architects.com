@@ -25,28 +25,28 @@ import { toast } from "sonner"
 export function ShareLinkComponent() {
     const pathname = usePathname()
 
-    const [isOpen,setIsOpen] = useState<boolean>()
-        const handleClick = () => {
-                setIsOpen(false)
-                toast.success('Sao chép địa chỉ bài viết thành công!')
-        }
+    const [isOpen, setIsOpen] = useState<boolean>()
+    const handleClick = () => {
+        setIsOpen(false)
+        toast.success('Sao chép địa chỉ bài viết thành công!')
+    }
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="shadow-md ">
-                <span className=" text-secondary mr-2 ">
-                <ShareBtn />
-                </span>
+                <Button variant="outline" className="group shadow-md border-none bg-neutral-100 rounded-none hover:bg-secondary hover:text-white duration-500">
+                    <span className=" text-secondary mr-2 group-hover:text-white duration-500 ">
+                        <ShareBtn />
+                    </span>
                     <p className="text-xs hover:text-secondary">
-                    Chia sẽ
+                        Chia sẽ
                     </p>
-                    </Button>
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md ">
+            <DialogContent className="sm:max-w-md bg-white">
                 <DialogHeader>
                     <DialogTitle>Chia sẽ bài viết</DialogTitle>
                     <DialogDescription>
-                        Ai có link có thể xem được bài viết
+                        sao chép link bên dưới
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
@@ -60,9 +60,9 @@ export function ShareLinkComponent() {
                             readOnly
                         />
                     </div>
-                    <Button 
-                    onClick={handleClick}
-                    variant='outline' type="submit" size="sm" className="px-3">
+                    <Button
+                        onClick={handleClick}
+                        variant='outline' type="submit" size="sm" className="px-3">
                         <span className="sr-only">Copy</span>
                         <CopyIcon className="h-4 w-4 text-secondary" />
                     </Button>

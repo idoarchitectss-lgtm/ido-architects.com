@@ -95,7 +95,18 @@ const nextConfig = {
                 port: "",
                 pathname: "/**",
             },
-
+            {
+                protocol:"https",
+                hostname:"www.palmarchi.com",
+                port: "",
+                pathname: "/**",
+            },
+            {
+                protocol:"https",
+                hostname:"cdn.stocksnap.io",
+                port: "",
+                pathname: "/**",
+            },
             
             
         ]

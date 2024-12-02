@@ -37,9 +37,9 @@ const HeaderPost: React.FC<HeaderPostProps> = ({
           publishedDate={post?.date}
           tagsList={post?.tags?.nodes}
         />
-        <div className='flex flex-row items-center gap-1'>
+        {/* <div className='flex flex-row items-center gap-1'>
           <ShareLinkComponent />
-        </div>
+        </div> */}
       </div>
 
     </>

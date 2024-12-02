@@ -1,16 +1,20 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import ImageCarouselHero from './imageCarouelHero'
 import { hero } from '@/types/typeForWordpressData'
+import { CarouselApi } from '@/components/ui/carousel'
 
 
-interface HeroProps {
-  heroArr: hero['edges']
-}
 
 
-const Hero = ({heroArr}:HeroProps) => {
+const Hero = ({heroArr}:{heroArr:hero['heros']['nodes']}) => {
+  // useEffect(() => {
+  //   console.log("check hero",heroArr)
+  // })
+
+  
   return (
-    <section className='relative flex-col items-stretch h-[100vh] w-[100vw] overflow-hidden'>
+    <section className='relative flex-row items-stretch h-[690px] w-[100%] overflow-hidden'>
         <ImageCarouselHero 
         heroArr={heroArr}
         />

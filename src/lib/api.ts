@@ -1,3 +1,5 @@
+import { AboutType, DetailPageType, hero, SingleServiceType } from "@/types/typeForWordpressData";
+import { StringValidation } from "zod";
 
 
 const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || "";
@@ -64,8 +66,10 @@ query AllPortfolios {
           floorDimension
           propertyType
           numberOfFloors
-          addressOfProperty
+          addressofproperty
         }
+        isCompleted
+      	isFeatured
       }
       featuredImage {
         node {
@@ -82,7 +86,7 @@ query AllPortfolios {
   }
             }
         `)
-  return data.portfolios;
+  return data?.portfolios;
 }
 
 export async function getPortfolioCates() {
@@ -116,7 +120,7 @@ export async function getSinglePortfolio(slug: string) {
     project {
       descriptionOfProject
       generalInformation {
-        addressOfProperty
+        addressofproperty
         completedYear
         floorDimension
         numberOfFloors
@@ -243,20 +247,6 @@ export async function getSinglePost(slug: string) {
 }
 
 
-// export async function getNewEndCursor() {
-//   const data: any = FetchAPI(`
-//     query NewEndCursor {
-//   posts(first: 5) {
-//     pageInfo {
-//       endCursor
-//       hasNextPage
-//     }
-//   }
-// }
-//     `)
-//   return data.posts?.pageInfo.endCursor
-// }
-
 type ServiceData = {
   services: {
     edges: {
@@ -305,19 +295,57 @@ export async function getServices() {
   return data?.services;
 }
 
+export async function getSingleService(slug:string):Promise<SingleServiceType>{
+  const data = await FetchAPI(`
+ query singleService($id: ID = "", $idType: ServiceIdType = URI) {
+  service(id: $id, idType: $idType) {
+    title
+    excerpt
+    content
+    serviceFields {
+      serviceName
+      descriptionOfService
+    }
+    slug
+    featuredImage {
+      node {
+        altText
+        sourceUrl
+      }
+    }
+    seo {
+      metaKeywords
+      metaDesc
+      canonical
+      title
+    }
+  }
+}
+    `,
+  {
+    variables: {
+      id:slug
+    }
+  } );
+
+    return data
+}
+
 
 export async function getHero() {
   const data = await FetchAPI(`
-   query Hero {
+query hero {
   heros {
-    edges {
-      node {
-        heros {
+    nodes {
+      heros {
+        hero {
           heroTitle
           heroSubtitle
           heroBodyText
-          heroBanner {
+          ctaButton
+          banner_img {
             node {
+              altText
               sourceUrl
             }
           }
@@ -328,7 +356,7 @@ export async function getHero() {
 }
     `)
 
-  return data.heros;
+  return data;
 }
 
 // get image for logo
@@ -351,4 +379,61 @@ export async function getLogo() {
     `)
 
     return data;
+};
+
+export async function getAbout():Promise<AboutType> {
+  const data = await FetchAPI(`
+    query about {
+  abouts {
+    nodes {
+      aboutComponent {
+        bodytext
+        title
+        subtitle
+        image {
+          node {
+            altText
+            sourceUrl
+          }
+        }
+        button {
+          hrefbtn
+          labelbtn
+        }
+      }
+    }
+  }
+}
+    `)
+
+    return data;
+
+}
+
+
+
+export async function getDetailPage(id:string):Promise<DetailPageType>{
+  const data = await FetchAPI(`
+  query detailPage($id: ID = "", $idType: PageIdType = ID) {
+  page(id: $id, idType: $idType) {
+    content
+    slug
+    title
+    featuredImage {
+      node {
+        altText
+        sourceUrl
+      }
+    }
+  }
+}
+   `
+  ,
+  {
+    variables: {
+      id:id
+    }
+  }
+  )
+  return data;
 }
