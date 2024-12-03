@@ -34,22 +34,22 @@ export async function generateStaticParams() {
 // dùng function generateMetadata để tạo ra các thông tin meta động cho các trang hổ trợ SEO
 export async function generateMetadata({ params }: { params: Params }) {
     const post: NodeProps = await getSinglePost(params.post);
-    const imageUrl = post.featuredImage?.node.sourceUrl || '';
+    const imageUrl = post?.featuredImage?.node.sourceUrl || '';
     const validImageUrl = imageUrl ? new URL(imageUrl).toString() : '';
     return {
-        title: post.title,
-        description: post.excerpt,
+        title: post?.title,
+        description: post?.excerpt,
         openGraph: {
-            title: post.title,
-            description: post.excerpt,
-            url: `https://www.ido-architects.com/blog/${post.slug}`,
+            title: post?.title,
+            description: post?.excerpt,
+            url: `https://www.ido-architects.com/blog/${post?.slug}`,
             type: 'article',
             images: [
                 {
                     url: validImageUrl,
                     width: 800,
                     height: 600,
-                    alt: post.title,
+                    alt: post?.title,
                 },
             ],
         },
