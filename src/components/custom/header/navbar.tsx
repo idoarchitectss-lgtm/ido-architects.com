@@ -12,13 +12,13 @@ import { ChevronDown } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 
-const ItemMenu = [
+export const ItemMenu = [
   {
     name: "Trang chủ",
     slug: '/'
   },
   {
-    name: "Giới thiệu",
+    name: "Về Ido Architects",
     slug: '/gioi-thieu'
   },
   {
@@ -45,7 +45,7 @@ const ItemMenu = [
       },
       {
         name: "Dịch Vụ Thi Công",
-        slug: '/dich-vu-thi-cong'
+        slug: '/thiet-ke-va-thi-cong-tron-goi'
       },
       {
         name: "Dịch Vụ Tư Vấn Giám Sát",
@@ -61,10 +61,10 @@ const ItemMenu = [
     name: "Tuyển dụng",
     slug: '/tuyen-dung'
   },
-  {
-    name: "Liên hệ",
-    slug: "/lien-he"
-  },
+  // {
+  //   name: "Liên hệ",
+  //   slug: "/lien-he"
+  // },
 ]
 
 

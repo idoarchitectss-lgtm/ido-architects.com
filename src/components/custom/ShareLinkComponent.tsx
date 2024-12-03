@@ -16,9 +16,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ShareBtn from "./buttons/ShareBtn"
 import { usePathname } from "next/navigation"
-import { OFFICIAL_WEB_URL } from "@/lib/constants"
 import { useState } from "react"
 import { toast } from "sonner"
+import { BASE_URL } from "@/lib/constants"
 
 
 
@@ -56,7 +56,7 @@ export function ShareLinkComponent() {
                         </Label>
                         <Input
                             id="link"
-                            defaultValue={`${OFFICIAL_WEB_URL}${pathname}`}
+                            defaultValue={`${BASE_URL}${pathname}`}
                             readOnly
                         />
                     </div>

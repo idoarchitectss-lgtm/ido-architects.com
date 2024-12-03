@@ -21,8 +21,8 @@ const BreadcrumbComponent = () => {
 
   return (
     <div className=" my-5  pb-2 w-full overflow-x-scroll hiddenScrollBar">
-      <Breadcrumb className="">
-        <BreadcrumbList className="px-2">
+      <Breadcrumb className="w-full overflow-x-scroll hiddenScrollBar">
+        <BreadcrumbList className="px-2 w-[1000px] flex flex-row">
           {/* xử lý name breadcrumb viết hoa chữ cái đầu */}
           <BreadcrumbItem>
             <BreadcrumbLink href="/" className="hover:text-secondary duration-300 font-semibold">

@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import {motion} from 'framer-motion'
+import NumberCounter from './NumberCounter'
 
 
 
@@ -33,12 +34,12 @@ const NumberOfAchievements= (
     className=' grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-5 px-2 lg:px-10 w-[1000px] mx-auto text-white'>
         {
             archievementArr.map((item,index)=>(
-                <div
-                key={index}
-                className='cursor-pointer hover:shadow-secondary/20 hover:shadow-md hover:border-2 duration-500 bg-neutral-100 text-secondary  text-xl font-[700] p-8 flex flex-col gap-3 items-center justify-center text-center shadow-xl'>
-                <p className='uppercase text-primary '>{item.title}</p>
-                <p className='text-3xl'>{item.number}</p>
-            </div>
+            <NumberCounter 
+            key={index}
+            title={item.title}
+            from={0}
+            to={item.number}
+            />
             ))
         }
         

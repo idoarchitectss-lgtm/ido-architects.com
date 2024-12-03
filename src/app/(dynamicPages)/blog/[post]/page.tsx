@@ -60,10 +60,10 @@ export default async function SingelPostPage({ params }: { params: Params }) {
     const post: NodeProps = await getSinglePost(params.post)
     const relevantPosts: PostsProps = await AllPosts();
     return (
-        <main id='topPage'>
+        <main id='topPage' className='px-1'>
             <Suspense fallback={<Loading />}>
                 {/* <Header /> */}
-                <Container>
+                <Container className=''>
                     <BreadcrumbComponent />
                     <div className='grid grid-cols-3'>
                         {/* right side */}

@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { StarIcon } from '@radix-ui/react-icons'
 import MainButton from '../buttons/MainButton';
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 interface PortfoliosForHomepage {
     portfoliosArray: portfolios[];
@@ -29,8 +30,11 @@ const PortfoliosForHomepage: React.FC<PortfoliosForHomepage> = ({
     text,
     href
 }) => {
+
+    const router = useRouter();
+
     useEffect(() => {
-        console.log("check portfoliosArray", portfoliosArray)
+        // console.log("check portfoliosArray", portfoliosArray)
     }, [portfoliosArray])
     //     const portfoliosArray = await allPortfolios();
     //   const portfolioArrForHome = portfoliosArray.slice(0, 6);
@@ -89,7 +93,10 @@ const PortfoliosForHomepage: React.FC<PortfoliosForHomepage> = ({
                             className='w-full'>
                             <CarouselContent className=''>
                                 {portfoliosArray?.map((item, index) => (
-                                    <CarouselItem key={index}
+                                    
+                                    <CarouselItem
+                                    key={index}
+                                    onClick={()=>router.push(`/du-an/${item.slug}`)}
                                         className='relative basis-full  md:basis-1/2 lg:basis-1/4 h-[450px] xl:h-[400px] gap-5 flex flex-col justify-end mr-5 cursor-pointer group overflow-hidden'
                                     >
                                         {/* icon dự án nổi bật */}
@@ -120,6 +127,7 @@ const PortfoliosForHomepage: React.FC<PortfoliosForHomepage> = ({
                                             <p className='text-md text-neutral-300 text-center group-hover:opacity-100 opacity-0 duration-500'>{item.project.generalInformation.propertyType}</p>
                                         </div>
                                     </CarouselItem>
+                                    
                                 ))}
                             </CarouselContent>
                             <div className='absolute w-full top-[80%] flex flex-row gap-2 justify-center items-center h-[150px] my-10 z-10'>

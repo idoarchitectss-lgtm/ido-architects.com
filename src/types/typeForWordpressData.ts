@@ -16,6 +16,7 @@ export type PostsDataProps =
                             }
                         };
                         date: string;
+                        uri:string;
                         author: {
                             node: {
                                 name: string;
@@ -144,6 +145,7 @@ export type portfolios = {
     }
     content:string;
     excerpt: string;
+    date:string;
     project: {
         descriptionOfProject: string;
         nameOfProject: string;

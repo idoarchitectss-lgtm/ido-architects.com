@@ -58,6 +58,7 @@ query AllPortfolios {
       uri
       title(format: RAW)
       excerpt
+      date
       project {
         descriptionOfProject
         nameOfProject
@@ -151,6 +152,7 @@ export async function getAllPosts(postPerPage: number, currentPage: any) {
             excerpt
             slug
             date
+            uri
             featuredImage {
               node {
                 sourceUrl
