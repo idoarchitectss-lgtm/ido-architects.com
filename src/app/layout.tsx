@@ -32,7 +32,7 @@ const montserrat = Montserrat({
 
 
 export const metadata: Metadata = {
-  title: "Công ty thiết kế xây dựng IDO-ARCHITECTS",
+  title: "IDO ARCHITECTS - Công ty TNHH Thiết kế và Xây dựng IDO ARCHITECTS",
   description: "Đơn vị thiết kế thi công kiến trúc chuyên nghiệp và uy tín tại Đà Nẵng",
 };
 export default async function RootLayout({
