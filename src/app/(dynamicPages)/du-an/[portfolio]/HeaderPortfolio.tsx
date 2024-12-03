@@ -32,31 +32,8 @@ const HeaderPortfolio: React.FC<HeaderPortfolioProps> = ({ portfolio }) => {
 
           </div>
         </Link>
-
       </div>
-      <div className='flex flex-row items-center justify-between my-2'>
-        <div className='flex flex-row items-center gap-1'>
-          <ShareLinkComponent />
-          <Dialog>
-            <DialogTrigger className='w-full border-[1px] h-10 rounded-md px-4'>
-              <p
-                className=' hover:text-secondary'>
-                Đăng ký nhận bản vẽ
-              </p>
-            </DialogTrigger>
-            <DialogContent className='p-0 border-0'>
-              <DialogHeader>
-                {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
-                <DialogDescription className='flex justify-center items-center w-full h-full'>
-                  <ContactForm 
-                  labelOfForm='Đăng ký tư vấn'
-                  />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
+      
     </>
   )
 }

@@ -12,11 +12,11 @@ const BodyPortfolio: React.FC<BodyPostProps> = ({
 }) => {
 
     return (
-        <div>
+        <div className='px-1'>
             <PortfolioInfo 
             project={portfolio?.project}
             />
-            <div className='bg-secondary/20 rounded-md py-4 px-3 my-5 italic'>
+            <div className='bg-secondary/10 rounded-md py-4 px-3 my-5 italic'>
                 <div dangerouslySetInnerHTML={{ __html: portfolio?.excerpt }}></div>
             </div>
             <div className='flex flex-col justify-start gap-1 break-words'

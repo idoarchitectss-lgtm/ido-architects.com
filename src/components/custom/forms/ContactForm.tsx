@@ -11,12 +11,9 @@ import { FormSuccess } from './FormSuccess'
 import { Button } from '@/components/ui/button'
 import { ContactSchema } from '@/schemas'
 
-import { contact } from "@/actions/contact";
 import { Textarea } from '@/components/ui/textarea'
-import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { Mail } from 'lucide-react'
 
 interface ContactFromProps {
   btnColor?: string;
