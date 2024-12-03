@@ -2,6 +2,7 @@
 import PostCard from '@/components/custom/newsAndBlog/postCard';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { NodeProps, PostsProps } from '@/types/typeForWordpressData'
+import { ChevronRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 interface FooterPostProps {
@@ -25,7 +26,7 @@ const FooterPost: React.FC<FooterPostProps> = ({
   }, [pathname,relevantPosts,])
 
   return (
-    <div >
+    <div className='mb-10'>
       <Carousel>
         <CarouselContent className='flex flex-row'>
           {newPosts?.map((post) => (

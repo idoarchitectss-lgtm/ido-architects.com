@@ -12,12 +12,12 @@ const PortfolioInfo: React.FC<PortfolioInfoProps> = ({
 }) => {
     const { descriptionOfProject, nameOfProject, generalInformation } = project || {};
     return (
-        <div className=' border-neutral-500 border-[1px] rounded-lg px-2 py-2 overflow-hidden'>
+        <div className=' px-2 py-2 overflow-hidden'>
             <table className="table-auto w-full text-sm">
                 <thead className='rounded-md'>
-                    <tr className="bg-primary/10 ">
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thông tin tổng quan của dự án</th>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{nameOfProject || "Đang cập nhật"}</th>
+                    <tr className="bg-neutral-100 ">
+                        <th className="px-2 py-2 text-left text-xs font-medium text-primary uppercase tracking-wider">Thông tin tổng quan của dự án</th>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-primary uppercase tracking-wider">{nameOfProject || "Đang cập nhật"}</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -31,7 +31,7 @@ const PortfolioInfo: React.FC<PortfolioInfoProps> = ({
                     </tr>
                     <tr>
                         <td className="px-2 py-2 whitespace-nowrap">Quy mô dự án</td>
-                        <td className="px-2 py-2 whitespace-nowrap">{generalInformation?.floorDimension}</td>
+                        <td className="px-2 py-2 whitespace-nowrap">{generalInformation?.floorDimension} m2</td>
                     </tr>
                     <tr>
                         <td className="px-2 py-2 whitespace-nowrap">Loại công trình</td>
@@ -39,7 +39,7 @@ const PortfolioInfo: React.FC<PortfolioInfoProps> = ({
                     </tr>
                     <tr>
                         <td className="px-2 py-2 whitespace-nowrap">Số tầng cao</td>
-                        <td className="px-2 py-2 whitespace-nowrap">{generalInformation?.numberOfFloors}</td>
+                        <td className="px-2 py-2 whitespace-nowrap">{generalInformation?.numberOfFloors} tầng</td>
                     </tr>
                     <tr>
                         <td className="px-2 py-2 whitespace-nowrap">Địa chỉ dự án</td>
