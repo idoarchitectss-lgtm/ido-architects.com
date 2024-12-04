@@ -30,7 +30,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
         query,
         variables
       }),
-      next: { revalidate: 10 },
+      next: { revalidate: 60 },
       //thêm thời gian chờ load dữ liệu để tạo các trang tĩnh, tránh trường hợp fail vì fetch dữ liệu về vượt quá thời gian chờ, điều này dẫn đến lỗi và không delop được. Thường gặp khi deploy vercel.
       signal: controller.signal
     }
