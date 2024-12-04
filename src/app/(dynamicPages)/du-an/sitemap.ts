@@ -3,8 +3,7 @@ import { BASE_URL } from '@/lib/constants'
 import { MetadataRoute } from 'next'
  
 
-export default async function sitemap({slug}:{slug:string}):Promise<MetadataRoute.Sitemap> {
-    try {
+export default async function sitemap():Promise<MetadataRoute.Sitemap> {
     const res = await allPortfolios();
     const portfolios = res.portfoliosArray || []
     return portfolios?.map((project)=>({
@@ -13,8 +12,4 @@ export default async function sitemap({slug}:{slug:string}):Promise<MetadataRout
         changeFrequency:'weekly',
         priority:0.8,
     }))
-    } catch (error) {
-        console.error('Error in fetching Sitemap', error)
-        return [];
-    }
 }

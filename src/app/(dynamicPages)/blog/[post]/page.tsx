@@ -27,18 +27,18 @@ async function AllPosts() {
 }
 
 // refactor code
-export async function generateStaticParams() {
-    try {
-        const res:PostsProps = await getAllPosts(10,1);
-        const edges = res?.edges || [];
-        return edges.map((post)=>({
-            id:post.node.slug
-        }))
-    } catch (error) {
-        console.error('Error in generateStaticParams:', error);
-        return [];
-    }
-}
+// export async function generateStaticParams() {
+//     try {
+//         const res:PostsProps = await getAllPosts(10,1);
+//         const edges = res?.edges || [];
+//         return edges.map((post)=>({
+//             id:post.node.slug
+//         }))
+//     } catch (error) {
+//         console.error('Error in generateStaticParams:', error);
+//         return [];
+//     }
+// }
 
 // dùng function generateMetadata để tạo ra các thông tin meta động cho các trang hổ trợ SEO
 export async function generateMetadata({ params }: { params: Params }) {
