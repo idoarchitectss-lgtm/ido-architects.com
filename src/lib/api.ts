@@ -12,7 +12,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 giây
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 giây
   /**
    * Vì không truyền trực tiếp timeout value vào fetch, nên cần tạo một AbortController để có thể hủy yêu cầu fetch. 
    * AbortController: Tạo một AbortController để có thể hủy yêu cầu fetch.
@@ -25,7 +25,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
     API_URL,
     {
       headers,
-      method: "POST",
+    method: "POST",
       body: JSON.stringify({
         query,
         variables
