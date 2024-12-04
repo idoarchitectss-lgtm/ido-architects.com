@@ -17,22 +17,32 @@ interface Params {
 type Edges = PostsDataProps['posts']
 
 async function AllPosts() {
-    const posts = await getAllPosts(10, 1);
-    // console.log("checkpost>>>", posts)
+   try {
+    const posts:PostsProps = await getAllPosts(10, 1);
     return posts;
+   } catch (error) {
+    console.error('Error in AllPosts:', error);
+    return {edges:[],pageInfo:{} as any};
+   }
 }
 
+// refactor code
 export async function generateStaticParams() {
-    const res: Edges = await getAllPosts(100, 0);
-    const edges = res.edges
-    return edges.map((post) => ({
-        id: post.node.slug
-    }))
+    try {
+        const res:PostsProps = await getAllPosts(10,1);
+        const edges = res?.edges || [];
+        return edges.map((post)=>({
+            id:post.node.slug
+        }))
+    } catch (error) {
+        console.error('Error in generateStaticParams:', error);
+        return [];
+    }
 }
-
 
 // dùng function generateMetadata để tạo ra các thông tin meta động cho các trang hổ trợ SEO
 export async function generateMetadata({ params }: { params: Params }) {
+    try {
     const post: NodeProps = await getSinglePost(params.post);
     const imageUrl = post?.featuredImage?.node.sourceUrl || '';
     const validImageUrl = imageUrl ? new URL(imageUrl).toString() : '';
@@ -44,21 +54,30 @@ export async function generateMetadata({ params }: { params: Params }) {
             description: post?.excerpt,
             url: `https://www.ido-architects.com/blog/${post?.slug}`,
             type: 'article',
-            images: [
+            images: validImageUrl ? [
                 {
                     url: validImageUrl,
                     width: 800,
                     height: 600,
                     alt: post?.title,
                 },
-            ],
+            ] : [],
         },
     };
+    } catch (error) {
+        console.error('Error in generateMetadata:', error);
+        return {
+            title: 'Ido Architects',
+            description:'Công ty thiết kế kiến trúc'
+        }
+    }
 }
 
 export default async function SingelPostPage({ params }: { params: Params }) {
+    try {
     const post: NodeProps = await getSinglePost(params.post)
     const relevantPosts: PostsProps = await AllPosts();
+    
     return (
         <main id='topPage' className='px-1'>
             <Suspense fallback={<Loading />}>
@@ -85,4 +104,8 @@ export default async function SingelPostPage({ params }: { params: Params }) {
         </main>
 
     )
+} catch (error) {
+ console.error('Error in SingelPostPage:', error);
+ return <div>Error loading post</div>       
+}
 }
