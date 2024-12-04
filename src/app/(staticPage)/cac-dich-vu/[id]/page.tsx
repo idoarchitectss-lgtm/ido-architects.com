@@ -10,10 +10,15 @@ interface Params {
 
 // tạo trang tĩnh SSG
 export async function generateStaticParams() {
+    try {
     const servicesArr = await allServices();
     return servicesArr.map((service) => ({
         id: service.slug
     }))
+    } catch (error) {
+        console.error('Error in generateStaticParams:', error);
+        return [];
+    }
 }
 
 export default async function SingleServicePage({ params }: { params: Params }) {

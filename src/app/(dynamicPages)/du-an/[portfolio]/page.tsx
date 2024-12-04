@@ -17,15 +17,21 @@ interface Params {
 }
 
 export async function generateStaticParams() {
+    try {
     const data = await getAllPortfolios();
-    const portfolios: portfolios[] = data?.nodes
+    const portfolios: portfolios[] = data?.nodes || []
     return portfolios.map((portfolio) => ({
         id: portfolio.slug
     }))
+    } catch (error) {
+        console.error('Error in generateStaticParams portfolio:', error);
+        return [];
+    }
 }
 
 
 export async function generateMetadata({params}:{params:Params}) {
+    try {
     const res = await getSinglePortfolio(params.portfolio)
     const portfolio: portfolios = await res.portfolio;
 
@@ -41,14 +47,21 @@ export async function generateMetadata({params}:{params:Params}) {
             Description:portfolio?.excerpt,
             url: `https://www.ido-architects.com/du-an/${params.portfolio}`,
             type: 'article',
-            image: [
+            images: validImageUrl ? [
                 {
                     url: validImageUrl,
                     width: 800,
                     height: 600,
-                    alt:portfolio?.title,
+                    alt: portfolio?.title,
                 },
-            ]
+            ] : [],
+        }
+    }
+    } catch (error) {
+        console.error('Error in generateMetadata portfolio:', error);
+        return {
+            title:'Không có portfolio nào phù hợp',
+            description:'Các dự án tại Ido Architects'
         }
     }
 }
