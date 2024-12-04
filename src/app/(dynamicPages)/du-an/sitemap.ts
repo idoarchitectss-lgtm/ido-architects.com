@@ -4,12 +4,17 @@ import { MetadataRoute } from 'next'
  
 
 export default async function sitemap({slug}:{slug:string}):Promise<MetadataRoute.Sitemap> {
+    try {
     const res = await allPortfolios();
-    const portfolios = res.portfoliosArray
-    return portfolios.map((project)=>({
+    const portfolios = res.portfoliosArray || []
+    return portfolios?.map((project)=>({
         url:`${BASE_URL}/du-an/${project.slug}`,
         lastModified:project.date,
         changeFrequency:'weekly',
         priority:0.8,
     }))
+    } catch (error) {
+        console.error('Error in fetching Sitemap', error)
+        return [];
+    }
 }

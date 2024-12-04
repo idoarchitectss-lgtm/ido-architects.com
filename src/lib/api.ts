@@ -1,5 +1,4 @@
 import { AboutType, DetailPageType, hero, SingleServiceType } from "@/types/typeForWordpressData";
-import { StringValidation } from "zod";
 
 
 const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || "";
@@ -12,7 +11,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 giây
+  const timeoutId = setTimeout(() => controller.abort(), 50000); // 30 giây
   /**
    * Vì không truyền trực tiếp timeout value vào fetch, nên cần tạo một AbortController để có thể hủy yêu cầu fetch. 
    * AbortController: Tạo một AbortController để có thể hủy yêu cầu fetch.
@@ -30,7 +29,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
         query,
         variables
       }),
-      next: { revalidate: 60 },
+      next: { revalidate: 120 },
       //thêm thời gian chờ load dữ liệu để tạo các trang tĩnh, tránh trường hợp fail vì fetch dữ liệu về vượt quá thời gian chờ, điều này dẫn đến lỗi và không delop được. Thường gặp khi deploy vercel.
       signal: controller.signal
     }
