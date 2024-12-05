@@ -16,13 +16,13 @@ const ContactFormIcon = () => {
     return (
         <div className="fixed w-12 h-12 bottom-28 left-3 z-50  flex flex-row items-center justify-between ">
             <Dialog>
-                <DialogTrigger className='h-26 w-26 flex flex-col gap-5'>
-                    <div className='w-full opacity-60 hover:opacity-100 cursor-pointer duration-300'>
+                <DialogTrigger className='h-26 w-26 flex flex-col items-center justify-center gap-5'>
+                    <div className='w-16 opacity-60 hover:opacity-100 cursor-pointer duration-300'>
                     <MailSvg />
                     </div>
-                    <div className='w-full opacity-60 hover:opacity-100 cursor-pointer duration-300'>
+                    {/* <div className='w-full opacity-60 hover:opacity-100 cursor-pointer duration-300'>
                     <ZaloSvg />
-                    </div>
+                    </div> */}
                 </DialogTrigger>
                 <DialogContent className='p-0 border-0'>
                     <DialogHeader>
