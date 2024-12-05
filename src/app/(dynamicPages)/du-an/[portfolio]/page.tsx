@@ -16,18 +16,18 @@ interface Params {
     portfolio: string
 }
 
-// export async function generateStaticParams() {
-//     try {
-//     const data = await getAllPortfolios();
-//     const portfolios: portfolios[] = data?.nodes || []
-//     return portfolios.map((portfolio) => ({
-//         id: portfolio.slug
-//     }))
-//     } catch (error) {
-//         console.error('Error in generateStaticParams portfolio:', error);
-//         return [];
-//     }
-// }
+export async function generateStaticParams() {
+    try {
+    const data = await getAllPortfolios();
+    const portfolios: portfolios[] = data?.nodes || []
+    return portfolios.map((portfolio) => ({
+        id: portfolio.slug
+    }))
+    } catch (error) {
+        console.error('Error in generateStaticParams portfolio:', error);
+        return [];
+    }
+}
 
 
 export async function generateMetadata({params}:{params:Params}) {
