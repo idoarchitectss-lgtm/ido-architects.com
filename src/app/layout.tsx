@@ -20,7 +20,7 @@ import ContactFormIcon from "@/components/custom/ContactFormIcon";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { Analytics } from '@vercel/analytics/next';
 dotenv.config()
 
 type Edges = PostsDataProps['posts']
@@ -74,6 +74,7 @@ export default async function RootLayout({
           </Suspense>
           <ToastProvider>
             {children}
+            <Analytics />
             <SpeedInsights />
             <ContactFormIcon />
           </ToastProvider>
