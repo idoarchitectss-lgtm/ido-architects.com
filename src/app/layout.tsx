@@ -60,15 +60,15 @@ export default async function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
       </Head> */}
       <body className={`${montserrat.className}, antialiased`}>
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
+        > */}
           <Suspense fallback={<Loading />}>
             <Header
-              logo={'https://res.cloudinary.com/dskpdydeu/images/v1727843734/logo-nen-trong-suot/logo-nen-trong-suot.png'}
+              logo={'https://ido-architects.io/wp-content/uploads/2024/12/logo.jpg'}
               posts={posts}
             />
           </Suspense>
@@ -79,7 +79,7 @@ export default async function RootLayout({
             <ContactFormIcon />
           </ToastProvider>
           <Footer />
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

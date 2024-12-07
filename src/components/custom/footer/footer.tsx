@@ -66,7 +66,7 @@ const Footer = () => {
   // },[segments])
 
   return (
-    <footer className='bg-[#222222] text-white'>
+    <footer className='bg-[#222222] text-white pt-20'>
       <Container>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7 py-3 px-2 md:px-10'>
           {/* col-1 */}
@@ -89,7 +89,7 @@ const Footer = () => {
                     </div>
                     <Link
                       href={item.href}
-                      className='group-hover:text-secondary duration-500 '>{item.text}
+                      className='group-hover:text-secondary duration-500 text-left'>{item.text}
                     </Link>
                   </div>
                 ))}
@@ -111,9 +111,8 @@ const Footer = () => {
             ))}
           </div>
           {/* col-3 */}
-          <div className='col-span-1'>
-
-            <div className=''>
+          <div className='col-span-1 w-full overflow-hidden'>
+            <div className='w-full'>
               <h3 className='font-[700] text-lg'>Theo dõi chúng tôi</h3>
               <FacebookPageEmbed />
             </div>

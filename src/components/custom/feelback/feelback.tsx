@@ -80,7 +80,7 @@ const Feelback = () => {
                                 >
                                     <div className="flex flex-col justify-start gap-5 bg-neutral-100 h-[320px] py-10 px-10 cursor-move">
                                         <div className="border-l-[2px] border-secondary/80 px-5 ">
-                                            <p className="text-lg text-neutral-700">{item.commentOfAuthor}</p>
+                                            <p className="text-neutral-500 text-lg leading-8">{item.commentOfAuthor}</p>
                                         </div>
                                         <div className="flex flex-row justify-start items-center gap-5">
                                             <div className="w-16 h-16 rounded-full">

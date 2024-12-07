@@ -28,7 +28,7 @@ export default async function SingleServicePage({ params }: { params: Params }) 
             <BackgroundForBreadcrumb
                 titleForPage={service?.title || 'Các dịch vụ'}
             />
-            <Container className="">
+            <Container className="px-1">
                 <BreadcrumbComponent />
                 <div dangerouslySetInnerHTML={{ __html: service?.content }}></div>
                 <div className="w-full md:w-8/12 mx-auto px-2">
