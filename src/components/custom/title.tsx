@@ -39,7 +39,7 @@ const Title: React.FC<TitleProps> = ({
           ${islightBg ? "" : "text-white"}
           `}>{title}
         </h2>
-        <p className={`text-neutral-600 font-[600] text-[16px] line-clamp-2 
+        <p className={`text-neutral-500 text-lg leading-8 line-clamp-2 
           ${islightBg ? "text-neutral-400" : "text-white"}
           ${isLeftPosition ? "text-left" : "text-center"}
         `}>

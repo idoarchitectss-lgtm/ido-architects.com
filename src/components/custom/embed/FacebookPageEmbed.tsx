@@ -27,10 +27,10 @@ const FacebookPageEmbed = () => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       {/* Thay URL của trang Facebook bằng URL của bạn */}
       <div
-        className="fb-page"
+        className="fb-page w-full"
         data-href="https://www.facebook.com/ido.architectss"
         data-tabs="timeline" // Các tab: timeline, events, messages
         data-width="300"
@@ -39,7 +39,8 @@ const FacebookPageEmbed = () => {
         data-adapt-container-width="true"
         data-hide-cover="false"
         data-show-facepile="true"
-      ></div>
+      >
+      </div>
     </div>
   );
 };

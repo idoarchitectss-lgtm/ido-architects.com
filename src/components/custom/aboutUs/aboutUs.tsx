@@ -25,15 +25,7 @@ const AboutUs = ({ about }: { about: AboutType['abouts']['nodes'] }) => {
                                 <p className='text-secondary font-[700] text-center md:text-left border-l-[1px] border-secondary pl-2'>{item.aboutComponent.subtitle}</p>
                                 <h2 className='text-4xl font-[700] text-center md:text-left'>{item.aboutComponent.title}</h2>
                                 <p className='text-neutral-500 text-lg leading-8'>{item.aboutComponent.bodytext}</p>
-                                {/* <Button className='rounded-none bg-transparent hover:text-secondary border-[1px] border-neutral-500 py-7'>
-                                <Link href={item.aboutComponent.button.labelbtn} className=' flex flex-row items-center '>
-                                    <span className='text-neutral-500'>{item.aboutComponent.button.labelbtn}</span>
-                                    <ChevronDown className='w-5 h-5 text-neutral-500' />
-                                </Link>
-                                </Button> */}
-
                                 <MainButton
-                                
                                 labelOfButton='xem thêm'
                                 href='/gioi-thieu'
                                 />

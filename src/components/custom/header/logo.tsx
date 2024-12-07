@@ -16,9 +16,9 @@ const Logo = ({logo,className}:LogoProps) => {
       <Image 
       src={logo}
       alt='IDO-Architects'
-      width={1000}
-      height={1000}
-      className='object-cover w-full h-full'
+      width={300}
+      height={300}
+      className='object-cover w-[70px]'
       />
     </Link>
   )
