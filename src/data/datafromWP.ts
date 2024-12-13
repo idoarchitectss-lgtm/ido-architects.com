@@ -18,8 +18,8 @@ export async function allPortfolios() {
   const portfoliosArray: portfolios[] = portfoliosRes?.nodes;
   // const portfolioArrForHome = portfoliosArray?.slice(0, 6);
 
-  const featuredPortfolios = portfoliosArray.filter(item => item.project.isFeatured === true);
-  const completedPortfolios = portfoliosArray.filter(item=>item.project.isCompleted === true);
+  const featuredPortfolios = portfoliosArray?.filter(item => item.project.isFeatured === true);
+  const completedPortfolios = portfoliosArray?.filter(item=>item.project.isCompleted === true);
   return {portfoliosArray,featuredPortfolios,completedPortfolios};
 }
 export async function allServices() {
