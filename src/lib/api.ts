@@ -66,7 +66,7 @@ query AllPortfolios {
           floorDimension
           propertyType
           numberOfFloors
-          addressofproperty
+          addressOfProperty
         }
         isCompleted
       	isFeatured
@@ -120,7 +120,7 @@ export async function getSinglePortfolio(slug: string) {
     project {
       descriptionOfProject
       generalInformation {
-        addressofproperty
+        addressOfProperty
         completedYear
         floorDimension
         numberOfFloors

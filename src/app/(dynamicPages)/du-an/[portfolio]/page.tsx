@@ -69,7 +69,7 @@ export async function generateMetadata({params}:{params:Params}) {
 // [{params1:{uri:"portfoliio/lem-apart"}}, {params2:{uri:"portfoliio/lem-apart2"}}]
 export default async function DetailPortfolioPage({ params }: { params: Params }) {
     const res = await getSinglePortfolio(params.portfolio)
-    const portfolio: portfolios = await res.portfolio;
+    const portfolio: portfolios = await res?.portfolio;
 
     const allPortfolios = await getAllPortfolios();
     const portfolioArr: portfolios[] = allPortfolios?.nodes
