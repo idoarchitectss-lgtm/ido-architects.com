@@ -25,15 +25,9 @@ const RecruitPage = async () => {
             /> */}
           <div dangerouslySetInnerHTML={{ __html: res?.page.content }}></div>
         </div>
-<<<<<<< HEAD
-        <TouchTocontact 
-        src="https://res.cloudinary.com/dskpdydeu/images/v1727844172/z5500051833314_36dda93a6e40150ab1a9d9b17cdf52f8-1/z5500051833314_36dda93a6e40150ab1a9d9b17cdf52f8-1.jpg"
-        labelOfForm="Liên hệ chúng tôi"
-=======
         <TouchTocontact
           src="https://res.cloudinary.com/dskpdydeu/images/v1727844172/z5500051833314_36dda93a6e40150ab1a9d9b17cdf52f8-1/z5500051833314_36dda93a6e40150ab1a9d9b17cdf52f8-1.jpg"
           labelOfForm="Liên hệ chúng tôi"
->>>>>>> develop
         />
       </Container>
     </div>
