@@ -14,14 +14,12 @@ import { Suspense } from "react";
 import Loading from "./loading";
 // import { Toaster } from "@/components/ui/sonner";
 
-import dotenv from 'dotenv'
 import ToastProvider from "@/providers/ToastProvider";
 import ContactFormIcon from "@/components/custom/ContactFormIcon";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from '@vercel/analytics/next';
-dotenv.config()
 
 type Edges = PostsDataProps['posts']
 

@@ -1,16 +1,13 @@
+import Loading from "@/app/loading";
+import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
 import Container from "@/components/custom/container";
-import { getAllPortfolios, getSinglePortfolio } from "@/lib/api"
+import { getAllPortfolios, getSinglePortfolio } from "@/lib/api";
 import { portfolios } from "@/types/typeForWordpressData";
-import { Suspense, useEffect } from "react";
-import HeaderPortfolio from "./HeaderPortfolio";
+import { Suspense } from "react";
+import SideBarComponent from "../../blog/[post]/SideBarComponent";
 import BodyPortfolio from "./BodyPortfolio";
 import FooterPortfolio from "./FooterPortfolio";
-import Loading from "@/app/loading";
-import ContactForm from "@/components/custom/forms/ContactForm";
-import SideBarComponent from "../../blog/[post]/SideBarComponent";
-import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
-import { Description } from "@radix-ui/react-dialog";
-import { url } from "inspector";
+import HeaderPortfolio from "./HeaderPortfolio";
 
 interface Params {
     portfolio: string
@@ -18,11 +15,19 @@ interface Params {
 
 export async function generateStaticParams() {
     try {
+<<<<<<< HEAD
     const data = await getAllPortfolios();
     const portfolios: portfolios[] = data?.nodes || []
     return portfolios.map((portfolio) => ({
         id: portfolio.slug
     }))
+=======
+        const data = await getAllPortfolios();
+        const portfolios: portfolios[] = data?.nodes || []
+        return portfolios.map((portfolio) => ({
+            id: portfolio.slug
+        }))
+>>>>>>> develop
     } catch (error) {
         console.error('Error in generateStaticParams portfolio:', error);
         return [];
@@ -30,14 +35,22 @@ export async function generateStaticParams() {
 }
 
 
+<<<<<<< HEAD
 export async function generateMetadata({params}:{params:Params}) {
     try {
     const res = await getSinglePortfolio(params.portfolio)
     const portfolio: portfolios = await res.portfolio;
+=======
+export async function generateMetadata({ params }: { params: Params }) {
+    try {
+        const res = await getSinglePortfolio(params.portfolio)
+        const portfolio: portfolios = await res.portfolio;
+>>>>>>> develop
 
-    const imageUrl = portfolio?.featuredImage?.node.sourceUrl || '';
-    const validImageUrl = imageUrl ? new URL(imageUrl).toString() : '';
+        const imageUrl = portfolio?.featuredImage?.node.sourceUrl || '';
+        const validImageUrl = imageUrl ? new URL(imageUrl).toString() : '';
 
+<<<<<<< HEAD
     
     return {
         title: portfolio?.title,
@@ -62,6 +75,32 @@ export async function generateMetadata({params}:{params:Params}) {
         return {
             title:'Không có portfolio nào phù hợp',
             description:'Các dự án tại Ido Architects'
+=======
+
+        return {
+            title: portfolio?.title,
+            description: portfolio?.excerpt,
+            opengraph: {
+                title: portfolio?.title,
+                Description: portfolio?.excerpt,
+                url: `https://www.ido-architects.com/du-an/${params.portfolio}`,
+                type: 'article',
+                images: validImageUrl ? [
+                    {
+                        url: validImageUrl,
+                        width: 800,
+                        height: 600,
+                        alt: portfolio?.title,
+                    },
+                ] : [],
+            }
+        }
+    } catch (error) {
+        console.error('Error in generateMetadata portfolio:', error);
+        return {
+            title: 'Không có portfolio nào phù hợp',
+            description: 'Các dự án tại Ido Architects'
+>>>>>>> develop
         }
     }
 }

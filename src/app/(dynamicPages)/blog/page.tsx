@@ -6,8 +6,7 @@ import PostCard from "@/components/custom/newsAndBlog/postCard";
 import PaginationComponent from "@/components/custom/pagination/PaginationComponent";
 import { getAllPosts } from "@/lib/api";
 
-import { PostsDataProps } from "@/types/typeForWordpressData"
-import { usePathname } from "next/navigation";
+import { PostsDataProps } from "@/types/typeForWordpressData";
 import { Suspense } from "react";
 
 
@@ -34,35 +33,35 @@ export default async function BlogPage({ searchParams }: Readonly<SearchParamsPr
     return (
         <main>
             <Suspense fallback={<Loading />}>
-            <BackgroundForBreadcrumb 
-            titleForPage="Trang blog và tin tức kiến trúc"
-            />
+                <BackgroundForBreadcrumb
+                    titleForPage="Trang blog và tin tức kiến trúc"
+                />
                 <Container className="">
-                <BreadcrumbComponent />
-                   <div className="w-full mx-auto">
-                   <h2 className="text-3xl font-bold my-5">Tổng hợp các bài viết blog của IDO Architect</h2>
-                    {/* rendering all posts */}
-                    <Suspense>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10 ">
-                            {posts?.map((post) => (
-                                <PostCard
-                                    key={post.slug}
-                                    srcOfImg={post?.featuredImage?.node.sourceUrl || ''}
-                                    author={post?.author?.node.name}
-                                    publishedDate={post.date}
-                                    titleOfPost={post.title}
-                                    subtitleOfPost={post.excerpt}
-                                    tagsList={post.tags.nodes}
-                                    link={`blog/${post.slug}`}
-                                />
-                            ))}
-                        </div>
-                    </Suspense>
-                   </div>
+                    <BreadcrumbComponent />
+                    <div className="w-full mx-auto">
+                        <h2 className="text-3xl font-bold my-5">Tổng hợp các bài viết blog của IDO Architect</h2>
+                        {/* rendering all posts */}
+                        <Suspense>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10 ">
+                                {posts?.map((post) => (
+                                    <PostCard
+                                        key={post.slug}
+                                        srcOfImg={post?.featuredImage?.node.sourceUrl || ''}
+                                        author={post?.author?.node.name}
+                                        publishedDate={post.date}
+                                        titleOfPost={post.title}
+                                        subtitleOfPost={post.excerpt}
+                                        tagsList={post.tags.nodes}
+                                        link={`blog/${post.slug}`}
+                                    />
+                                ))}
+                            </div>
+                        </Suspense>
+                    </div>
                     <div className="my-5">
-                    <PaginationComponent
-                        pageCount={pageCount}
-                    />
+                        <PaginationComponent
+                            pageCount={pageCount}
+                        />
                     </div>
                 </Container>
             </Suspense>
