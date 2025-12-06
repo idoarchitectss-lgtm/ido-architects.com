@@ -1,4 +1,5 @@
-import { AboutType, DetailPageType, hero, SingleServiceType } from "@/types/typeForWordpressData";
+import { AboutType, DetailPageType, SingleServiceType } from "@/types/typeForWordpressData";
+import { redis, WP_AUTH_TOKEN_KEY } from "./redis";
 
 
 const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || "";
@@ -6,8 +7,23 @@ const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || "";
 async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
   const headers: { "Content-Type": string, [key: string]: string } = { "Content-Type": "application/json" };
 
-  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-    headers["Authorization"] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+  // Lấy token từ Redis trước, fallback về environment variable
+  let authToken = process.env.WORDPRESS_AUTH_REFRESH_TOKEN;
+
+  try {
+    // Chỉ gọi Redis nếu có cấu hình
+    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+      const redisToken = await redis.get(WP_AUTH_TOKEN_KEY);
+      if (redisToken) {
+        authToken = redisToken as string;
+      }
+    }
+  } catch (error) {
+    // Silent fallback to env token
+  }
+
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
   }
 
   const controller = new AbortController();
@@ -24,7 +40,7 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
     API_URL,
     {
       headers,
-    method: "POST",
+      method: "POST",
       body: JSON.stringify({
         query,
         variables
@@ -38,6 +54,11 @@ async function FetchAPI(query = "", { variables }: Record<string, any> = {}) {
 
 
   const json = await res.json();
+
+  if (json.errors) {
+    console.error('GraphQL Errors:', json.errors);
+    throw new Error('Failed to fetch API: ' + JSON.stringify(json.errors))
+  }
 
   if (json.error) {
     console.error(json.error);
@@ -194,10 +215,6 @@ export async function getAllPosts(postPerPage: number, currentPage: any) {
       }
       }
   `
-    , {
-      cache: 'only-if-cached',
-      next: { revalidate: 10 } // Tải lại dữ liệu sau 60 giây
-    }
   );
 
   return data?.posts;
@@ -296,7 +313,7 @@ export async function getServices() {
   return data?.services;
 }
 
-export async function getSingleService(slug:string):Promise<SingleServiceType>{
+export async function getSingleService(slug: string): Promise<SingleServiceType> {
   const data = await FetchAPI(`
  query singleService($id: ID = "", $idType: ServiceIdType = URI) {
   service(id: $id, idType: $idType) {
@@ -323,13 +340,13 @@ export async function getSingleService(slug:string):Promise<SingleServiceType>{
   }
 }
     `,
-  {
-    variables: {
-      id:slug
-    }
-  } );
+    {
+      variables: {
+        id: slug
+      }
+    });
 
-    return data
+  return data
 }
 
 
@@ -379,10 +396,10 @@ export async function getLogo() {
 }
     `)
 
-    return data;
+  return data;
 };
 
-export async function getAbout():Promise<AboutType> {
+export async function getAbout(): Promise<AboutType> {
   const data = await FetchAPI(`
     query about {
   abouts {
@@ -407,13 +424,13 @@ export async function getAbout():Promise<AboutType> {
 }
     `)
 
-    return data;
+  return data;
 
 }
 
 
 
-export async function getDetailPage(id:string):Promise<DetailPageType>{
+export async function getDetailPage(id: string): Promise<DetailPageType> {
   const data = await FetchAPI(`
   query detailPage($id: ID = "", $idType: PageIdType = ID) {
   page(id: $id, idType: $idType) {
@@ -429,12 +446,12 @@ export async function getDetailPage(id:string):Promise<DetailPageType>{
   }
 }
    `
-  ,
-  {
-    variables: {
-      id:id
+    ,
+    {
+      variables: {
+        id: id
+      }
     }
-  }
   )
   return data;
 }
