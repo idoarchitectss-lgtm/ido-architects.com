@@ -2,113 +2,114 @@
 
 
 const nextConfig = {
-    reactStrictMode:true,
+    staticPageGenerationTimeout: 60, // Giống Vercel default (giây)
+    reactStrictMode: true,
     images: {
         remotePatterns: [
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "images.unsplash.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "plus.unsplash.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "architeck.peacefulqode.co.in",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "scontent.fdad3-5.fna.fbcdn.net",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "scontent.fdad3-4.fna.fbcdn.net",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "scontent.fdad3-1.fna.fbcdn.net",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "media.istockphoto.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
+                protocol: "https",
                 hostname: "images.pexels.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"http",
+                protocol: "http",
                 hostname: "servicecompany.test",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"http",
+                protocol: "http",
                 hostname: "2.gravatar.com",
                 port: "",
                 pathname: "/**",
-            },    
+            },
             {
-                protocol:"https",
-                hostname:"secure.gravatar.com",
-                port: "",
-                pathname: "/**",
-            },  
-            {
-                protocol:"https",
-                hostname:"ido-architects.io",
+                protocol: "https",
+                hostname: "secure.gravatar.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
-                hostname:"ido-architects.io.com",
+                protocol: "https",
+                hostname: "ido-architects.io",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
-                hostname:"unsplash.com",
+                protocol: "https",
+                hostname: "ido-architects.io.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
-                hostname:"res.cloudinary.com",
+                protocol: "https",
+                hostname: "unsplash.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
-                hostname:"www.palmarchi.com",
+                protocol: "https",
+                hostname: "res.cloudinary.com",
                 port: "",
                 pathname: "/**",
             },
             {
-                protocol:"https",
-                hostname:"cdn.stocksnap.io",
+                protocol: "https",
+                hostname: "www.palmarchi.com",
                 port: "",
                 pathname: "/**",
             },
-            
-            
+            {
+                protocol: "https",
+                hostname: "cdn.stocksnap.io",
+                port: "",
+                pathname: "/**",
+            },
+
+
         ]
     }
 };
