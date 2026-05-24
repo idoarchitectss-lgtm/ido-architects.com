@@ -5,7 +5,7 @@ import Hero from "@/components/custom/hero/hero";
 import OfferServices from "@/components/custom/offerServices/offerServices";
 
 import { Suspense } from "react";
-import Loading from "./loading";
+import Loading from "@/app/loading";
 import TouchTocontact from "@/components/custom/TouchTocontact";
 
 import NewsAndBlogComponnet from "@/components/custom/newsAndBlog/NewsAndBlogComponnet";

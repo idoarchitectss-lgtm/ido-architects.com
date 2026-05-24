@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum PostType {
+  BLOG_POST
+  PROJECT_POST
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts Post[]
+  media Media[]
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  type          PostType  @default(BLOG_POST)
+  title         String
+  slug          String    @unique
+  excerpt       String?
+  content       String?
+  featuredImage String?
+  publishedAt   DateTime?
+  isPublished   Boolean   @default(false)
+  metaTitle     String?
+  metaDesc      String?
+  metaKeywords  String?
+
+  /// JSON blob — chỉ dùng cho PROJECT_POST
+  /// Shape: { nameOfProject, addressOfProperty, completedYear, floorDimension,
+  ///          numberOfFloors, propertyType, designedCompany, isCompleted, isFeatured }
+  projectMeta Json?
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  categories Category[]
+  tags       Tag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, isPublished, publishedAt(sort: Desc)])
+  @@index([slug])
+  @@index([authorId])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  posts Post[]
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  posts Post[]
+}
+
+model Media {
+  id          String   @id @default(cuid())
+  filename    String
+  url         String
+  contentType String
+  size        Int
+  width       Int?
+  height      Int?
+  alt         String?
+  uploadedBy  String
+  createdAt   DateTime @default(now())
+
+  uploader User @relation(fields: [uploadedBy], references: [id])
+
+  @@index([createdAt(sort: Desc)])
+  @@index([uploadedBy])
+}
