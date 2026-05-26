@@ -105,11 +105,11 @@ export function heroStatic(): HeroArr {
     {
       heros: {
         hero: {
-          heroTitle: "Thiết Kế Nội Thất – Hài Hòa Giữa Thẩm Mỹ & Công Năng",
-          heroSubtitle: "DỊCH VỤ NỘI THẤT",
+          heroTitle: "Mang đến trải nghiệm sống đầy cảm hứng và chất lượng bền vững",
+          heroSubtitle: "IDO-ARCHITECTS",
           heroBodyText:
             "Chúng tôi kiến tạo những không gian sống tinh tế, phản ánh cá tính và phong cách riêng của từng gia chủ.",
-          ctaButton: "Xem dịch vụ",
+          ctaButton: "Liên hệ",
           banner_img: {
             node: {
               altText: "Thiết kế nội thất IDO Architects",
@@ -123,11 +123,11 @@ export function heroStatic(): HeroArr {
     {
       heros: {
         hero: {
-          heroTitle: "Kiến Trúc Xanh – Bền Vững Theo Thời Gian",
-          heroSubtitle: "DỰ ÁN NỔI BẬT",
+          heroTitle: "Tích hợp thiên nhiên vào công trình",
+          heroSubtitle: "IDO-ARCHITECTS",
           heroBodyText:
-            "Mỗi công trình được nghiên cứu kỹ lưỡng từ phong thủy, công năng đến thẩm mỹ – kết hợp kiến trúc hiện đại và bản sắc Việt.",
-          ctaButton: "Xem dự án",
+            "",
+          ctaButton: "Liên hệ",
           banner_img: {
             node: {
               altText: "Dự án kiến trúc IDO Architects",
