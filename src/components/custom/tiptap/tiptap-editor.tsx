@@ -1,13 +1,93 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, ReactNodeViewRenderer, NodeViewWrapper, type ReactNodeViewProps } from "@tiptap/react";
+import { Node, mergeAttributes, type NodeConfig } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
+import ImageCompareSlider from "./ImageCompareSlider";
+
+// ─── ImageGrid custom TipTap node ────────────────────────────────────────────
+const ImageGridExtension = Node.create({
+  name: "imageGrid",
+  group: "block",
+  content: "image+",
+
+  addAttributes() {
+    return {
+      cols: {
+        default: 2,
+        parseHTML: (element: HTMLElement) => {
+          if (element.classList.contains("tiptap-image-grid--3")) return 3;
+          return 2;
+        },
+      },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: "div.tiptap-image-grid" }];
+  },
+
+  renderHTML({ node, HTMLAttributes }: Parameters<NonNullable<NodeConfig["renderHTML"]>>[0]) {
+    return [
+      "div",
+      mergeAttributes(HTMLAttributes, {
+        class: `tiptap-image-grid tiptap-image-grid--${node.attrs.cols}`,
+      }),
+      0,
+    ];
+  },
+});
+
+// ─── ImageCompare custom TipTap node ─────────────────────────────────────────
+function ImageCompareNodeView({ node }: ReactNodeViewProps) {
+  return (
+    <NodeViewWrapper contentEditable={false} data-drag-handle className="my-4">
+      <ImageCompareSlider
+        before={(node.attrs.before as string) ?? ""}
+        after={(node.attrs.after as string) ?? ""}
+      />
+    </NodeViewWrapper>
+  );
+}
+
+const ImageCompareExtension = Node.create({
+  name: "imageCompare",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      before: { default: null },
+      after:  { default: null },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: "div[data-image-compare]" }];
+  },
+
+  renderHTML({ node, HTMLAttributes }: Parameters<NonNullable<NodeConfig["renderHTML"]>>[0]) {
+    return [
+      "div",
+      mergeAttributes(HTMLAttributes, {
+        "data-image-compare": "",
+        "data-before": node.attrs.before,
+        "data-after":  node.attrs.after,
+        class: "image-compare-container",
+      }),
+    ];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageCompareNodeView);
+  },
+});
 
 // ─── Toolbar button ───────────────────────────────────────────────────────────
 function ToolbarBtn({
@@ -52,6 +132,17 @@ interface TiptapEditorProps {
    * gọi `insertFn(url)` để chèn ảnh vào editor.
    */
   onOpenMediaPicker?: (insertFn: (url: string) => void) => void;
+  /**
+   * Khi người dùng nhấn nút "Chèn nhiều ảnh/layout", hàm này được gọi với
+   * một callback `insertFn`. Component cha mở MediaPicker ở mode layout,
+   * khi chọn xong gọi `insertFn(urls, cols)`.
+   */
+  onOpenMediaPickerLayout?: (insertFn: (urls: string[], cols: number) => void) => void;
+  /**
+   * Khi người dùng nhấn nút "So sánh ảnh", hàm này được gọi với callback `insertFn`.
+   * Component cha mở MediaPicker 2 lần (before → after), rồi gọi `insertFn(before, after)`.
+   */
+  onOpenMediaPickerCompare?: (insertFn: (before: string, after: string) => void) => void;
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
@@ -61,10 +152,14 @@ export default function TiptapEditor({
   placeholder = "Viết nội dung bài viết ở đây...",
   className,
   onOpenMediaPicker,
+  onOpenMediaPickerLayout,
+  onOpenMediaPickerCompare,
 }: TiptapEditorProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [showLinkInput, setShowLinkInput] = useState(false);
+  // Keep a ref to the latest editor so callbacks always get fresh instance
+  const editorRef = useRef<ReturnType<typeof useEditor>>(null);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -74,6 +169,8 @@ export default function TiptapEditor({
       Link.configure({ openOnClick: false, HTMLAttributes: { class: "text-blue-600 underline" } }),
       Image.configure({ HTMLAttributes: { class: "max-w-full h-auto rounded-lg" } }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
+      ImageGridExtension,
+      ImageCompareExtension,
     ],
     content,
     editorProps: {
@@ -86,6 +183,11 @@ export default function TiptapEditor({
       onChange?.(editor.getHTML());
     },
   });
+
+  // Keep ref in sync so async callbacks always use latest editor
+  useEffect(() => {
+    editorRef.current = editor;
+  }, [editor]);
 
   // Sync khi content prop thay đổi từ bên ngoài
   useEffect(() => {
@@ -127,6 +229,44 @@ export default function TiptapEditor({
       if (url) editor?.chain().focus().setImage({ src: url }).run();
     }
   }, [editor, onOpenMediaPicker]);
+
+  const insertImageLayout = useCallback(() => {
+    if (onOpenMediaPickerLayout) {
+      onOpenMediaPickerLayout((urls: string[], cols: number) => {
+        if (urls.length === 0) return;
+        if (cols === 1 || urls.length === 1) {
+          // Chèn từng ảnh đơn
+          urls.forEach((url) => {
+            editor?.chain().focus().setImage({ src: url }).run();
+          });
+        } else {
+          // Chèn grid node (JSON) — không bị ProseMirror strip
+          editor?.chain().focus().insertContent({
+            type: "imageGrid",
+            attrs: { cols },
+            content: urls.map((url) => ({
+              type: "image",
+              attrs: { src: url, class: "max-w-full h-auto rounded-lg" },
+            })),
+          }).run();
+        }
+      });
+    }
+  }, [editor, onOpenMediaPickerLayout]);
+
+  const insertImageCompare = useCallback(() => {
+    if (!onOpenMediaPickerCompare) return;
+    onOpenMediaPickerCompare((before: string, after: string) => {
+      if (!before || !after) return;
+      const ed = editorRef.current;
+      if (!ed) return;
+      // Insert atom node using commands
+      ed.commands.insertContent({
+        type: "imageCompare",
+        attrs: { before, after },
+      });
+    });
+  }, [onOpenMediaPickerCompare]);
 
   if (!editor) return null;
 
@@ -210,6 +350,16 @@ export default function TiptapEditor({
       <ToolbarBtn onClick={insertImageUrl} title={onOpenMediaPicker ? "Chèn ảnh từ thư viện" : "Chèn ảnh (URL)"}>
         🖼
       </ToolbarBtn>
+      {onOpenMediaPickerLayout && (
+        <ToolbarBtn onClick={insertImageLayout} title="Chèn nhiều ảnh / layout lưới">
+          ⊞🖼
+        </ToolbarBtn>
+      )}
+      {onOpenMediaPickerCompare && (
+        <ToolbarBtn onClick={insertImageCompare} title="Chèn ảnh so sánh Trước / Sau">
+          ◧🖼
+        </ToolbarBtn>
+      )}
 
       <Divider />
 

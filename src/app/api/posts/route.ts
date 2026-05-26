@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PostQuerySchema, PostCreateSchema } from "@/features/posts/validations/post.schema";
 import { findManyPosts, createPost } from "@/features/posts/services/post.service";
 import { transformPostList, transformPost } from "@/features/posts/transforms/post.transform";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 
 // GET /api/posts?type=&page=&size=&showAll=&isFeatured=&isCompleted=
 export async function GET(req: NextRequest) {

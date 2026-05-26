@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { del } from "@vercel/blob";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import {
   findMediaById,
   deleteMedia,

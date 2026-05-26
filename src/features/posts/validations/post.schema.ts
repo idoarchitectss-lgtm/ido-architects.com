@@ -62,6 +62,7 @@ export const PostQuerySchema = z.object({
   showAll: z.string().transform((v) => v === "true").optional(),
   isFeatured: z.string().transform((v) => v === "true").optional(),
   isCompleted: z.string().transform((v) => v === "true").optional(),
+  search: z.string().max(200).optional(),
 });
 
 // ─── Inferred types ───────────────────────────────────────────────────────────
