@@ -16,7 +16,7 @@ const BackgroundForBreadcrumb:React.FC<BackgroundForBreadcrumbProps> = ({
   return (
     <div className='relative h-[35vh]'
     style={{ 
-      backgroundImage: "url(https://ido-architects.io/wp-content/uploads/2024/08/1-a-40-1-1.jpg)", 
+      backgroundImage: "url(/image/bg-breadcrumb.webp)", 
       backgroundRepeat: "no-repeat", backgroundSize: "cover", 
       backgroundPosition: "center"
      }}

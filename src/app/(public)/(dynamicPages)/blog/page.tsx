@@ -4,32 +4,22 @@ import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbCompon
 import Container from "@/components/custom/container";
 import PostCard from "@/components/custom/newsAndBlog/postCard";
 import PaginationComponent from "@/components/custom/pagination/PaginationComponent";
-import { getAllPosts } from "@/lib/api";
-
-import { PostsDataProps } from "@/types/typeForWordpressData";
+import { allBlogsFromCMS } from "@/data/datafromCMS";
 import { Suspense } from "react";
-
-
-type Edges = PostsDataProps['posts']
 
 interface SearchParamsProps {
     searchParams?: {
         page?: string;
         query?: string;
-    }
+    };
 }
 
-
-
-
 export default async function BlogPage({ searchParams }: Readonly<SearchParamsProps>) {
-
     const currentPage = Number(searchParams?.page) || 1;
-    // cần lấy thông tin currentPage
-    const res: Edges = await getAllPosts(10, currentPage);
-    const posts = res.edges.map((edge) => edge.node)
-    const pageCount = res.pageInfo?.offsetPagination?.total
-    // console.log(posts)
+    const res = await allBlogsFromCMS(10, currentPage);
+    const posts = res.edges.map((edge) => edge.node);
+    const pageCount = res.pageInfo?.offsetPagination?.total;
+
     return (
         <main>
             <Suspense fallback={<Loading />}>
@@ -40,9 +30,8 @@ export default async function BlogPage({ searchParams }: Readonly<SearchParamsPr
                     <BreadcrumbComponent />
                     <div className="w-full mx-auto">
                         <h2 className="text-3xl font-bold my-5">Tổng hợp các bài viết blog của IDO Architect</h2>
-                        {/* rendering all posts */}
                         <Suspense>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10">
                                 {posts?.map((post) => (
                                     <PostCard
                                         key={post.slug}
@@ -57,15 +46,13 @@ export default async function BlogPage({ searchParams }: Readonly<SearchParamsPr
                                 ))}
                             </div>
                         </Suspense>
-                    </div>
-                    <div className="my-5">
                         <PaginationComponent
-                            pageCount={pageCount}
+                            totalPages={Math.ceil((pageCount ?? 0) / 10)}
+                            currentPage={currentPage}
                         />
                     </div>
                 </Container>
             </Suspense>
-
         </main>
-    )
+    );
 }

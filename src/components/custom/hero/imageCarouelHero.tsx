@@ -11,12 +11,12 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import ContentForCarousel from "./ContentForCarousel"
-import { hero } from "@/types/typeForWordpressData"
+import { HeroArr } from "@/types/types"
 import { useEffect, useState } from "react"
 
 
 
-const ImageCarouselHero = ({ heroArr }: { heroArr: hero['heros']['nodes'] }) => {
+const ImageCarouselHero = ({ heroArr }: { heroArr: HeroArr }) => {
 
     const [api, setApi] = useState<CarouselApi>()
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -37,10 +37,12 @@ const ImageCarouselHero = ({ heroArr }: { heroArr: hero['heros']['nodes'] }) => 
         }, 8000)
         return () => clearInterval(intervalId)
 
-    }, [api, autoPlay])
+    }, [api, autoPlay]);
+
     const gotoIndexedItem = (index: number) => {
         api?.scrollTo(index)
-    }
+    };
+
     return (
         <Carousel
             setApi={setApi}
@@ -73,6 +75,7 @@ const ImageCarouselHero = ({ heroArr }: { heroArr: hero['heros']['nodes'] }) => 
                     )
                 })}
             </CarouselContent>
+            
             <div className='absolute w-full top-[85%] flex flex-row gap-2 justify-center items-center h-[100px] z-10'>
                 {heroArr.map((_, index) => (
                     <button
@@ -86,7 +89,6 @@ const ImageCarouselHero = ({ heroArr }: { heroArr: hero['heros']['nodes'] }) => 
                     </button>
                 ))}
             </div>
-
         </Carousel>
     )
 }

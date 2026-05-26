@@ -16,19 +16,26 @@ export const sendNewsLetterInfo = async (
    
 }
 
-export const sendRequestFromContactForm = async(email:string,phone:string,name:string,message:string | undefined)=> {
+export const sendRequestFromContactForm = async (
+    adminEmail: string,
+    phone: string,
+    name: string,
+    message: string | undefined,
+    customerEmail: string
+) => {
     await resend.emails.send({
-        from:"onboarding@resend.dev",
-        to:email,
-        subject:"Yêu cầu tư vấn từ trang liên hệ",
-        html:`{
-            <h2>Thông tin người yêu cầu tư vấn</h2>
+        from: "onboarding@resend.dev",
+        to: adminEmail,
+        subject: `[IDO Architects] Yêu cầu tư vấn mới từ ${name}`,
+        html: `
+            <h2>Thông tin yêu cầu tư vấn mới</h2>
             <ul>
-            <li>Họ và tên:${name}</li>
-            <li>Số điện thoai: ${phone}</li>
-            <li>Email người đăng ký: ${email}</li>
-            <li>Yêu cầu: ${message}</li>
+                <li><strong>Họ và tên:</strong> ${name}</li>
+                <li><strong>Số điện thoại:</strong> ${phone}</li>
+                <li><strong>Email:</strong> ${customerEmail}</li>
+                <li><strong>Nội dung yêu cầu:</strong> ${message || "(Không có)"}</li>
             </ul>
-        }`
+            <p>Vui lòng liên hệ lại với khách hàng sớm nhất!</p>
+        `,
     });
 };

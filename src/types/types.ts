@@ -1,5 +1,24 @@
 import { PreviewData } from "next";
 
+// ─── Hero types ───────────────────────────────────────────────────────────────
+export type HeroSlide = {
+  heros: {
+    hero: {
+      heroTitle: string;
+      heroSubtitle: string;
+      heroBodyText: string;
+      ctaButton: string;
+      banner_img: {
+        node: {
+          altText: string;
+          sourceUrl: string;
+        };
+      };
+    };
+  };
+};
+
+export type HeroArr = HeroSlide[];
 
 export interface MenuItemProps {
     name:string;

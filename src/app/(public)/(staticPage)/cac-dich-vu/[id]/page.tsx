@@ -2,19 +2,17 @@ import BackgroundForBreadcrumb from "@/components/custom/BackgroundForBreadcrumb
 import BackToTopNoClient from "@/components/custom/backToTop/BackToTopNoClient";
 import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
 import Container from "@/components/custom/container";
-import { allServices, singleService } from "@/data/datafromWP";
+import { allServicesStatic, singleServiceStatic } from "@/data/staticData";
+import { notFound } from "next/navigation";
 
 interface Params {
     id: string;
 }
 
-// tạo trang tĩnh SSG
 export async function generateStaticParams() {
     try {
-    const servicesArr = await allServices();
-    return servicesArr.map((service) => ({
-        id: service.slug
-    }))
+        const servicesArr = allServicesStatic();
+        return servicesArr.map((service) => ({ id: service.slug }));
     } catch (error) {
         console.error('Error in generateStaticParams:', error);
         return [];
@@ -22,19 +20,17 @@ export async function generateStaticParams() {
 }
 
 export default async function SingleServicePage({ params }: { params: Params }) {
-    const service = await singleService(params.id)
+    const service = singleServiceStatic(params.id);
+    if (!service) notFound();
+
     return (
         <main id='topPage' className="">
-            <BackgroundForBreadcrumb
-                titleForPage={service?.title || 'Các dịch vụ'}
-            />
+            <BackgroundForBreadcrumb titleForPage={service.title} />
             <Container className="px-1">
                 <BreadcrumbComponent />
-                <div dangerouslySetInnerHTML={{ __html: service?.content }}></div>
-                <div className="w-full md:w-8/12 mx-auto px-2">
-                </div>
+                <div dangerouslySetInnerHTML={{ __html: service.content }}></div>
             </Container>
             <BackToTopNoClient />
         </main>
-    )
+    );
 }

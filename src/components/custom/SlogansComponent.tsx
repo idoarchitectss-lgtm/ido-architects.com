@@ -11,7 +11,7 @@ const SlogansComponent = () => {
     <div
       className='h-[350px] w-full relative'
       style={{
-        backgroundImage: "url('https://ido-architects.io/wp-content/uploads/2024/08/19-a-48-1.jpg')",
+        backgroundImage: "url('/image/hero-banner-idoarchitects.jpg')",
         backgroundPosition: "center",
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed'

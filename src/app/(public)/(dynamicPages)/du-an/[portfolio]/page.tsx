@@ -1,13 +1,17 @@
 import Loading from "@/app/loading";
 import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
 import Container from "@/components/custom/container";
-import { getAllPortfolios, getSinglePortfolio } from "@/lib/api";
 import { portfolios } from "@/types/typeForWordpressData";
 import { Suspense } from "react";
 import SideBarComponent from "../../blog/[post]/SideBarComponent";
 import BodyPortfolio from "./BodyPortfolio";
 import FooterPortfolio from "./FooterPortfolio";
 import HeaderPortfolio from "./HeaderPortfolio";
+import {
+    allProjectsFromCMS,
+    allProjectSlugsFromCMS,
+    getSingleProjectFromCMS,
+} from "@/data/datafromCMS";
 
 interface Params {
     portfolio: string
@@ -15,89 +19,71 @@ interface Params {
 
 export async function generateStaticParams() {
     try {
-        const data = await getAllPortfolios();
-        const portfolios: portfolios[] = data?.nodes || []
-        return portfolios.map((portfolio) => ({
-            id: portfolio.slug
-        }))
+        const slugs = await allProjectSlugsFromCMS();
+        return slugs.map((slug) => ({ portfolio: slug }));
     } catch (error) {
         console.error('Error in generateStaticParams portfolio:', error);
         return [];
     }
 }
 
-
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({ params }: { params: Promise<Params> }) {
     try {
-        const res = await getSinglePortfolio(params.portfolio)
-        const portfolio: portfolios = await res.portfolio;
-
+        const { portfolio: portfolioSlug } = await params;
+        const res = await getSingleProjectFromCMS(portfolioSlug);
+        const portfolio: portfolios | undefined = res?.portfolio;
         const imageUrl = portfolio?.featuredImage?.node.sourceUrl || '';
-        const validImageUrl = imageUrl ? new URL(imageUrl).toString() : '';
-
 
         return {
-            title: portfolio?.title,
-            description: portfolio?.excerpt,
-            opengraph: {
+            title: portfolio?.title ?? 'Dự án',
+            description: portfolio?.excerpt ?? 'Các dự án tại Ido Architects',
+            openGraph: {
                 title: portfolio?.title,
-                Description: portfolio?.excerpt,
-                url: `https://www.ido-architects.com/du-an/${params.portfolio}`,
+                description: portfolio?.excerpt,
+                url: `https://www.ido-architects.com/du-an/${portfolioSlug}`,
                 type: 'article',
-                images: validImageUrl ? [
-                    {
-                        url: validImageUrl,
-                        width: 800,
-                        height: 600,
-                        alt: portfolio?.title,
-                    },
-                ] : [],
-            }
-        }
+                images: imageUrl ? [{ url: imageUrl, width: 800, height: 600, alt: portfolio?.title }] : [],
+            },
+        };
     } catch (error) {
         console.error('Error in generateMetadata portfolio:', error);
         return {
             title: 'Không có portfolio nào phù hợp',
-            description: 'Các dự án tại Ido Architects'
-        }
+            description: 'Các dự án tại Ido Architects',
+        };
     }
 }
 
-// [{params1:{uri:"portfoliio/lem-apart"}}, {params2:{uri:"portfoliio/lem-apart2"}}]
-export default async function DetailPortfolioPage({ params }: { params: Params }) {
-    const res = await getSinglePortfolio(params.portfolio)
-    const portfolio: portfolios = await res?.portfolio;
+export default async function DetailPortfolioPage({ params }: { params: Promise<Params> }) {
+    const { portfolio: portfolioSlug } = await params;
+    const res = await getSingleProjectFromCMS(portfolioSlug);
+    const portfolio: portfolios | undefined = res?.portfolio;
 
-    const allPortfolios = await getAllPortfolios();
-    const portfolioArr: portfolios[] = allPortfolios?.nodes
-
+    const { portfoliosArray } = await allProjectsFromCMS();
 
     return (
         <main>
             <Suspense fallback={<Loading />}>
                 <Container>
                     <BreadcrumbComponent />
-                    <div className="grid grid-cols-1  lg:grid-cols-3 ">
-                        <div className="'col-span-3 lg:col-span-2 border-0'">
-                            <HeaderPortfolio
-                                portfolio={portfolio}
-                            />
-                            <BodyPortfolio
-                                portfolio={portfolio}
-                            />
-                            <FooterPortfolio
-                                portfolioArr={portfolioArr}
-                            />
+                    {portfolio ? (
+                        <div className="grid grid-cols-1 lg:grid-cols-3">
+                            <div className="col-span-3 lg:col-span-2 border-0">
+                                <HeaderPortfolio portfolio={portfolio} />
+                                <BodyPortfolio portfolio={portfolio} />
+                                <FooterPortfolio portfolioArr={portfoliosArray} />
+                            </div>
+                            <div className="relative col-span-1 hidden lg:block ml-5 w-full">
+                                <SideBarComponent />
+                            </div>
                         </div>
-                        <div className='relative col-span-1 hidden lg:block ml-5 w-full'>
-                            {/* <SideBarComponent></SideBarComponent> */}
-                            <SideBarComponent />
+                    ) : (
+                        <div className="py-20 text-center text-gray-400">
+                            Không tìm thấy dự án.
                         </div>
-                    </div>
-                    {/* <ContactForm /> */}
+                    )}
                 </Container>
             </Suspense>
-
         </main>
-    )
+    );
 }

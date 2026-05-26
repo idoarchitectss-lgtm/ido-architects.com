@@ -8,7 +8,7 @@ import ServiceCarousel from '@/components/custom/offerServices/ServiceCarousel';
 import SlogansComponent from '@/components/custom/SlogansComponent';
 import TouchTocontact from '@/components/custom/TouchTocontact';
 import ValuesComponent from '@/components/custom/values/ValuesComponent';
-import { allServices } from '@/data/datafromWP';
+import { allServicesStatic } from '@/data/staticData';
 import IntroductionAboutCompany from './IntroductionAboutCompany';
 import BreadcrumbComponent from '@/components/custom/breadcrumb/BreadcrumbComponent';
 
@@ -19,7 +19,7 @@ const companyInfo = {
 }
 
 const AboutUsPage = async () => {
-  const servicesArr = await allServices();
+  const servicesArr = allServicesStatic();
 
   const { title, img, text, } = companyInfo
   return (

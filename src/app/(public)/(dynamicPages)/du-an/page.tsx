@@ -5,12 +5,12 @@ import Container from "@/components/custom/container";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import BackgroundForBreadcrumb from "@/components/custom/BackgroundForBreadcrumb";
-import { allPortfolioCategories, allPortfolios } from "@/data/datafromWP";
 import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
+import { allProjectsFromCMS, allProjectCategoriesFromCMS } from "@/data/datafromCMS";
 
 export default async function PortfolioPage() {
-    const portfolios = await allPortfolios();
-    const porfolioCategoryArray = await allPortfolioCategories();
+    const portfolios = await allProjectsFromCMS();
+    const porfolioCategoryArray = await allProjectCategoriesFromCMS();
     return (
         <main>
             <BackgroundForBreadcrumb 

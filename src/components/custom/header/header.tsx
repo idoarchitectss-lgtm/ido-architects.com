@@ -11,8 +11,6 @@ import SearchComponent from './search/SearchComponent'
 
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce';
-import { getAllPosts } from '@/lib/api'
-
 import { motion, useScroll } from "framer-motion"
 
 import { EdgesProps, PostsDataProps, PostsProps } from '@/types/typeForWordpressData'

@@ -55,36 +55,6 @@ const nextConfig = {
                 pathname: "/**",
             },
             {
-                protocol: "http",
-                hostname: "servicecompany.test",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "http",
-                hostname: "2.gravatar.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "secure.gravatar.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "ido-architects.io",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "ido-architects.io.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
                 protocol: "https",
                 hostname: "unsplash.com",
                 port: "",
@@ -98,17 +68,17 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "www.palmarchi.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
                 hostname: "cdn.stocksnap.io",
                 port: "",
                 pathname: "/**",
             },
-
+ {
+                protocol: "https",
+                hostname: "19pq7zhhlxgdtnnv.public.blob.vercel-storage.com",
+                port: "",
+                pathname: "/**",
+            },
+            
 
         ]
     }

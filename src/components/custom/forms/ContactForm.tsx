@@ -42,33 +42,31 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
     setSuccess('')
 
     startTransition(async () => {
-    console.log(values)
-    try {
-      const response = await fetch('https://ido-architects.io/wp-json/wp/v2/contact_submission', {
-        method:'POST',
-        headers: {
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify(values),
-      });
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(values),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-        if (result?.success) {
-            setSuccess(result.success || 'Gửi thông tin thành công');
-            form.reset();
-            toast.success(result.success || 'Gửi yêu cầu thanh cong');
+        if (response.ok && result?.success) {
+          setSuccess(result.success);
+          form.reset();
+          toast.success(result.success);
         } else {
-          toast.error(result?.error || 'Gửi yêu cầu thất bại. Vui lòng thử lại!');
-            throw new Error(result?.error || 'Gửi yêu cầu đã xảy ra lỗi');
+          const errMsg = result?.error || 'Gửi yêu cầu thất bại. Vui lòng thử lại!';
+          setError(errMsg);
+          toast.error(errMsg);
         }
-    } else {
-        throw new Error('Failed to submit form. Please try again later.');
-    }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : String(error));
-    }
+      } catch (error) {
+        const errMsg = 'Đã xảy ra lỗi kết nối. Vui lòng thử lại!';
+        setError(errMsg);
+        toast.error(errMsg);
+      }
     })
   }
   return (
