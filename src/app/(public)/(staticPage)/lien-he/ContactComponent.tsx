@@ -1,7 +1,7 @@
 import { Clock10, FacebookIcon, LocateIcon, MailIcon, PhoneForwarded, X } from 'lucide-react'
 import React from 'react'
 import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons'
-import ContactForm from '../../../components/custom/forms/ContactForm'
+import ContactForm from '@/components/custom/forms/ContactForm'
 import {motion} from 'framer-motion'
 
 const ContactComponent = () => {
