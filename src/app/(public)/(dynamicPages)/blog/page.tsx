@@ -47,8 +47,7 @@ export default async function BlogPage({ searchParams }: Readonly<SearchParamsPr
                             </div>
                         </Suspense>
                         <PaginationComponent
-                            totalPages={Math.ceil((pageCount ?? 0) / 10)}
-                            currentPage={currentPage}
+                            pageCount={Math.ceil((pageCount ?? 0) / 10)}
                         />
                     </div>
                 </Container>

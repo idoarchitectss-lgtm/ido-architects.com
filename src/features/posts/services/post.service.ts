@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { Prisma, PostType } from "../../../../generated/prisma/client";
+import { Prisma, PostType } from "@generated/prisma/client";
 import type { PostWithRelations } from "../types/post.types";
 import type { PostInput, PostUpdateInput, PostQuery } from "../validations/post.schema";
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { findManyPosts } from "@/features/posts/services/post.service";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PostType } from "../../../../generated/prisma/client";
+import { PostType } from "@generated/prisma/client";
 
 const TYPE_LABEL: Record<PostType, string> = {
   BLOG_POST: "Blog",

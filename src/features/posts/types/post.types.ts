@@ -1,4 +1,4 @@
-import type { PostType } from "../../../../generated/prisma/client";
+import type { PostType } from "@generated/prisma/client";
 
 // Re-export enum để dùng ở client mà không import từ generated/
 export { PostType };
