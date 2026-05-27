@@ -1,7 +1,7 @@
 import BackgroundForBreadcrumb from '@/components/custom/BackgroundForBreadcrumb';
 import Container from '@/components/custom/container';
 import OfferServices from '@/components/custom/offerServices/offerServices';
-import { allServicesStatic } from '@/data/staticData';
+import { allServicesFromCMS } from '@/data/datafromCMS';
 import FQAComponent from './FQA';
 import Title from '@/components/custom/title';
 import { Suspense } from 'react';
@@ -10,7 +10,7 @@ import TouchToContact from '@/components/custom/TouchTocontact';
 import BreadcrumbComponent from '@/components/custom/breadcrumb/BreadcrumbComponent';
 
 const OurServicesPage = async () => {
-  const servicesArr = allServicesStatic();
+  const servicesArr = await allServicesFromCMS();
 
   return (
     <main>

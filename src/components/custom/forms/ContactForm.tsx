@@ -169,9 +169,10 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
           <Button
             disabled={isPending}
             type='submit'
-            className='bg-secondary w-full text-white hover:bg-secondary/90 border-none '
+            variant={'cta'}
+            className='w-full text-sm tracking-widest'
           >
-            <span className='tracking-wide'>LIÊN HỆ TƯ VẤN</span>
+            <span>LIÊN HỆ TƯ VẤN</span>
           </Button>
         </form>
       </Form>

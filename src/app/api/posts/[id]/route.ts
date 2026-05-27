@@ -6,7 +6,7 @@ import {
   deletePost,
 } from "@/features/posts/services/post.service";
 import { transformPost } from "@/features/posts/transforms/post.transform";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 
 type RouteContext = { params: Promise<{ id: string }> };
 

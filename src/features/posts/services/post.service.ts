@@ -23,7 +23,7 @@ export async function resolveSlugToId(slug: string): Promise<string | null> {
 export async function findManyPosts(
   query: PostQuery
 ): Promise<{ posts: PostWithRelations[]; total: number }> {
-  const { type, page, size, showAll, isFeatured, isCompleted } = query;
+  const { type, page, size, showAll, isFeatured, isCompleted, search } = query;
 
   const where: Prisma.PostWhereInput = {};
 
@@ -33,6 +33,14 @@ export async function findManyPosts(
   if (!showAll) {
     where.isPublished = true;
     where.publishedAt = { lte: new Date() };
+  }
+
+  // Full-text search trên title và slug
+  if (search && search.trim().length > 0) {
+    where.OR = [
+      { title: { contains: search.trim(), mode: "insensitive" } },
+      { slug: { contains: search.trim(), mode: "insensitive" } },
+    ];
   }
 
   // JSON path filter cho projectMeta (chỉ có nghĩa với PROJECT_POST)
@@ -152,4 +160,14 @@ export async function updatePost(
 // ─── Delete ───────────────────────────────────────────────────────────────────
 export async function deletePost(id: string): Promise<void> {
   await prisma.post.delete({ where: { id } });
+}
+
+// ─── Static build helpers (dùng trong generateStaticParams & sitemap) ─────────
+export async function getPublishedSlugsByType(type: PostType): Promise<string[]> {
+  const posts = await prisma.post.findMany({
+    where: { type, isPublished: true, publishedAt: { lte: new Date() } },
+    select: { slug: true },
+    orderBy: { publishedAt: "desc" },
+  });
+  return posts.map((p) => p.slug);
 }

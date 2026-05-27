@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Upload, Trash2, Check, ImageIcon, X } from "lucide-react";
-import AdminModal from "@/app/admin/_components/AdminModal";
+import AdminModal from "@/app/dashboard/admin/_components/AdminModal";
 import { Button } from "@/components/ui/button";
-import { useAdminToast } from "@/app/admin/_hooks/useAdminToast";
+import { useAdminToast } from "@/app/dashboard/admin/_hooks/useAdminToast";
 import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────

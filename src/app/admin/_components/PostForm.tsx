@@ -31,7 +31,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, X } from "lucide-react";
-import MediaPicker from "@/app/admin/_components/MediaPicker";
+import MediaPicker from "@/app/dashboard/admin/_components/MediaPicker";
 import { MediaSelector } from "@/components/custom/media/media-selector";
 import { generateSlug } from "@/features/posts/helpers/post.helpers";
 import TiptapEditor from "@/components/custom/tiptap/tiptap-editor";

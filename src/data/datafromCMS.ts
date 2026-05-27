@@ -21,8 +21,14 @@ import type {
   porfolioCategory,
   NodeProps,
   PostsProps,
+  ServicesNodeArr,
 } from "@/types/typeForWordpressData";
 import type { ProjectMeta } from "@/features/posts/types/post.types";
+import type { ServiceResponse, ServiceListResponse } from "@/features/company-services/types/service.types";
+import {
+  serviceListToNodeArr,
+  serviceResponseToNodeItem,
+} from "@/features/company-services/transforms/service.transform";
 
 // ─── Resolve base URL (Server Component chạy trong Node.js cần URL tuyệt đối) ─
 function getBaseUrl() {
@@ -47,6 +53,7 @@ function toPortfolioShape(post: PostResponse): portfolios {
     content: post.content ?? "",
     excerpt: post.excerpt ?? "",
     date: post.publishedAt ?? post.createdAt,
+    galleryImages: Array.isArray(meta.galleryImages) ? meta.galleryImages : [],
     project: {
       descriptionOfProject: post.excerpt ?? "",
       nameOfProject: meta.nameOfProject ?? post.title,
@@ -234,5 +241,40 @@ export async function getSingleBlogFromCMS(slug: string): Promise<NodeProps | nu
 export async function allBlogSlugsFromCMS(): Promise<string[]> {
   const posts = await fetchBlogs();
   return posts.map((p) => p.slug);
+}
+
+// ─── Company Services ─────────────────────────────────────────────────────────
+
+/** GET /api/services?showAll=false&size=100 → ServicesNodeArr (published only) */
+export async function allServicesFromCMS(): Promise<ServicesNodeArr> {
+  const res = await fetch(
+    `${getBaseUrl()}/api/services?showAll=false&size=100`,
+    { next: { revalidate: 120, tags: ["services"] } }
+  );
+  if (!res.ok) return [];
+  const data: ServiceListResponse = await res.json();
+  return serviceListToNodeArr(data.services ?? []);
+}
+
+/** GET /api/services/slug/[slug] → single ServiceResponse or null */
+export async function singleServiceFromCMS(
+  slug: string
+): Promise<ServiceResponse | null> {
+  const res = await fetch(`${getBaseUrl()}/api/services/slug/${slug}`, {
+    next: { revalidate: 120, tags: [`service-slug-${slug}`] },
+  });
+  if (!res.ok) return null;
+  return res.json() as Promise<ServiceResponse>;
+}
+
+/** Lấy tất cả slug services cho generateStaticParams */
+export async function allServiceSlugsFromCMS(): Promise<string[]> {
+  const res = await fetch(
+    `${getBaseUrl()}/api/services?showAll=false&size=100`,
+    { next: { revalidate: 120, tags: ["services"] } }
+  );
+  if (!res.ok) return [];
+  const data: ServiceListResponse = await res.json();
+  return (data.services ?? []).map((s) => s.slug);
 }
 

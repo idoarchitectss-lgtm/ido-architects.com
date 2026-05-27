@@ -20,16 +20,111 @@ enum PostType {
 // ─── Models ──────────────────────────────────────────────────────────────────
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      String   @default("ADMIN")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    String                 @id @default(cuid())
+  name                  String
+  email                 String                 @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  role                  UserRole               @default(USER)
+  isTwoFactorEnabled    Boolean                @default(false)
+  acquisitionDate       DateTime?              @default(now())
+  acquisitionSource     String?
+  lastActiveAt          DateTime?
+  lifetimeValue         Float?                 @default(0)
+  totalSpent            Float?                 @default(0)
+  chatSettings          Json?
+  lastChatAt            DateTime?
+  preferredLanguage     String                 @default("en")
+  totalChatSessions     Int                    @default(0)
+  //Relations
+  twoFactorConfirmation TwoFactorConfirmation?
+  session               Session[]
+  account               Account[]
 
   posts Post[]
   media Media[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+// IMPORTANT: field names must be `identifier` + `token` (not `email` + `token`)
+// NextAuth PrismaAdapter expects these exact names
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model MagicLinkRateLimit {
+  id            String    @id @default(cuid())
+  email         String
+  ipAddress     String? // Optional: Track by IP for extra security
+  attemptCount  Int       @default(1)
+  lastAttempt   DateTime  @default(now())
+  cooldownUntil DateTime? // NULL = no cooldown, DateTime = blocked until this time
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // @@map("magic_link_rate_limits")
+
+  @@unique([email])
+  @@index([email, cooldownUntil]) // Fast lookup for rate limit check
+  @@index([createdAt]) // Cleanup old records
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 model Post {
@@ -101,3 +196,50 @@ model Media {
   @@index([createdAt(sort: Desc)])
   @@index([uploadedBy])
 }
+
+// ─── Contact Submissions ─────────────────────────────────────────────────────
+
+enum ContactStatus {
+  NEW
+  READ
+  RESOLVED
+  SPAM
+}
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String?
+  status    ContactStatus @default(NEW)
+  note      String?       // Admin internal note
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([email])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String?
+  content       String?
+  featuredImage String?
+  icon          String?
+  isPublished   Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  metaTitle     String?
+  metaDesc      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+  @@index([slug])
+}
+
+

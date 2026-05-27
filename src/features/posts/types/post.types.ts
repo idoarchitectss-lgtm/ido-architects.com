@@ -14,6 +14,7 @@ export type ProjectMeta = {
   designedCompany?: string;
   isCompleted?: boolean;
   isFeatured?: boolean;
+  galleryImages?: string[];
 };
 
 // ─── Response shapes (API → client) ──────────────────────────────────────────

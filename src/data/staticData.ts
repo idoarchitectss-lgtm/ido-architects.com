@@ -96,7 +96,7 @@ export function heroStatic(): HeroArr {
           banner_img: {
             node: {
               altText: "IDO Architects – Thiết kế kiến trúc",
-              sourceUrl: "/image/hero-banner-idoarchitects.jpg",
+              sourceUrl: "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779849796404-Untitled-13-1.jpg",
             },
           },
         },
@@ -105,16 +105,16 @@ export function heroStatic(): HeroArr {
     {
       heros: {
         hero: {
-          heroTitle: "Thiết Kế Nội Thất – Hài Hòa Giữa Thẩm Mỹ & Công Năng",
-          heroSubtitle: "DỊCH VỤ NỘI THẤT",
+          heroTitle: "Mang đến trải nghiệm sống đầy cảm hứng và chất lượng bền vững",
+          heroSubtitle: "IDO-ARCHITECTS",
           heroBodyText:
             "Chúng tôi kiến tạo những không gian sống tinh tế, phản ánh cá tính và phong cách riêng của từng gia chủ.",
-          ctaButton: "Xem dịch vụ",
+          ctaButton: "Liên hệ",
           banner_img: {
             node: {
               altText: "Thiết kế nội thất IDO Architects",
               sourceUrl:
-                "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1800&q=80",
+                "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779850687204-Khach_Bep002_0000-1.jpg",
             },
           },
         },
@@ -123,16 +123,16 @@ export function heroStatic(): HeroArr {
     {
       heros: {
         hero: {
-          heroTitle: "Kiến Trúc Xanh – Bền Vững Theo Thời Gian",
-          heroSubtitle: "DỰ ÁN NỔI BẬT",
+          heroTitle: "Tích hợp thiên nhiên vào công trình",
+          heroSubtitle: "IDO-ARCHITECTS",
           heroBodyText:
-            "Mỗi công trình được nghiên cứu kỹ lưỡng từ phong thủy, công năng đến thẩm mỹ – kết hợp kiến trúc hiện đại và bản sắc Việt.",
-          ctaButton: "Xem dự án",
+            "",
+          ctaButton: "Liên hệ",
           banner_img: {
             node: {
               altText: "Dự án kiến trúc IDO Architects",
               sourceUrl:
-                "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&q=80",
+                "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779850687204-Khach_Bep002_0000-1.jpg",
             },
           },
         },
@@ -157,7 +157,7 @@ export function aboutStatic(): AboutType["abouts"]["nodes"] {
           node: {
             altText: "IDO Architects",
             sourceUrl:
-              "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop",
+              "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779853065113-Untitled-3-1.jpg",
           },
         },
         button: { labelbtn: "Xem thêm", hrefbtn: "/gioi-thieu" },
