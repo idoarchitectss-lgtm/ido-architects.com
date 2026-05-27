@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,10 +8,11 @@ import Title from '@/components/custom/title';
 import PortfolioCate from './portfolioCate';
 
 import { porfolioCategory, portfolios } from '@/types/typeForWordpressData';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import MainButton from '../buttons/MainButton';
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
+import { PROPERTY_TYPES } from '@/features/posts/validations/post.schema';
 interface PortfolioProps {
   portfoliosArray: portfolios[];
   porfolioCategoryArray: porfolioCategory[];
@@ -34,12 +35,15 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
   labelOfButton
 }) => {
   const pathname = usePathname();
-  const route = useRouter();
 
   const [seletedcategory, setSeletedCategory] = useState<string | null>("Tất cả")
 
   const portfolios = portfoliosArray;
   const portfoliosByCategory = portfolios?.filter(portfolio => portfolio?.project.generalInformation.propertyType === seletedcategory)
+
+  /** Chuyển enum value → label tiếng Việt, fallback về value gốc nếu không tìm thấy */
+  const getPropertyLabel = (value: string) =>
+    PROPERTY_TYPES.find((t) => t.value === value)?.label ?? value;
 
   useEffect(() => {
     console.log("seletedcategory", seletedcategory)
@@ -86,7 +90,7 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
                     key={portfolioCategory.slug}
                     className={`w-[200px] px-5 py-3  cursor-pointer  text-neutral-500 border-neutral-500/30 border-[1px] border-b-[0px] rounded-none text-sm bg-neutral-100 hover:text-secondary duration-500
                     ${seletedcategory === portfolioCategory.name ? "text-neutral-500 font-[700] bg-white border-t-secondary border-[1px]" : ""} `}
-                    nameOfCategory={portfolioCategory.name}
+                    nameOfCategory={getPropertyLabel(portfolioCategory.name)}
                     handleClick={() => setSeletedCategory(portfolioCategory.name)}
                   />
                 ))}
@@ -135,7 +139,7 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
                               Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
                             </li>
                             <li>
-                              Loại công trình: {portfolio.project.generalInformation.propertyType}
+                              Loại công trình: {getPropertyLabel(portfolio.project.generalInformation.propertyType)}
                             </li>
                           </ul>
                         </div>
@@ -184,7 +188,7 @@ const PortfolioComponent: React.FC<PortfolioProps> = ({
                               Quy mô: {portfolio.project.generalInformation.numberOfFloors} tầng
                             </li>
                             <li>
-                              Loại công trình: {portfolio.project.generalInformation.propertyType}
+                              Loại công trình: {getPropertyLabel(portfolio.project.generalInformation.propertyType)}
                             </li>
                           </ul>
                         </div>

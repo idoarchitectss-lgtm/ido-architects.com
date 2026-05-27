@@ -32,8 +32,12 @@ interface MediaPickerProps {
   onSelectMultiple?: (urls: string[], cols: ImageLayoutCols) => void;
   /** URL đang được chọn (để highlight) */
   selectedUrl?: string;
-  /** Mode mặc định khi mở modal */
-  initialMode?: "single" | "layout";
+  /** Mode mặc định khi mở modal:
+   *  - "single"  → chọn 1 ảnh
+   *  - "layout"  → chọn nhiều + chọn số cột
+   *  - "gallery" → chọn nhiều, không có layout cột (dùng cho gallery dự án)
+   */
+  initialMode?: "single" | "layout" | "gallery";
   /** Hiển thị banner gợi ý ở trên lưới ảnh (ví dụ: hướng dẫn pick before/after) */
   hint?: string;
 }
@@ -156,7 +160,7 @@ export default function MediaPicker({
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [hoverId, setHoverId] = useState<string | null>(null);
   // Mode: single = chọn 1 ảnh, layout = chọn nhiều ảnh + layout
-  const [mode, setMode] = useState<"single" | "layout">("single");
+  const [mode, setMode] = useState<"single" | "layout" | "gallery">("single");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [layoutCols, setLayoutCols] = useState<ImageLayoutCols>(2);
 
@@ -205,7 +209,8 @@ export default function MediaPicker({
   const handleInsertLayout = () => {
     if (selectedIds.size === 0) return;
     const urls = items.filter((i) => selectedIds.has(i.id)).map((i) => i.url);
-    onSelectMultiple?.(urls, layoutCols);
+    // gallery mode: cols not relevant, pass 1 as dummy
+    onSelectMultiple?.(urls, mode === "gallery" ? 1 : layoutCols);
     setSelectedIds(new Set());
     onClose();
   };
@@ -222,33 +227,35 @@ export default function MediaPicker({
         {/* Upload zone */}
         <UploadZone onUploaded={(item) => setItems((prev) => [item, ...prev])} />
 
-        {/* Mode tabs */}
-        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-          <button
-            type="button"
-            onClick={() => { setMode("single"); setSelectedIds(new Set()); }}
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
-              mode === "single" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
-            )}
-          >
-            <ImageIcon2 size={13} />
-            Ảnh đơn
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("layout")}
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
-              mode === "layout" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
-            )}
-          >
-            <LayoutGrid size={13} />
-            Nhiều ảnh
-          </button>
-        </div>
+        {/* Mode tabs — ẩn khi mode gallery */}
+        {mode !== "gallery" && (
+          <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+            <button
+              type="button"
+              onClick={() => { setMode("single"); setSelectedIds(new Set()); }}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
+                mode === "single" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+              )}
+            >
+              <ImageIcon2 size={13} />
+              Ảnh đơn
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("layout")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
+                mode === "layout" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+              )}
+            >
+              <LayoutGrid size={13} />
+              Nhiều ảnh
+            </button>
+          </div>
+        )}
 
-        {/* Layout picker (mode layout only) */}
+        {/* Layout picker — chỉ hiện ở mode "layout", không hiện ở "gallery" */}
         {mode === "layout" && (
           <div className="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3 flex-wrap">
             <span className="text-xs font-medium text-blue-700 shrink-0">Chọn layout:</span>
@@ -360,7 +367,7 @@ export default function MediaPicker({
         <div className="flex justify-between items-center pt-2 border-t">
           <p className="text-xs text-gray-400">{items.length} ảnh</p>
           <div className="flex gap-2">
-            {mode === "layout" && onSelectMultiple && (
+            {(mode === "layout" || mode === "gallery") && onSelectMultiple && (
               <Button
                 size="sm"
                 disabled={selectedIds.size === 0}
@@ -369,8 +376,10 @@ export default function MediaPicker({
               >
                 <LayoutGrid size={13} />
                 {selectedIds.size > 0
-                  ? `Chèn ${selectedIds.size} ảnh${layoutCols > 1 ? ` (${layoutCols} cột)` : ""}`
-                  : "Chèn ảnh"}
+                  ? mode === "gallery"
+                    ? `Thêm ${selectedIds.size} ảnh`
+                    : `Chèn ${selectedIds.size} ảnh${layoutCols > 1 ? ` (${layoutCols} cột)` : ""}`
+                  : mode === "gallery" ? "Thêm ảnh" : "Chèn ảnh"}
               </Button>
             )}
             <Button variant="outline" size="sm" onClick={onClose}>Đóng</Button>

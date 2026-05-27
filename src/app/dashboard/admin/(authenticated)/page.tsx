@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { FileText, Images, Tag, ArrowRight, LayoutDashboard } from "lucide-react";
+import { FileText, Images, Tag, Briefcase, ArrowRight, LayoutDashboard, MessageSquare } from "lucide-react";
 
 const quickLinks = [
   {
@@ -12,6 +12,24 @@ const quickLinks = [
     color: "text-blue-600",
     bg: "bg-blue-50",
     border: "border-blue-100 hover:border-blue-300",
+  },
+  {
+    href: "/dashboard/admin/services",
+    icon: Briefcase,
+    label: "Dịch vụ",
+    description: "Quản lý danh mục dịch vụ",
+    color: "text-amber-600",
+    bg: "bg-amber-50",
+    border: "border-amber-100 hover:border-amber-300",
+  },
+  {
+    href: "/dashboard/admin/contacts",
+    icon: MessageSquare,
+    label: "Yêu cầu liên hệ",
+    description: "Quản lý yêu cầu từ khách hàng",
+    color: "text-sky-600",
+    bg: "bg-sky-50",
+    border: "border-sky-100 hover:border-sky-300",
   },
   {
     href: "/dashboard/admin/categories",
@@ -66,7 +84,7 @@ export default async function AdminDashboardPage() {
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
           Truy cập nhanh
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickLinks.map(({ href, icon: Icon, label, description, color, bg, border }) => (
             <Link
               key={href}

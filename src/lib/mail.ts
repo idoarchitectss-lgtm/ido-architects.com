@@ -26,6 +26,7 @@ export const sendRequestFromContactForm = async (
     await resend.emails.send({
         from: "onboarding@resend.dev",
         to: adminEmail,
+        replyTo: customerEmail,
         subject: `[IDO Architects] Yêu cầu tư vấn mới từ ${name}`,
         html: `
             <h2>Thông tin yêu cầu tư vấn mới</h2>

@@ -12,17 +12,18 @@ import PortfoliosForHomepage from "@/components/custom/portfolio/PortfoliosForHo
 import {
   allBlogsFromCMS,
   allProjectsFromCMS,
+  allServicesFromCMS,
 } from "@/data/datafromCMS";
-import { allServicesStatic, heroStatic, aboutStatic } from "@/data/staticData";
+import { heroStatic, aboutStatic } from "@/data/staticData";
 
 export default async function Home() {
-  const [blogsRes, portfolioRes] = await Promise.all([
+  const [blogsRes, portfolioRes, servicesArr] = await Promise.all([
     allBlogsFromCMS(10, 1),
     allProjectsFromCMS(),
+    allServicesFromCMS(),
   ]);
 
   const postsArray = blogsRes.edges;
-  const servicesArr = allServicesStatic();
 
   return (
     <div className="relative overflow-hidden">

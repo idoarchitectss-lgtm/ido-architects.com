@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { UserRole } from '@generated/prisma/client';
 import { apiLogger } from '../../lib/helpers/api-logger';
 import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';

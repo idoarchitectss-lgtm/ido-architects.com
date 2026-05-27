@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, FileText, LogOut, Tag, Images } from "lucide-react";
+import { LayoutDashboard, FileText, LogOut, Tag, Images, Briefcase, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/dashboard/admin/posts", label: "Quản lý bài viết", icon: FileText },
+  { href: "/dashboard/admin/services", label: "Dịch vụ", icon: Briefcase },
+  { href: "/dashboard/admin/contacts", label: "Yêu cầu liên hệ", icon: MessageSquare },
   { href: "/dashboard/admin/categories", label: "Chuyên mục", icon: Tag },
   { href: "/dashboard/admin/media", label: "Thư viện ảnh", icon: Images },
 ];

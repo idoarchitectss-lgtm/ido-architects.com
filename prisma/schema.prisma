@@ -197,4 +197,49 @@ model Media {
   @@index([uploadedBy])
 }
 
+// ─── Contact Submissions ─────────────────────────────────────────────────────
+
+enum ContactStatus {
+  NEW
+  READ
+  RESOLVED
+  SPAM
+}
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String?
+  status    ContactStatus @default(NEW)
+  note      String?       // Admin internal note
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([email])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String?
+  content       String?
+  featuredImage String?
+  icon          String?
+  isPublished   Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  metaTitle     String?
+  metaDesc      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+  @@index([slug])
+}
+
 

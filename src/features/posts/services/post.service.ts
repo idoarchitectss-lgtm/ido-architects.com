@@ -161,3 +161,13 @@ export async function updatePost(
 export async function deletePost(id: string): Promise<void> {
   await prisma.post.delete({ where: { id } });
 }
+
+// ─── Static build helpers (dùng trong generateStaticParams & sitemap) ─────────
+export async function getPublishedSlugsByType(type: PostType): Promise<string[]> {
+  const posts = await prisma.post.findMany({
+    where: { type, isPublished: true, publishedAt: { lte: new Date() } },
+    select: { slug: true },
+    orderBy: { publishedAt: "desc" },
+  });
+  return posts.map((p) => p.slug);
+}

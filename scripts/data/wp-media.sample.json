@@ -1,0 +1,24 @@
+[
+  {
+    "id": 101,
+    "title": "Ảnh dự án biệt thự sunrise",
+    "url": "https://your-wp-site.com/wp-content/uploads/2024/01/biet-thu-sunrise-01.jpg",
+    "mime_type": "image/jpeg",
+    "width": 1920,
+    "height": 1080,
+    "alt_text": "Biệt thự The Sunrise - mặt tiền",
+    "filesize": 512000,
+    "date": "2024-01-10T08:00:00"
+  },
+  {
+    "id": 102,
+    "title": "Ảnh nội thất phòng khách",
+    "url": "https://your-wp-site.com/wp-content/uploads/2024/01/noi-that-phong-khach.jpg",
+    "mime_type": "image/jpeg",
+    "width": 1920,
+    "height": 1280,
+    "alt_text": "Phòng khách nội thất cao cấp",
+    "filesize": 384000,
+    "date": "2024-01-10T08:05:00"
+  }
+]
