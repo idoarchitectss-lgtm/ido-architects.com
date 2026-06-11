@@ -8,16 +8,28 @@ export const PostType = {
 export type PostType = (typeof PostType)[keyof typeof PostType];
 
 // ─── ProjectMeta schema ───────────────────────────────────────────────────────
+
+export const PROPERTY_TYPES = [
+  { value: "villa",       label: "Villa" },
+  { value: "townhouse",   label: "Nhà phố" },
+  { value: "apartment",   label: "Căn hộ" },
+  { value: "office",      label: "Văn phòng" },
+  { value: "hotel",       label: "Khách sạn" },
+] as const;
+
+export type PropertyTypeValue = (typeof PROPERTY_TYPES)[number]["value"];
+
 export const ProjectMetaSchema = z.object({
   nameOfProject: z.string().optional(),
   addressOfProperty: z.string().optional(),
   completedYear: z.string().optional(),
   floorDimension: z.coerce.number().positive().optional(),
   numberOfFloors: z.coerce.number().int().positive().optional(),
-  propertyType: z.string().optional(),
+  propertyType: z.enum(PROPERTY_TYPES.map((t) => t.value) as [string, ...string[]]).optional(),
   designedCompany: z.string().optional(),
   isCompleted: z.boolean().default(false),
   isFeatured: z.boolean().default(false),
+  galleryImages: z.array(z.string().url()).optional().default([]),
 });
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -62,6 +74,7 @@ export const PostQuerySchema = z.object({
   showAll: z.string().transform((v) => v === "true").optional(),
   isFeatured: z.string().transform((v) => v === "true").optional(),
   isCompleted: z.string().transform((v) => v === "true").optional(),
+  search: z.string().max(200).optional(),
 });
 
 // ─── Inferred types ───────────────────────────────────────────────────────────

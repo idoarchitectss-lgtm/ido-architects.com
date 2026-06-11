@@ -9,9 +9,10 @@ import FooterPortfolio from "./FooterPortfolio";
 import HeaderPortfolio from "./HeaderPortfolio";
 import {
     allProjectsFromCMS,
-    allProjectSlugsFromCMS,
     getSingleProjectFromCMS,
 } from "@/data/datafromCMS";
+import { getPublishedSlugsByType } from "@/features/posts/services/post.service";
+import { PostType } from "@generated/prisma/client";
 
 interface Params {
     portfolio: string
@@ -19,7 +20,7 @@ interface Params {
 
 export async function generateStaticParams() {
     try {
-        const slugs = await allProjectSlugsFromCMS();
+        const slugs = await getPublishedSlugsByType(PostType.PROJECT_POST);
         return slugs.map((slug) => ({ portfolio: slug }));
     } catch (error) {
         console.error('Error in generateStaticParams portfolio:', error);

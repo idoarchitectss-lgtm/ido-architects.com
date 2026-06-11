@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import { findAllMedia } from "@/features/media/services/media.service";
 
 // GET /api/media?page=1&limit=24&search=banner&contentType=image/png&folder=media

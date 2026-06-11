@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "title": "Biệt thự hiện đại The Sunrise",
+    "slug": "biet-thu-hien-dai-the-sunrise",
+    "content": "<p>Nội dung bài viết HTML...</p>",
+    "excerpt": "Mô tả ngắn về dự án...",
+    "featured_image_url": "https://your-wp-site.com/wp-content/uploads/2024/01/featured.jpg",
+    "date": "2024-06-15T10:00:00",
+    "status": "publish",
+    "categories": ["Biệt thự", "Dự án nổi bật"],
+    "tags": ["hiện đại", "Đà Nẵng"],
+    "meta": {
+      "nameOfProject": "The Sunrise Villa",
+      "addressOfProperty": "Ngũ Hành Sơn, Đà Nẵng",
+      "completedYear": "2024",
+      "floorDimension": 350,
+      "numberOfFloors": 3,
+      "propertyType": "villa",
+      "designedCompany": "IDO Architects",
+      "isCompleted": true,
+      "isFeatured": true
+    }
+  },
+  {
+    "id": 2,
+    "title": "Nhà phố tân cổ điển Hải Châu",
+    "slug": "nha-pho-tan-co-dien-hai-chau",
+    "content": "<p>Nội dung bài viết HTML...</p>",
+    "excerpt": "Mô tả ngắn về dự án...",
+    "featured_image_url": "https://your-wp-site.com/wp-content/uploads/2024/02/featured.jpg",
+    "date": "2024-05-20T10:00:00",
+    "status": "publish",
+    "categories": ["Nhà phố"],
+    "tags": ["tân cổ điển", "Đà Nẵng"],
+    "meta": {
+      "nameOfProject": "Grand Avenue House",
+      "addressOfProperty": "Hải Châu, Đà Nẵng",
+      "completedYear": "2024",
+      "floorDimension": 220,
+      "numberOfFloors": 4,
+      "propertyType": "townhouse",
+      "designedCompany": "IDO Architects",
+      "isCompleted": true,
+      "isFeatured": false
+    }
+  }
+]

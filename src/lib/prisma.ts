@@ -2,9 +2,10 @@ import { PrismaClient } from "@generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const createPrismaClient = () => {
-  const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL!,
-  });
+  // Use DIRECT_URL for adapter (non-pooler) to avoid Neon pooler issues with Prisma
+  // Fall back to DATABASE_URL if DIRECT_URL is not set
+  const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL!;
+  const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({ adapter });
 };
 

@@ -6,7 +6,7 @@ import ImageCarouselHero from './imageCarouelHero'
 const Hero = () => {
 const heroArr = heroStatic();
   return (
-    <section className='relative flex-row items-stretch h-[690px] w-[100%] overflow-hidden'>
+    <section className='relative flex-row items-stretch h-[calc(100svh-72px)] md:h-[calc(100svh-90px)] w-full overflow-hidden'>
       <ImageCarouselHero
         heroArr={heroArr}
       />

@@ -96,7 +96,7 @@ export function heroStatic(): HeroArr {
           banner_img: {
             node: {
               altText: "IDO Architects – Thiết kế kiến trúc",
-              sourceUrl: "/image/hero-banner-idoarchitects.jpg",
+              sourceUrl: "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779849796404-Untitled-13-1.jpg",
             },
           },
         },
@@ -114,7 +114,7 @@ export function heroStatic(): HeroArr {
             node: {
               altText: "Thiết kế nội thất IDO Architects",
               sourceUrl:
-                "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1800&q=80",
+                "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779850687204-Khach_Bep002_0000-1.jpg",
             },
           },
         },
@@ -132,7 +132,7 @@ export function heroStatic(): HeroArr {
             node: {
               altText: "Dự án kiến trúc IDO Architects",
               sourceUrl:
-                "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&q=80",
+                "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779850687204-Khach_Bep002_0000-1.jpg",
             },
           },
         },
@@ -157,7 +157,7 @@ export function aboutStatic(): AboutType["abouts"]["nodes"] {
           node: {
             altText: "IDO Architects",
             sourceUrl:
-              "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop",
+              "https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779853065113-Untitled-3-1.jpg",
           },
         },
         button: { labelbtn: "Xem thêm", hrefbtn: "/gioi-thieu" },

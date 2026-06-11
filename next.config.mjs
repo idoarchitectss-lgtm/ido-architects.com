@@ -78,23 +78,7 @@ const nextConfig = {
                 port: "",
                 pathname: "/**",
             },
-             {
-                protocol: "https",
-                hostname: "wzbnvt5mhbyjribc.public.blob.vercel-storage.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "ido-architects.io",
-                port: "",
-                pathname: "/**",
-            },
-
             
-
-            
-
 
         ]
     }

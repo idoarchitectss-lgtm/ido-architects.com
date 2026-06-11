@@ -5,6 +5,8 @@ import "./globals.css";
 import ToastProvider from "@/providers/ToastProvider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from '@vercel/analytics/next';
@@ -19,28 +21,32 @@ export const metadata: Metadata = {
   description: "Đơn vị thiết kế thi công kiến trúc chuyên nghiệp và uy tín tại Đà Nẵng",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <ToastProvider>
-            <QueryProvider>
-              {children}
-              <Analytics />
-              <SpeedInsights />
-            </QueryProvider>
-          </ToastProvider>
-        </ThemeProvider>
+        <SessionProvider session={session}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            <ToastProvider>
+              <QueryProvider>
+                {children}
+                <Analytics />
+                <SpeedInsights />
+              </QueryProvider>
+            </ToastProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

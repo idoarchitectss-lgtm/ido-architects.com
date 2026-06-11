@@ -146,6 +146,7 @@ export type portfolios = {
     content:string;
     excerpt: string;
     date:string;
+    galleryImages: string[];
     project: {
         descriptionOfProject: string;
         nameOfProject: string;
