@@ -29,6 +29,7 @@ import {
   serviceListToNodeArr,
   serviceResponseToNodeItem,
 } from "@/features/company-services/transforms/service.transform";
+import { DEFAULT_IMG } from "@/lib/constants";
 
 // ─── Resolve base URL (Server Component chạy trong Node.js cần URL tuyệt đối) ─
 function getBaseUrl() {
@@ -45,9 +46,7 @@ function toPortfolioShape(post: PostResponse): portfolios {
     title: post.title,
     featuredImage: {
       node: {
-        sourceUrl:
-          post.featuredImage ??
-          "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+        sourceUrl: post.featuredImage ?? DEFAULT_IMG,
       },
     },
     content: post.content ?? "",

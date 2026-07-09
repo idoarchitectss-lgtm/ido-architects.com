@@ -82,9 +82,8 @@ const Navbar = () => {
       <div className='flex flex-row items-center justify-start gap-8'>
         {
           ItemMenu.map((item, index) => (
-            <>
-          <HoverCard openDelay={200} closeDelay={200}>
-            <HoverCardTrigger key={index} 
+          <HoverCard key={index} openDelay={200} closeDelay={200}>
+            <HoverCardTrigger  
             href={item.slug}
             className={`font-[400] text-md hover:text-secondary duration-300 flex flex-row items-center justify-center py-2
               ${selectedItem === item.slug ? 'border-white border-b-2 text-secondary font-bold': ''}
@@ -110,8 +109,6 @@ const Navbar = () => {
             </HoverCardContent>
             )}
           </HoverCard>
-            </>
-
           ))
         }
       </div>

@@ -4,6 +4,7 @@ import { portfolios } from '@/types/typeForWordpressData'
 import Image from 'next/image'
 import { Images, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { useState } from 'react'
+import { DEFAULT_IMG } from '@/lib/constants'
 
 interface HeaderPortfolioProps {
   portfolio: portfolios
@@ -16,7 +17,9 @@ function extractImagesFromHtml(html: string): string[] {
 }
 
 const HeaderPortfolio: React.FC<HeaderPortfolioProps> = ({ portfolio }) => {
-  const featured = portfolio?.featuredImage?.node.sourceUrl
+  // Bỏ qua ảnh default placeholder — không phải ảnh thật của bài viết
+  const rawFeatured = portfolio?.featuredImage?.node.sourceUrl
+  const featured = rawFeatured && rawFeatured !== DEFAULT_IMG ? rawFeatured : undefined
 
   // Priority: galleryImages from CMS → fallback extract from content HTML
   const cmsGallery: string[] = portfolio.galleryImages ?? []

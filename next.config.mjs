@@ -74,12 +74,22 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "19pq7zhhlxgdtnnv.public.blob.vercel-storage.com",
+                hostname: "*.public.blob.vercel-storage.com",
                 port: "",
                 pathname: "/**",
             },
-            
-
+            {
+                protocol: "https",
+                hostname: "ido-architects.io",
+                port: "",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "static.xx.fbcdn.net",
+                port: "",
+                pathname: "/**",
+            },
         ]
     }
 };
