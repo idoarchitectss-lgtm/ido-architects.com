@@ -8,7 +8,12 @@ interface ToastProviderProps {
 const ToastProvider = ({ children }: ToastProviderProps) => {
     return (
         <>
-            <Toaster className='z-50 bg-white text-black'/>
+            <Toaster
+                theme="light"
+                position="top-right"
+                richColors
+                className="z-50 bg-white text-black"
+            />
             {children}
         </>
     )

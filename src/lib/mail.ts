@@ -21,7 +21,8 @@ export const sendRequestFromContactForm = async (
     phone: string,
     name: string,
     message: string | undefined,
-    customerEmail: string
+    customerEmail: string,
+    serviceTitle?: string
 ) => {
     await resend.emails.send({
         from: "onboarding@resend.dev",
@@ -34,6 +35,7 @@ export const sendRequestFromContactForm = async (
                 <li><strong>Họ và tên:</strong> ${name}</li>
                 <li><strong>Số điện thoại:</strong> ${phone}</li>
                 <li><strong>Email:</strong> ${customerEmail}</li>
+                ${serviceTitle ? `<li><strong>Gói dịch vụ quan tâm:</strong> ${serviceTitle}</li>` : ""}
                 <li><strong>Nội dung yêu cầu:</strong> ${message || "(Không có)"}</li>
             </ul>
             <p>Vui lòng liên hệ lại với khách hàng sớm nhất!</p>

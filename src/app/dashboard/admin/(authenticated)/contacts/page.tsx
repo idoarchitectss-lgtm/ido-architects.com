@@ -155,6 +155,11 @@ function ContactsPageInner() {
                 <tr key={c.id} className="hover:bg-gray-50/60 transition-colors group">
                   <td className="px-5 py-3.5">
                     <p className="font-medium text-gray-900">{c.name}</p>
+                    {c.service && (
+                      <span className="inline-block mt-0.5 px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[11px] font-medium">
+                        {c.service.title}
+                      </span>
+                    )}
                     {c.message && (
                       <p className="text-gray-400 text-xs mt-0.5 truncate max-w-[240px]">{c.message}</p>
                     )}

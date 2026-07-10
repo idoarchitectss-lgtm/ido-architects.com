@@ -23,7 +23,7 @@ export async function resolveSlugToId(slug: string): Promise<string | null> {
 export async function findManyPosts(
   query: PostQuery
 ): Promise<{ posts: PostWithRelations[]; total: number }> {
-  const { type, page, size, showAll, isFeatured, isCompleted, search } = query;
+  const { type, page, size, showAll, isFeatured, isCompleted, search, categoryId } = query;
 
   const where: Prisma.PostWhereInput = {};
 
@@ -41,6 +41,13 @@ export async function findManyPosts(
       { title: { contains: search.trim(), mode: "insensitive" } },
       { slug: { contains: search.trim(), mode: "insensitive" } },
     ];
+  }
+
+  // Filter by category
+  if (categoryId) {
+    where.categories = {
+      some: { id: categoryId },
+    };
   }
 
   // JSON path filter cho projectMeta (chỉ có nghĩa với PROJECT_POST)

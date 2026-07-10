@@ -1,6 +1,6 @@
 'use client'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
 import * as z from 'zod'
@@ -10,22 +10,37 @@ import { FormError } from './FormError'
 import { FormSuccess } from './FormSuccess'
 import { Button } from '@/components/ui/button'
 import { ContactSchema } from '@/schemas'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { Contact, Contact2Icon, MailIcon, Quote } from 'lucide-react'
+
+interface ServiceOption {
+  id: string;
+  title: string;
+}
 
 interface ContactFromProps {
   btnColor?: string;
-  labelOfForm:string
+  labelOfForm: string
 }
 
-const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
+const ContactForm = ({ btnColor, labelOfForm }: ContactFromProps) => {
   const router = useRouter()
 
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
+  const [services, setServices] = useState<ServiceOption[]>([]);
+
+  useEffect(() => {
+    fetch('/api/services?size=100')
+      .then((r) => r.json())
+      .then((data) => setServices(data.services ?? []))
+      .catch(() => setServices([]));
+  }, []);
 
   const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
@@ -33,7 +48,8 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
       name: "",
       email: "",
       phone: "",
-      message: ""
+      message: "",
+      serviceId: undefined
     }
   })
 
@@ -70,15 +86,14 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
     })
   }
   return (
-    <div className='bg-neutral-100 relative w-full lg:w-10/12 h-[550px] p-5  flex flex-col justify-center '>
-      <div className='absolute top-5 left-5 flex flex-row justify-center items-center gap-2 border-[1px] border-neutral-300 shadow-xl py-2 mx-auto bg-neutral-800  text-white w-11/12 '>
-        <h2 className='text-center font-[500] text-2xl '>{labelOfForm}</h2>
-      </div>
-
+    <div className='bg-neutral-100 shadow-md rounded-md relative w-full h-fit p-5 flex flex-col justify-center '>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}
-        className=''
-        > 
+          className=''
+        >
+          <div className='flex flex-row justify-center items-center gap-2  py-2 mx-auto  w-11/12 '>
+            <h2 className='text-center text-3xl font-bold '>{labelOfForm}</h2>
+          </div>
           {/* họ và tên */}
           <FormField
             control={form.control}
@@ -88,7 +103,7 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-white border-none focus:ring-0 shadow-sm rounded-none text-neutral-500'
+                      className='w-full bg-white border-none focus:ring-0 rounded-none text-neutral-500'
                       type='text'
                       placeholder='Họ và tên'
                       {...field}
@@ -109,7 +124,7 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-white  border-none focus:ring-0 rounded-none shadow-xl text-neutral-500'
+                      className='w-full bg-white  border-none focus:ring-0 rounded-none  text-neutral-500'
                       type='text'
                       placeholder='Email'
                       {...field}
@@ -129,11 +144,36 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
                 <FormItem className='my-5'>
                   <FormControl className='h-[50px]'>
                     <Input
-                      className='w-full bg-white border-none focus:ring-0 rounded-none shadow-xl text-neutral-500'
+                      className='w-full bg-white border-none focus:ring-0 rounded-none  text-neutral-500'
                       type='text'
                       placeholder='Điện thoại'
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </>
+            )}
+          />
+
+          {/* Dropdown Service list */}
+          <FormField
+            control={form.control}
+            name='serviceId'
+            render={({ field }) => (
+              <>
+                <FormItem className='my-5'>
+                  <FormControl className='h-[50px]'>
+                    <Select value={field.value} onValueChange={field.onChange} disabled={services.length === 0}>
+                      <SelectTrigger className='w-full bg-white border-none focus:ring-0 rounded-none text-neutral-500 h-[50px]'>
+                        <SelectValue placeholder={services.length === 0 ? 'Hiện chưa có gói dịch vụ' : 'Gói dịch vụ quan tâm (không bắt buộc)'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {services.map((s) => (
+                          <SelectItem key={s.id} value={s.id}>{s.title}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,7 +191,7 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
                     <Textarea
                       {...field}
                       placeholder='Vui lòng để lại yêu cầu của bạn!'
-                      className='border-0 focus:ring-0 shadow-xl rounded-none bg-white text-neutral-500'
+                      className='border-0 focus:ring-0  rounded-none bg-white text-neutral-500'
                     />
 
                   </FormControl>
@@ -160,19 +200,17 @@ const ContactForm = ({ btnColor,labelOfForm }: ContactFromProps) => {
               </>
             )}
           />
-
           <div className='my-3'>
-
             {error ? <FormError message={error} /> : success ? <FormSuccess message={success} /> : null}
           </div>
-
           <Button
             disabled={isPending}
             type='submit'
             variant={'cta'}
-            className='w-full text-sm tracking-widest'
+            className='w-full font-bold text-lg tracking-widest py-7 flex flex-row items-center gap-2'
           >
-            <span>LIÊN HỆ TƯ VẤN</span>
+            <span>GỬI YÊU CẦU</span>
+            <MailIcon />
           </Button>
         </form>
       </Form>

@@ -8,6 +8,14 @@ import type {
 } from "../validations/contact-submission.schema";
 import type { ContactSubmission } from "@generated/prisma/client";
 
+export type ContactSubmissionWithService = ContactSubmission & {
+  service: { id: string; title: string } | null;
+};
+
+const SERVICE_INCLUDE = {
+  service: { select: { id: true, title: true } },
+} satisfies Prisma.ContactSubmissionInclude;
+
 // ─── Create ───────────────────────────────────────────────────────────────────
 export async function createContactSubmission(
   data: ContactSubmitInput
@@ -18,7 +26,7 @@ export async function createContactSubmission(
 // ─── Find many (admin) ────────────────────────────────────────────────────────
 export async function findManyContacts(
   query: ContactQuery
-): Promise<{ contacts: ContactSubmission[]; total: number }> {
+): Promise<{ contacts: ContactSubmissionWithService[]; total: number }> {
   const { page, size, search, status } = query;
 
   const where: Prisma.ContactSubmissionWhereInput = {};
@@ -38,6 +46,7 @@ export async function findManyContacts(
   const [contacts, total] = await Promise.all([
     prisma.contactSubmission.findMany({
       where,
+      include: SERVICE_INCLUDE,
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * size,
       take: size,
@@ -51,16 +60,23 @@ export async function findManyContacts(
 // ─── Find one ─────────────────────────────────────────────────────────────────
 export async function findContactById(
   id: string
-): Promise<ContactSubmission | null> {
-  return prisma.contactSubmission.findUnique({ where: { id } });
+): Promise<ContactSubmissionWithService | null> {
+  return prisma.contactSubmission.findUnique({
+    where: { id },
+    include: SERVICE_INCLUDE,
+  });
 }
 
 // ─── Update status + note ─────────────────────────────────────────────────────
 export async function updateContactSubmission(
   id: string,
   data: ContactUpdateInput
-): Promise<ContactSubmission> {
-  return prisma.contactSubmission.update({ where: { id }, data });
+): Promise<ContactSubmissionWithService> {
+  return prisma.contactSubmission.update({
+    where: { id },
+    data,
+    include: SERVICE_INCLUDE,
+  });
 }
 
 // ─── Delete ───────────────────────────────────────────────────────────────────

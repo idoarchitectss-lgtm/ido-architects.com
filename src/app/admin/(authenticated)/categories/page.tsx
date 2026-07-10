@@ -20,12 +20,15 @@ import CategoryForm, {
   type CategoryFormValues,
 } from "@/app/dashboard/admin/_components/CategoryForm";
 import { useAdminToast } from "@/app/dashboard/admin/_hooks/useAdminToast";
+import { PostType } from "@/features/posts/validations/post.schema";
 
 interface Category {
   id: string;
+  type: PostType;
   name: string;
   slug: string;
   description?: string | null;
+  image?: string | null;
   postCount: number;
   createdAt: string;
 }
@@ -173,6 +176,9 @@ export default function CategoriesPage() {
                     Tên
                   </th>
                   <th className="text-left px-4 py-3 font-medium text-gray-600">
+                    Loại
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium text-gray-600">
                     Slug
                   </th>
                   <th className="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">
@@ -193,6 +199,13 @@ export default function CategoriesPage() {
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-4 py-3 font-medium">{cat.name}</td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        variant={cat.type === PostType.BLOG_POST ? "secondary" : "outline"}
+                      >
+                        {cat.type === PostType.BLOG_POST ? "Blog" : "Dự án"}
+                      </Badge>
+                    </td>
                     <td className="px-4 py-3">
                       <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">
                         {cat.slug}
@@ -289,9 +302,11 @@ export default function CategoriesPage() {
           defaultValues={
             editTarget
               ? {
+                  type: editTarget.type,
                   name: editTarget.name,
                   slug: editTarget.slug,
                   description: editTarget.description ?? "",
+                  image: editTarget.image ?? "",
                 }
               : undefined
           }

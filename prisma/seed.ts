@@ -29,18 +29,18 @@ async function main() {
 
   // Tạo một số categories mẫu
   const categories = [
-    { name: "Biệt thự", slug: "biet-thu" },
-    { name: "Nhà phố", slug: "nha-pho" },
-    { name: "Căn hộ", slug: "can-ho" },
-    { name: "Văn phòng", slug: "van-phong" },
-    { name: "Kiến trúc nội thất", slug: "kien-truc-noi-that" },
-    { name: "Tin tức", slug: "tin-tuc" },
+    { name: "Biệt thự", slug: "biet-thu", type: "PROJECT_POST" as const },
+    { name: "Nhà phố", slug: "nha-pho", type: "PROJECT_POST" as const },
+    { name: "Căn hộ", slug: "can-ho", type: "PROJECT_POST" as const },
+    { name: "Văn phòng", slug: "van-phong", type: "PROJECT_POST" as const },
+    { name: "Kiến trúc nội thất", slug: "kien-truc-noi-that", type: "PROJECT_POST" as const },
+    { name: "Tin tức", slug: "tin-tuc", type: "BLOG_POST" as const },
   ];
 
   for (const cat of categories) {
     await prisma.category.upsert({
       where: { slug: cat.slug },
-      update: {},
+      update: { type: cat.type },
       create: cat,
     });
   }

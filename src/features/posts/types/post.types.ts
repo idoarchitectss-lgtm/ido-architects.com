@@ -7,6 +7,7 @@ export { PostType };
 export type ProjectMeta = {
   nameOfProject?: string;
   addressOfProperty?: string;
+  mapEmbedUrl?: string;
   completedYear?: string;
   floorDimension?: number;
   numberOfFloors?: number;

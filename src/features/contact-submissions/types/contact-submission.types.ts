@@ -8,6 +8,8 @@ export type ContactSubmissionResponse = {
   message: string | null;
   status: ContactStatus;
   note: string | null;
+  serviceId: string | null;
+  service: { id: string; title: string } | null;
   createdAt: string;
   updatedAt: string;
 };

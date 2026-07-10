@@ -1,10 +1,10 @@
-import type { ContactSubmission } from "@generated/prisma/client";
+import type { ContactSubmissionWithService } from "../services/contact-submission.data";
 import type {
   ContactSubmissionResponse,
   ContactListResponse,
 } from "../types/contact-submission.types";
 
-export function transformContact(c: ContactSubmission): ContactSubmissionResponse {
+export function transformContact(c: ContactSubmissionWithService): ContactSubmissionResponse {
   return {
     id: c.id,
     name: c.name,
@@ -13,13 +13,15 @@ export function transformContact(c: ContactSubmission): ContactSubmissionRespons
     message: c.message,
     status: c.status as ContactSubmissionResponse["status"],
     note: c.note,
+    serviceId: c.serviceId,
+    service: c.service,
     createdAt: c.createdAt.toISOString(),
     updatedAt: c.updatedAt.toISOString(),
   };
 }
 
 export function transformContactList(
-  contacts: ContactSubmission[],
+  contacts: ContactSubmissionWithService[],
   total: number
 ): ContactListResponse {
   return { contacts: contacts.map(transformContact), total };

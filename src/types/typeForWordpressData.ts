@@ -157,6 +157,7 @@ export type portfolios = {
             numberOfFloors: number;
             addressOfProperty: string;
             designedCompany:string;
+            mapEmbedUrl?: string;
         };
         isCompleted:boolean;
         isFeatured:boolean;

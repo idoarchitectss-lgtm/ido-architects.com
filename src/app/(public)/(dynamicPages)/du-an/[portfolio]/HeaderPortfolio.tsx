@@ -3,7 +3,7 @@
 import { portfolios } from '@/types/typeForWordpressData'
 import Image from 'next/image'
 import { Images, X, ChevronLeft, ChevronRight } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { DEFAULT_IMG } from '@/lib/constants'
 
 interface HeaderPortfolioProps {
@@ -37,6 +37,16 @@ const HeaderPortfolio: React.FC<HeaderPortfolioProps> = ({ portfolio }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
+  // Mobile swipeable carousel: theo dõi ảnh đang hiển thị để render counter
+  const [mobileIndex, setMobileIndex] = useState(0)
+  const mobileScrollRef = useRef<HTMLDivElement>(null)
+
+  const handleMobileScroll = () => {
+    const el = mobileScrollRef.current
+    if (!el) return
+    setMobileIndex(Math.round(el.scrollLeft / el.clientWidth))
+  }
+
   const openLightbox = (index: number) => {
     setLightboxIndex(index)
     setLightboxOpen(true)
@@ -57,81 +67,120 @@ const HeaderPortfolio: React.FC<HeaderPortfolioProps> = ({ portfolio }) => {
 
   return (
     <>
-      {/* ── Airbnb-style photo grid ─────────────────────────────────── */}
+      {/* ── Photo gallery ───────────────────────────────────────────── */}
       <div className="relative mb-6 rounded-xl overflow-hidden">
         {displayImages.length === 0 ? (
-          <div className="h-[420px] bg-neutral-200 rounded-xl" />
-        ) : displayImages.length === 1 ? (
-          <div
-            className="relative h-[420px] cursor-pointer"
-            onClick={() => openLightbox(0)}
-          >
-            <Image
-              src={displayImages[0]}
-              alt={portfolio.project.nameOfProject}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
-          </div>
+          <div className="h-[280px] md:h-[420px] bg-neutral-200 rounded-xl" />
         ) : (
-          /* 1 large left + 2×2 right */
-          <div className="grid grid-cols-2 gap-1.5 h-[420px]">
-            {/* Large featured image */}
-            <div
-              className="relative col-span-1 cursor-pointer overflow-hidden rounded-tl-xl rounded-bl-xl"
-              onClick={() => openLightbox(0)}
-            >
-              <Image
-                src={displayImages[0]}
-                alt={portfolio.project.nameOfProject}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
-                sizes="50vw"
-                priority
-              />
-            </div>
-
-            {/* 2×2 right grid */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-1.5">
-              {[1, 2, 3, 4].map((idx) => {
-                const src = displayImages[idx]
-                const isLast = idx === 4
-                const remaining = allImages.length - 4 // ảnh chưa hiển thị
-                const roundedClass =
-                  idx === 1 ? 'rounded-tr-xl' : idx === 4 ? 'rounded-br-xl' : ''
-
-                return src ? (
+          <>
+            {/* Mobile: swipeable carousel */}
+            <div className="md:hidden relative">
+              <div
+                ref={mobileScrollRef}
+                onScroll={handleMobileScroll}
+                className="flex overflow-x-auto snap-x snap-mandatory rounded-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              >
+                {allImages.map((src, idx) => (
                   <div
                     key={idx}
-                    className={`relative cursor-pointer overflow-hidden ${roundedClass}`}
+                    className="relative w-full flex-shrink-0 snap-center h-[280px] cursor-pointer"
                     onClick={() => openLightbox(idx)}
                   >
                     <Image
                       src={src}
                       alt={`${portfolio.project.nameOfProject} ${idx + 1}`}
                       fill
-                      className="object-cover hover:scale-105 transition-transform duration-500"
-                      sizes="25vw"
+                      className="object-cover"
+                      sizes="100vw"
+                      priority={idx === 0}
                     />
-                    {/* Overlay "+N ảnh" trên ô cuối nếu còn ảnh chưa hiển thị */}
-                    {isLast && remaining > 0 && (
-                      <div className="absolute inset-0 bg-black/55 flex flex-col items-center justify-center gap-1 hover:bg-black/65 transition-colors">
-                        <Images size={24} className="text-white/90" />
-                        <span className="text-white font-semibold text-lg leading-none">
-                          +{remaining}
-                        </span>
-                        <span className="text-white/70 text-xs">ảnh</span>
-                      </div>
-                    )}
                   </div>
-                ) : (
-                  <div key={idx} className={`bg-neutral-100 ${roundedClass}`} />
-                )
-              })}
+                ))}
+              </div>
+              {allImages.length > 1 && (
+                <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <Images size={13} />
+                  {mobileIndex + 1}/{allImages.length}
+                </div>
+              )}
             </div>
-          </div>
+
+            {/* Desktop: Airbnb-style photo grid */}
+            <div className="hidden md:block">
+              {displayImages.length === 1 ? (
+                <div
+                  className="relative h-[420px] cursor-pointer"
+                  onClick={() => openLightbox(0)}
+                >
+                  <Image
+                    src={displayImages[0]}
+                    alt={portfolio.project.nameOfProject}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                    priority
+                  />
+                </div>
+              ) : (
+                /* 1 large left + 2×2 right */
+                <div className="grid grid-cols-2 gap-1.5 h-[420px]">
+                  {/* Large featured image */}
+                  <div
+                    className="relative col-span-1 cursor-pointer overflow-hidden rounded-tl-xl rounded-bl-xl"
+                    onClick={() => openLightbox(0)}
+                  >
+                    <Image
+                      src={displayImages[0]}
+                      alt={portfolio.project.nameOfProject}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                      sizes="50vw"
+                      priority
+                    />
+                  </div>
+
+                  {/* 2×2 right grid */}
+                  <div className="grid grid-cols-2 grid-rows-2 gap-1.5">
+                    {[1, 2, 3, 4].map((idx) => {
+                      const src = displayImages[idx]
+                      const isLast = idx === 4
+                      const remaining = allImages.length - 4 // ảnh chưa hiển thị
+                      const roundedClass =
+                        idx === 1 ? 'rounded-tr-xl' : idx === 4 ? 'rounded-br-xl' : ''
+
+                      return src ? (
+                        <div
+                          key={idx}
+                          className={`relative cursor-pointer overflow-hidden ${roundedClass}`}
+                          onClick={() => openLightbox(idx)}
+                        >
+                          <Image
+                            src={src}
+                            alt={`${portfolio.project.nameOfProject} ${idx + 1}`}
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-500"
+                            sizes="25vw"
+                          />
+                          {/* Overlay "+N ảnh" trên ô cuối nếu còn ảnh chưa hiển thị */}
+                          {isLast && remaining > 0 && (
+                            <div className="absolute inset-0 bg-black/55 flex flex-col items-center justify-center gap-1 hover:bg-black/65 transition-colors">
+                              <Images size={24} className="text-white/90" />
+                              <span className="text-white font-semibold text-lg leading-none">
+                                +{remaining}
+                              </span>
+                              <span className="text-white/70 text-xs">ảnh</span>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div key={idx} className={`bg-neutral-100 ${roundedClass}`} />
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
 

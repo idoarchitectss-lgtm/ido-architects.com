@@ -4,6 +4,7 @@ import BodyPost from './BodyPost';
 import FooterPost from './FooterPost';
 import { getSingleBlogFromCMS, allBlogsFromCMS, allBlogSlugsFromCMS } from '@/data/datafromCMS';
 import { NodeProps, PostsProps } from '@/types/typeForWordpressData';
+import { processHeadings } from '@/components/custom/tiptap/heading-utils';
 import SideBarComponent from './SideBarComponent';
 import { Suspense } from 'react';
 import Loading from '@/app/loading';
@@ -54,6 +55,7 @@ export default async function SinglePostPage({ params }: { params: Promise<Param
         if (!post) notFound();
 
         const res: PostsProps = await allBlogsFromCMS(10, 1);
+        const { headings } = processHeadings(post.content ?? '');
 
         return (
             <main id='topPage' className='px-1'>
@@ -66,7 +68,7 @@ export default async function SinglePostPage({ params }: { params: Promise<Param
                                 <BodyPost post={post} />
                             </div>
                             <div className='relative col-span-1 hidden lg:block ml-5 w-full'>
-                                <SideBarComponent />
+                                <SideBarComponent headings={headings} />
                             </div>
                         </div>
                         <div>

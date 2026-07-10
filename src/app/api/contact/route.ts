@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ContactSchema } from "@/schemas";
 import { sendRequestFromContactForm } from "@/lib/mail";
 import { createContactSubmission } from "@/features/contact-submissions/services/contact-submission.data";
+import { findServiceById } from "@/features/company-services/services/service.data";
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,14 +17,16 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const { name, email, phone, message } = parsed.data;
+        const { name, email, phone, message, serviceId } = parsed.data;
+
+        const service = serviceId ? await findServiceById(serviceId) : null;
 
         // Lưu vào DB song song với gửi email
         await Promise.allSettled([
-            createContactSubmission({ name, email, phone, message }),
+            createContactSubmission({ name, email, phone, message, serviceId }),
             (async () => {
                 const adminEmail = process.env.ADMIN_EMAIL || "ido.architectss@gmail.com";
-                await sendRequestFromContactForm(adminEmail, phone, name, message, email);
+                await sendRequestFromContactForm(adminEmail, phone, name, message, email, service?.title);
             })(),
         ]);
 

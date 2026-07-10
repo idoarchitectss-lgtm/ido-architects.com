@@ -36,14 +36,28 @@ import MediaPicker from "@/app/dashboard/admin/_components/MediaPicker";
 import { MediaSelector } from "@/components/custom/media/media-selector";
 import { generateSlug } from "@/features/posts/helpers/post.helpers";
 import TiptapEditor from "@/components/custom/tiptap/tiptap-editor";
-import "@/components/custom/tiptap/tiptap-editor-styles.css";
+import { useAdminToast } from "@/app/dashboard/admin/_hooks/useAdminToast";
 import { z } from "zod";
+
+// Nhãn tiếng Việt cho các trường hay bị thiếu, dùng để tổng hợp thông báo lỗi
+const FIELD_LABELS: Record<string, string> = {
+  title: "Tiêu đề",
+  slug: "Slug",
+  content: "Nội dung",
+  featuredImage: "Ảnh đại diện",
+  "projectMeta.nameOfProject": "Tên dự án",
+  "projectMeta.mapEmbedUrl": "Map Embed URL",
+  "projectMeta.floorDimension": "Diện tích sàn",
+  "projectMeta.numberOfFloors": "Số tầng",
+  "projectMeta.propertyType": "Loại công trình",
+};
 
 type CreateData = z.infer<typeof PostCreateSchema>;
 type UpdateData = z.infer<typeof PostUpdateSchema>;
 
 interface CategoryOption {
   id: string;
+  type: PostType;
   name: string;
   slug: string;
 }
@@ -54,6 +68,7 @@ type Props =
 
 export default function PostForm({ mode, post }: Props) {
   const router = useRouter();
+  const adminToast = useAdminToast();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [allCategories, setAllCategories] = useState<CategoryOption[]>([]);
@@ -76,32 +91,32 @@ export default function PostForm({ mode, post }: Props) {
   const defaultValues =
     mode === "edit" && post
       ? {
-          type: post.type,
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt ?? "",
-          content: post.content,
-          featuredImage: post.featuredImage ?? "",
-          isPublished: post.isPublished,
-          publishedAt: post.publishedAt ?? null,
-          metaTitle: post.metaTitle ?? "",
-          metaDescription: post.metaDesc ?? "",
-          metaKeywords: post.metaKeywords ?? "",
-          categories: post.categories.map((c) => c.id),
-          tags: post.tags?.map((t) => t.id) ?? [],
-          projectMeta: post.projectMeta
-            ? {
-                ...post.projectMeta,
-                galleryImages: post.projectMeta.galleryImages ?? [],
-              }
-            : undefined,
-        }
+        type: post.type,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt ?? "",
+        content: post.content,
+        featuredImage: post.featuredImage ?? "",
+        isPublished: post.isPublished,
+        publishedAt: post.publishedAt ?? null,
+        metaTitle: post.metaTitle ?? "",
+        metaDescription: post.metaDesc ?? "",
+        metaKeywords: post.metaKeywords ?? "",
+        categories: post.categories.map((c) => c.id),
+        tags: post.tags?.map((t) => t.id) ?? [],
+        projectMeta: post.projectMeta
+          ? {
+            ...post.projectMeta,
+            galleryImages: post.projectMeta.galleryImages ?? [],
+          }
+          : undefined,
+      }
       : {
-          type: PostType.BLOG_POST,
-          isPublished: false,
-          categories: [] as string[],
-          tags: [] as string[],
-        };
+        type: PostType.BLOG_POST,
+        isPublished: false,
+        categories: [] as string[],
+        tags: [] as string[],
+      };
 
   const {
     register,
@@ -116,13 +131,28 @@ export default function PostForm({ mode, post }: Props) {
   });
 
   const postType = watch("type");
+  const categoriesForType = allCategories.filter((c) => c.type === postType);
 
   useEffect(() => {
     fetch("/api/categories")
       .then((r) => r.json())
       .then((data: CategoryOption[]) => setAllCategories(data))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
+
+  // Khi đổi loại bài viết ở chế độ tạo mới, bỏ chọn các chuyên mục không thuộc loại mới
+  useEffect(() => {
+    if (mode !== "create") return;
+    const selected = (watch("categories") as string[] | undefined) ?? [];
+    const validIds = new Set(
+      allCategories.filter((c) => c.type === postType).map((c) => c.id)
+    );
+    const next = selected.filter((id) => validIds.has(id));
+    if (next.length !== selected.length) {
+      setValue("categories", next);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postType, allCategories]);
 
   const onTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (mode === "create" && !watch("slug")) {
@@ -154,8 +184,29 @@ export default function PostForm({ mode, post }: Props) {
     router.refresh();
   };
 
+  const onInvalid = () => {
+    adminToast.error(
+      "Thiếu thông tin bắt buộc",
+      "Vui lòng điền đầy đủ các trường được đánh dấu đỏ bên dưới trước khi lưu."
+    );
+  };
+
+  // Gom các lỗi hiện có thành danh sách nhãn tiếng Việt để hiển thị tổng hợp
+  const errorEntries: [string, string | undefined][] = [
+    ["title", errors.title?.message],
+    ["slug", errors.slug?.message],
+    ["content", errors.content?.message],
+    ["featuredImage", errors.featuredImage?.message],
+    ["projectMeta.nameOfProject", errors.projectMeta?.nameOfProject?.message],
+    ["projectMeta.mapEmbedUrl", errors.projectMeta?.mapEmbedUrl?.message],
+    ["projectMeta.floorDimension", errors.projectMeta?.floorDimension?.message],
+    ["projectMeta.numberOfFloors", errors.projectMeta?.numberOfFloors?.message],
+    ["projectMeta.propertyType", errors.projectMeta?.propertyType?.message],
+  ];
+  const errorList = errorEntries.filter(([, message]) => !!message);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 max-w-3xl">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-5 max-w-3xl">
 
       {/* Card: Phân loại */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-4">
@@ -210,11 +261,11 @@ export default function PostForm({ mode, post }: Props) {
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg" align="start">
-                        {allCategories.length === 0 ? (
+                        {categoriesForType.length === 0 ? (
                           <div className="px-2 py-3 text-xs text-muted-foreground text-center">Chua co chuyên mục</div>
                         ) : (
                           <>
-                            {allCategories.map((cat) => (
+                            {categoriesForType.map((cat) => (
                               <DropdownMenuCheckboxItem
                                 key={cat.id}
                                 checked={selected.includes(cat.id)}
@@ -338,8 +389,8 @@ export default function PostForm({ mode, post }: Props) {
         initialMode={tiptapMediaMode}
         hint={
           compareStep === "before" ? "Chọn ảnh TRƯỚC (bước 1/2)" :
-          compareStep === "after"  ? "Chọn ảnh SAU (bước 2/2)" :
-          undefined
+            compareStep === "after" ? "Chọn ảnh SAU (bước 2/2)" :
+              undefined
         }
         onClose={() => {
           // Skip cleanup when transitioning between compare steps (step1→step2)
@@ -402,12 +453,27 @@ export default function PostForm({ mode, post }: Props) {
           <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Thông tin dự án</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Tên dự án</Label>
+              <Label>Tên dự án *</Label>
               <Input {...register("projectMeta.nameOfProject")} placeholder="Biệt thự Vinhomes..." />
+              {errors.projectMeta?.nameOfProject && (
+                <p className="text-xs text-red-500 mt-1">{errors.projectMeta.nameOfProject.message}</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label>Địa chỉ</Label>
               <Input {...register("projectMeta.addressOfProperty")} placeholder="Hà Nội" />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Map Embed URL *</Label>
+              <Input
+                {...register("projectMeta.mapEmbedUrl")}
+                placeholder="https://www.google.com/maps/embed?pb=..."
+                type="url"
+              />
+              <p className="text-xs text-gray-400 mt-1">URL nhúng từ Google Maps embed code</p>
+              {errors.projectMeta?.mapEmbedUrl && (
+                <p className="text-xs text-red-500 mt-1">{errors.projectMeta.mapEmbedUrl.message}</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label>Năm hoàn thành</Label>
@@ -416,10 +482,16 @@ export default function PostForm({ mode, post }: Props) {
             <div className="space-y-1.5">
               <Label>Diện tích sàn (m²)</Label>
               <Input type="number" {...register("projectMeta.floorDimension", { valueAsNumber: true })} />
+              {errors.projectMeta?.floorDimension && (
+                <p className="text-xs text-red-500 mt-1">{errors.projectMeta.floorDimension.message}</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label>Số tầng</Label>
               <Input type="number" {...register("projectMeta.numberOfFloors", { valueAsNumber: true })} />
+              {errors.projectMeta?.numberOfFloors && (
+                <p className="text-xs text-red-500 mt-1">{errors.projectMeta.numberOfFloors.message}</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label>Loại công trình</Label>
@@ -559,6 +631,22 @@ export default function PostForm({ mode, post }: Props) {
       {error && (
         <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3">
           <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
+
+      {errorList.length > 0 && (
+        <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 space-y-1.5">
+          <p className="text-sm font-medium text-red-700">
+            Vui lòng kiểm tra lại các trường sau trước khi lưu:
+          </p>
+          <ul className="text-xs text-red-600 list-disc list-inside space-y-0.5">
+            {errorList.map(([field, message]) => (
+              <li key={field}>
+                <span className="font-medium">{FIELD_LABELS[field] ?? field}</span>
+                {message ? `: ${message}` : ""}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

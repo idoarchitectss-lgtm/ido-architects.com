@@ -19,13 +19,25 @@ export const PROPERTY_TYPES = [
 
 export type PropertyTypeValue = (typeof PROPERTY_TYPES)[number]["value"];
 
+// Chuyển "" và NaN (input số bị bỏ trống) thành undefined trước khi validate,
+// để field optional thật sự được bỏ qua thay vì rớt validate âm thầm.
+const emptyToUndefined = (val: unknown) => {
+  if (val === "" || val === null) return undefined;
+  if (typeof val === "number" && Number.isNaN(val)) return undefined;
+  return val;
+};
+
 export const ProjectMetaSchema = z.object({
   nameOfProject: z.string().optional(),
   addressOfProperty: z.string().optional(),
+  mapEmbedUrl: z.preprocess(emptyToUndefined, z.string().url("Map URL không hợp lệ").optional()),
   completedYear: z.string().optional(),
-  floorDimension: z.coerce.number().positive().optional(),
-  numberOfFloors: z.coerce.number().int().positive().optional(),
-  propertyType: z.enum(PROPERTY_TYPES.map((t) => t.value) as [string, ...string[]]).optional(),
+  floorDimension: z.preprocess(emptyToUndefined, z.coerce.number().positive().optional()),
+  numberOfFloors: z.preprocess(emptyToUndefined, z.coerce.number().int().positive().optional()),
+  propertyType: z.preprocess(
+    emptyToUndefined,
+    z.enum(PROPERTY_TYPES.map((t) => t.value) as [string, ...string[]]).optional()
+  ),
   designedCompany: z.string().optional(),
   isCompleted: z.boolean().default(false),
   isFeatured: z.boolean().default(false),
@@ -56,6 +68,12 @@ const PostBaseObject = z.object({
 export const PostCreateSchema = PostBaseObject.refine(
   (data) => data.type !== PostType.PROJECT_POST || (!!data.featuredImage && data.featuredImage.length > 0),
   { message: "Bài viết dự án cần có ảnh đại diện", path: ["featuredImage"] }
+).refine(
+  (data) => data.type !== PostType.PROJECT_POST || !!data.projectMeta?.nameOfProject?.trim(),
+  { message: "Vui lòng nhập tên dự án", path: ["projectMeta", "nameOfProject"] }
+).refine(
+  (data) => data.type !== PostType.PROJECT_POST || !!data.projectMeta?.mapEmbedUrl?.trim(),
+  { message: "Vui lòng nhập Map Embed URL", path: ["projectMeta", "mapEmbedUrl"] }
 );
 
 // ─── Update schema (tất cả optional trừ title, slug, type) ───────────────────
@@ -64,6 +82,14 @@ export const PostUpdateSchema = PostBaseObject.partial()
   .refine(
     (data) => data.type !== PostType.PROJECT_POST || !data.featuredImage || data.featuredImage.length > 0,
     { message: "Bài viết dự án cần có ảnh đại diện", path: ["featuredImage"] }
+  )
+  .refine(
+    (data) => data.type !== PostType.PROJECT_POST || !!data.projectMeta?.nameOfProject?.trim(),
+    { message: "Vui lòng nhập tên dự án", path: ["projectMeta", "nameOfProject"] }
+  )
+  .refine(
+    (data) => data.type !== PostType.PROJECT_POST || !!data.projectMeta?.mapEmbedUrl?.trim(),
+    { message: "Vui lòng nhập Map Embed URL", path: ["projectMeta", "mapEmbedUrl"] }
   );
 
 // ─── Query params schema ──────────────────────────────────────────────────────
@@ -75,6 +101,7 @@ export const PostQuerySchema = z.object({
   isFeatured: z.string().transform((v) => v === "true").optional(),
   isCompleted: z.string().transform((v) => v === "true").optional(),
   search: z.string().max(200).optional(),
+  categoryId: z.string().optional(),
 });
 
 // ─── Inferred types ───────────────────────────────────────────────────────────

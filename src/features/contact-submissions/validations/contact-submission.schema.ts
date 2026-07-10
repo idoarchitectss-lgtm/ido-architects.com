@@ -11,6 +11,7 @@ export const ContactSubmitSchema = z.object({
       "Số điện thoại không hợp lệ (VD: 0901234567)"
     ),
   message: z.string().max(2000).optional(),
+  serviceId: z.string().optional().nullable(),
 });
 
 // ─── Admin query ─────────────────────────────────────────────────────────────

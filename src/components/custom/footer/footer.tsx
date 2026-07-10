@@ -7,7 +7,7 @@ import Container from '@/components/custom/container'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Building2, ChevronRight, Facebook, Instagram, Linkedin, LocateIcon, Mail, Map, Phone, PlayCircle, Youtube } from 'lucide-react'
+import { Building2, ChevronRight, Facebook, HouseIcon, Instagram, Linkedin, LocateIcon, Mail, Map, Phone, PlayCircle, Space, Youtube } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import FacebookPageEmbed from '../embed/FacebookPageEmbed'
 
@@ -43,7 +43,12 @@ const footerItem = [
 const infoItems = [
   {
     icon: <Building2 />,
-    text: "Tầng 6 ,Danabook , 78 Bạch Đằng, Đà Nẵng",
+    text: "Văn phòng: 12 Phạm Phú Thứ, Phường Hải Châu, TP Đà Nẵng.",
+    href: "https://maps.app.goo.gl/muDjEQtkFAPLLBct7",
+  },
+   {
+    icon: <HouseIcon />,
+    text: "Nơi làm việc : 04 An Đồn, Phường An Hải, TP Đà Nẵng",
     href: "https://maps.app.goo.gl/muDjEQtkFAPLLBct7",
   },
   {

@@ -15,7 +15,8 @@ export const ContactSchema = z.object({
     phone: z.string().regex(/^(\+84|84|0)(3[2-9]|5[2689]|7[06-9]|8[0-689]|9[0-9])\d{7}$/, {
         message: "Số điện thoại không hợp lệ (VD: 0901234567 hoặc +84901234567)"
     }),
-    message:z.string().optional()
+    message:z.string().optional(),
+    serviceId: z.string().optional()
 })
 
 

@@ -63,6 +63,7 @@ function toPortfolioShape(post: PostResponse): portfolios {
         propertyType: meta.propertyType ?? "Công trình",
         addressOfProperty: meta.addressOfProperty ?? "",
         designedCompany: meta.designedCompany ?? "IDO Architects",
+        mapEmbedUrl: meta.mapEmbedUrl,
       },
       isCompleted: meta.isCompleted ?? false,
       isFeatured: meta.isFeatured ?? false,
@@ -196,13 +197,17 @@ async function fetchBlogs(params: Record<string, string> = {}): Promise<PostResp
 /** Fetch helper cho BLOG_POST */
 export async function allBlogsFromCMS(
   size = 10,
-  page = 1
+  page = 1,
+  categoryId?: string
 ): Promise<PostsProps> {
   const qs = new URLSearchParams({
     type: "BLOG_POST",
     size: String(size),
     page: String(page),
   });
+  if (categoryId) {
+    qs.append("categoryId", categoryId);
+  }
   const res = await fetch(`${getBaseUrl()}/api/posts?${qs}`, {
     next: { tags: ["blogs"], revalidate: 120 },
   });
@@ -240,6 +245,26 @@ export async function getSingleBlogFromCMS(slug: string): Promise<NodeProps | nu
 export async function allBlogSlugsFromCMS(): Promise<string[]> {
   const posts = await fetchBlogs();
   return posts.map((p) => p.slug);
+}
+
+// ─── Blog categories (Category model, type = BLOG_POST) ──────────────────────
+
+export type BlogCategoryItem = {
+  id: string;
+  name: string;
+  slug: string;
+  image: string | null;
+};
+
+/** GET /api/categories?type=BLOG_POST → danh mục dùng cho trang blog */
+export async function allBlogCategoriesFromCMS(): Promise<BlogCategoryItem[]> {
+  const res = await fetch(`${getBaseUrl()}/api/categories?type=BLOG_POST`, {
+    next: { tags: ["categories"], revalidate: 120 },
+  });
+  if (!res.ok) return [];
+  const data: Array<{ id: string; name: string; slug: string; image: string | null }> =
+    await res.json();
+  return data.map((c) => ({ id: c.id, name: c.name, slug: c.slug, image: c.image }));
 }
 
 // ─── Company Services ─────────────────────────────────────────────────────────

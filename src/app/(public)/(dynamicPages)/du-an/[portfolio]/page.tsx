@@ -1,6 +1,7 @@
 import Loading from "@/app/loading";
 import BreadcrumbComponent from "@/components/custom/breadcrumb/BreadcrumbComponent";
 import Container from "@/components/custom/container";
+import { processHeadings } from "@/components/custom/tiptap/heading-utils";
 import { portfolios } from "@/types/typeForWordpressData";
 import { Suspense } from "react";
 import SideBarComponent from "../../blog/[post]/SideBarComponent";
@@ -61,6 +62,7 @@ export default async function DetailPortfolioPage({ params }: { params: Promise<
     const portfolio: portfolios | undefined = res?.portfolio;
 
     const { portfoliosArray } = await allProjectsFromCMS();
+    const { headings } = portfolio ? processHeadings(portfolio.content ?? '') : { headings: [] };
 
     return (
         <main>
@@ -75,7 +77,7 @@ export default async function DetailPortfolioPage({ params }: { params: Promise<
                                 <FooterPortfolio portfolioArr={portfoliosArray} />
                             </div>
                             <div className="relative col-span-1 hidden lg:block ml-5 w-full">
-                                <SideBarComponent />
+                                <SideBarComponent headings={headings} />
                             </div>
                         </div>
                     ) : (

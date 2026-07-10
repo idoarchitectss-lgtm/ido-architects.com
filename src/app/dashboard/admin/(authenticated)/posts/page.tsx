@@ -111,7 +111,7 @@ function PostsPageInner() {
                     </span>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium border ${ post.isPublished ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                    <span className={`whitespace-nowrap inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium border ${ post.isPublished ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${post.isPublished ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                       {post.isPublished ? 'Đã đăng' : 'Nháp'}
                     </span>

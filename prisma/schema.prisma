@@ -162,12 +162,16 @@ model Post {
 
 model Category {
   id          String   @id @default(cuid())
+  type        PostType @default(BLOG_POST)
   name        String   @unique
   slug        String   @unique
   description String?
+  image       String?
   createdAt   DateTime @default(now())
 
   posts Post[]
+
+  @@index([type])
 }
 
 model Tag {
@@ -214,6 +218,8 @@ model ContactSubmission {
   message   String?
   status    ContactStatus @default(NEW)
   note      String?       // Admin internal note
+  serviceId String?
+  service   Service?      @relation(fields: [serviceId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -221,6 +227,7 @@ model ContactSubmission {
   @@index([status, createdAt(sort: Desc)])
   @@index([email])
   @@index([createdAt(sort: Desc)])
+  @@index([serviceId])
 }
 
 model Service {
@@ -237,6 +244,8 @@ model Service {
   metaDesc      String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  contactSubmissions ContactSubmission[]
 
   @@index([isPublished, sortOrder])
   @@index([slug])

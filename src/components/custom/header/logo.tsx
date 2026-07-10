@@ -14,7 +14,7 @@ const Logo = ({logo,className}:LogoProps) => {
     className={`${className} text-xl font-semibold`}>
       {/* <span className='text-secondary font-bold text-2xl'>IDO</span> Architects */}
       <Image 
-      src={logo}
+      src={"/logo.jpg"}
       alt='IDO-Architects'
       width={300}
       height={300}

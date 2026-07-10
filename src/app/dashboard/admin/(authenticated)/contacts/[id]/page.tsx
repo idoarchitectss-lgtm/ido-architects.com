@@ -113,6 +113,12 @@ export default function ContactDetailPage() {
             <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Số điện thoại</p>
             <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline">{contact.phone}</a>
           </div>
+          {contact.service && (
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Gói dịch vụ quan tâm</p>
+              <p className="text-sm text-gray-700">{contact.service.title}</p>
+            </div>
+          )}
         </div>
 
         {contact.message && (

@@ -72,13 +72,13 @@ const Feelback = () => {
                          loop:true,
                      }}
                     >
-                        <CarouselContent className="px-4 pl-2 mx-auto">
+                        <CarouselContent className="p-4 pl-2 mx-auto">
                             {feelbacksArray?.map((item, index) => (
                                 <CarouselItem
                                     key={index}
-                                    className="basis-full md:basis-1/2  xl:basis-1/4 mr-5 "
+                                    className="basis-full md:basis-1/2  xl:basis-1/3 mr-5"
                                 >
-                                    <div className="flex flex-col justify-start gap-5 bg-neutral-100 h-[320px] py-10 px-10 cursor-move">
+                                    <div className="flex flex-col justify-start gap-5 bg-neutral-100 h-[320px] py-10 px-10 cursor-move rounded-md">
                                         <div className="border-l-[2px] border-secondary/80 px-5 ">
                                             <p className="text-neutral-500 text-lg leading-8">{item.commentOfAuthor}</p>
                                         </div>
@@ -107,11 +107,10 @@ const Feelback = () => {
                         onClick={() => gotoIndexedItem(index)}
                         className={
                             `
-                            w-3 h-3 rounded-full duration-500
+                            w-6 h-[2px] duration-500
                             ${index === currentIndex ? "bg-secondary h-[7px] w-[70px] rounded-xl " : "bg-black/30"}
                             `}
                         key={index}>
-
                     </button>
 
                 ))}

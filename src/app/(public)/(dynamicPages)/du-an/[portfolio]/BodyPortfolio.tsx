@@ -1,4 +1,4 @@
-import TableOfContent from '@/components/custom/TableOfContent'
+import { processHeadings } from '@/components/custom/tiptap/heading-utils'
 import { NodeProps, portfolios } from '@/types/typeForWordpressData'
 import React from 'react'
 import PortfolioInfo from './PortfolioInfo'
@@ -11,16 +11,14 @@ interface BodyPostProps {
 const BodyPortfolio: React.FC<BodyPostProps> = ({
     portfolio
 }) => {
+    const { html: content } = processHeadings(portfolio?.content ?? '')
 
     return (
         <div className='px-1'>
-            <PortfolioInfo 
-            project={portfolio?.project}
+            <PortfolioInfo
+            portfolio={portfolio}
             />
-            <div className='bg-secondary/10 rounded-md py-4 px-3 my-5 italic'>
-                <div dangerouslySetInnerHTML={{ __html: portfolio?.excerpt }}></div>
-            </div>
-            <TiptapContent html={portfolio?.content} />
+            <TiptapContent html={content} />
         </div>
     )
 }

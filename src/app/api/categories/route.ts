@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { PostType } from "@/features/posts/validations/post.schema";
 import {
   CategoryCreateSchema,
 } from "@/features/categories/validations/category.schema";
@@ -10,13 +11,21 @@ import {
 } from "@/features/categories/services/category.service";
 
 // GET /api/categories — public
-export async function GET() {
-  const raw = await findAllCategories();
+export async function GET(req: NextRequest) {
+  const typeParam = req.nextUrl.searchParams.get("type");
+  const type =
+    typeParam && (Object.values(PostType) as string[]).includes(typeParam)
+      ? (typeParam as PostType)
+      : undefined;
+
+  const raw = await findAllCategories(type);
   const categories = raw.map((c) => ({
     id: c.id,
+    type: c.type,
     name: c.name,
     slug: c.slug,
     description: c.description,
+    image: c.image,
     postCount: c._count.posts,
     createdAt: c.createdAt,
   }));

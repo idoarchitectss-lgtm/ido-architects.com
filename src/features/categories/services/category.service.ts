@@ -1,16 +1,20 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
+import type { PostType } from "@/features/posts/validations/post.schema";
 import type { CategoryCreateInput, CategoryUpdateInput } from "../validations/category.schema";
 
 // ─── List all ─────────────────────────────────────────────────────────────────
-export async function findAllCategories() {
+export async function findAllCategories(type?: PostType) {
   return prisma.category.findMany({
+    where: type ? { type } : undefined,
     orderBy: { name: "asc" },
     select: {
       id: true,
+      type: true,
       name: true,
       slug: true,
       description: true,
+      image: true,
       createdAt: true,
       _count: { select: { posts: true } },
     },
