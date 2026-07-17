@@ -85,7 +85,7 @@ const Navbar = () => {
           <HoverCard key={index} openDelay={200} closeDelay={200}>
             <HoverCardTrigger  
             href={item.slug}
-            className={`font-[400] text-md hover:text-secondary duration-300 flex flex-row items-center justify-center py-2
+            className={`font-bold text-lg hover:text-secondary duration-300 flex flex-row items-center justify-center py-2
               ${selectedItem === item.slug ? 'border-white border-b-2 text-secondary font-bold': ''}
             `}>
               <p

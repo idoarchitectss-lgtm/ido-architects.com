@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ logo, posts }) => {
           <div className='flex-auto w-full flex flex-row justify-end
            items-center gap-2 '>
             <Navbar />
-            <SearchComponent className={`mx-2 `} posts={newPosts} />
+            {/* <SearchComponent className={`mx-2 `} posts={newPosts} /> */}
             {/* <Switchbtn /> */}
             <div className='flex flex-row items-center gap-4 border-l-[1px] pl-10 '>
               <HambugerMenu />
