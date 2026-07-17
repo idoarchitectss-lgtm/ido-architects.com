@@ -16,7 +16,7 @@ const BackgroundForBreadcrumb:React.FC<BackgroundForBreadcrumbProps> = ({
   return (
     <div className='relative h-[35vh] md:h-[55vh]'
     style={{ 
-      backgroundImage: "url(https://wzbnvt5mhbyjribc.public.blob.vercel-storage.com/media/1779849796404-Untitled-13-1.jpg)", 
+      backgroundImage: "url(/image/2027/hero-2.jpg)",
       backgroundRepeat: "no-repeat", backgroundSize: "cover", 
       backgroundPosition: "center"
      }}

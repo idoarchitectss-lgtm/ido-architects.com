@@ -33,7 +33,12 @@ const ContactComponent = () => {
             </div>
             <div className=' flex flex-col justify-start gap-2'>
               <h3 className=' font-bold text-xl'>Địa chỉ</h3>
-              <p className='text-neutral-500 text-base'>Tầng 6 ,Danabook , 78 Bạch Đằng, Đà Nẵng</p>
+              <p className='text-neutral-500 text-base'>
+               Văn phòng: 12 Phạm Phú Thứ, Phường Hải Châu, TP Đà Nẵng.
+              </p>
+              <p className='text-neutral-500 text-base'>
+                Nơi làm việc : 04 An Đồn, Phường An Hải, TP Đà Nẵng
+              </p>
             </div>
           </div>
 

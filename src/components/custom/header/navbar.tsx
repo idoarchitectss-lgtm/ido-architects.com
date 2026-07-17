@@ -61,10 +61,10 @@ export const ItemMenu = [
     name: "Tuyển dụng",
     slug: '/tuyen-dung'
   },
-  // {
-  //   name: "Liên hệ",
-  //   slug: "/lien-he"
-  // },
+  {
+    name: "Liên hệ",
+    slug: "/lien-he"
+  },
 ]
 
 

@@ -9,13 +9,13 @@ import BreadcrumbComponent from '@/components/custom/breadcrumb/BreadcrumbCompon
 const ContactPage = () => {
   return (
     <main>
-      <BackgroundForBreadcrumb 
-      titleForPage='Liên hệ'
+      <BackgroundForBreadcrumb
+        titleForPage='Liên hệ'
       />
       <Container>
         <BreadcrumbComponent />
         <ContactComponent />
-      <MapOfCompany />
+        <MapOfCompany />
       </Container>
     </main>
   )
