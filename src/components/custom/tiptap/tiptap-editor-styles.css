@@ -9,14 +9,6 @@
   color: #111827;
 }
 
-.tiptap-editor-content .ProseMirror p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  color: #9ca3af;
-  pointer-events: none;
-  float: left;
-  height: 0;
-}
-
 /* Headings */
 .tiptap-editor-content .ProseMirror h1 {
   font-size: 1.875rem;

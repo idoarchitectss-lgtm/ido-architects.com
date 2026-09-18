@@ -8,7 +8,36 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { useEffect, useState, useCallback, useRef } from "react";
+import {
+  Bold,
+  Italic,
+  Underline as UnderlineIcon,
+  Strikethrough,
+  Code,
+  Type,
+  Heading1,
+  Heading2,
+  Heading3,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  List,
+  ListOrdered,
+  Quote,
+  Link as LinkIcon,
+  Link2Off,
+  Image as ImageIcon,
+  RemoveFormatting,
+  Undo,
+  Redo,
+  Expand,
+  Minimize,
+  LayoutGrid,
+  Split,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import ImageCompareSlider from "./ImageCompareSlider";
 
 // ─── ImageGrid custom TipTap node ────────────────────────────────────────────
@@ -90,7 +119,7 @@ const ImageCompareExtension = Node.create({
 });
 
 // ─── Toolbar button ───────────────────────────────────────────────────────────
-function ToolbarBtn({
+function ToolbarButton({
   onClick,
   active,
   title,
@@ -102,17 +131,16 @@ function ToolbarBtn({
   children: React.ReactNode;
 }) {
   return (
-    <button
+    <Button
       type="button"
-      title={title}
+      size="icon"
+      variant={active ? "default" : "ghost"}
       onClick={onClick}
-      className={cn(
-        "px-2 py-1 rounded text-sm font-medium transition-colors hover:bg-gray-200",
-        active ? "bg-gray-900 text-white hover:bg-gray-800" : "text-gray-700"
-      )}
+      title={title}
+      className="h-8 w-8"
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -158,6 +186,7 @@ export default function TiptapEditor({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [showLinkInput, setShowLinkInput] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   // Keep a ref to the latest editor so callbacks always get fresh instance
   const editorRef = useRef<ReturnType<typeof useEditor>>(null);
 
@@ -166,7 +195,10 @@ export default function TiptapEditor({
     extensions: [
       StarterKit,
       Underline,
-      Link.configure({ openOnClick: false, HTMLAttributes: { class: "text-blue-600 underline" } }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: { class: "text-primary underline underline-offset-2 hover:text-primary/80" },
+      }),
       Image.configure({ HTMLAttributes: { class: "max-w-full h-auto rounded-lg" } }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       ImageGridExtension,
@@ -176,11 +208,14 @@ export default function TiptapEditor({
     editorProps: {
       attributes: {
         class: "focus:outline-none",
-        "data-placeholder": placeholder,
       },
+    },
+    onCreate({ editor }) {
+      setIsEmpty(editor.isEmpty);
     },
     onUpdate({ editor }) {
       onChange?.(editor.getHTML());
+      setIsEmpty(editor.isEmpty);
     },
   });
 
@@ -189,10 +224,11 @@ export default function TiptapEditor({
     editorRef.current = editor;
   }, [editor]);
 
-  // Sync khi content prop thay đổi từ bên ngoài
+  // Sync khi content prop thay đổi từ bên ngoài (emitUpdate: false để tránh vòng lặp update)
   useEffect(() => {
     if (editor && content !== undefined && editor.getHTML() !== content) {
-      editor.commands.setContent(content);
+      editor.commands.setContent(content, { emitUpdate: false });
+      setIsEmpty(editor.isEmpty);
     }
   }, [editor, content]);
 
@@ -213,7 +249,7 @@ export default function TiptapEditor({
 
   const insertLink = useCallback(() => {
     if (!linkUrl) return;
-    editor?.chain().focus().setLink({ href: linkUrl }).run();
+    editor?.chain().focus().extendMarkRange("link").setLink({ href: linkUrl }).run();
     setLinkUrl("");
     setShowLinkInput(false);
   }, [editor, linkUrl]);
@@ -273,121 +309,129 @@ export default function TiptapEditor({
   const toolbar = (
     <div className="flex flex-wrap items-center gap-0.5 p-2 border-b bg-gray-50">
       {/* Định dạng văn bản */}
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold (Ctrl+B)">
-        <b>B</b>
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)">
-        <i>I</i>
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)">
-        <u>U</u>
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive("strike")} title="Strikethrough">
-        <s>S</s>
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleCode().run()} active={editor.isActive("code")} title="Inline code">
-        {"<>"}
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold (Ctrl+B)">
+        <Bold className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)">
+        <Italic className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)">
+        <UnderlineIcon className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive("strike")} title="Strikethrough">
+        <Strikethrough className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} active={editor.isActive("code")} title="Inline code">
+        <Code className="h-4 w-4" />
+      </ToolbarButton>
 
       <Divider />
 
       {/* Heading */}
-      <ToolbarBtn onClick={() => editor.chain().focus().setParagraph().run()} active={editor.isActive("paragraph")} title="Paragraph">
-        ¶
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Heading 1">
-        H1
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Heading 2">
-        H2
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })} title="Heading 3">
-        H3
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => editor.chain().focus().setParagraph().run()} active={editor.isActive("paragraph")} title="Paragraph">
+        <Type className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Heading 1">
+        <Heading1 className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Heading 2">
+        <Heading2 className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })} title="Heading 3">
+        <Heading3 className="h-4 w-4" />
+      </ToolbarButton>
 
       <Divider />
 
       {/* Căn chỉnh */}
-      <ToolbarBtn onClick={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} title="Căn trái">
-        ⬛
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} title="Căn giữa">
-        ☰
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} title="Căn phải">
-        ≡
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} title="Căn trái">
+        <AlignLeft className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} title="Căn giữa">
+        <AlignCenter className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} title="Căn phải">
+        <AlignRight className="h-4 w-4" />
+      </ToolbarButton>
 
       <Divider />
 
       {/* Lists */}
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} title="Danh sách">
-        •—
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} title="Danh sách đánh số">
-        1.
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive("blockquote")} title="Blockquote">
-        "
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={editor.isActive("codeBlock")} title="Code block">
-        {"{}"}
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} title="Danh sách">
+        <List className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} title="Danh sách đánh số">
+        <ListOrdered className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive("blockquote")} title="Blockquote">
+        <Quote className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={editor.isActive("codeBlock")} title="Code block">
+        <Code className="h-4 w-4" />
+      </ToolbarButton>
 
       <Divider />
 
       {/* Link */}
-      <ToolbarBtn onClick={() => setShowLinkInput((v) => !v)} active={editor.isActive("link")} title="Chèn link">
-        🔗
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => setShowLinkInput((v) => !v)} active={editor.isActive("link")} title="Chèn link">
+        <LinkIcon className="h-4 w-4" />
+      </ToolbarButton>
       {editor.isActive("link") && (
-        <ToolbarBtn onClick={() => editor.chain().focus().unsetLink().run()} title="Xóa link">
-          🔗✕
-        </ToolbarBtn>
+        <ToolbarButton onClick={() => editor.chain().focus().unsetLink().run()} title="Xóa link">
+          <Link2Off className="h-4 w-4" />
+        </ToolbarButton>
       )}
 
       {/* Image */}
-      <ToolbarBtn onClick={insertImageUrl} title={onOpenMediaPicker ? "Chèn ảnh từ thư viện" : "Chèn ảnh (URL)"}>
-        🖼
-      </ToolbarBtn>
+      <ToolbarButton onClick={insertImageUrl} title={onOpenMediaPicker ? "Chèn ảnh từ thư viện" : "Chèn ảnh (URL)"}>
+        <ImageIcon className="h-4 w-4" />
+      </ToolbarButton>
       {onOpenMediaPickerLayout && (
-        <ToolbarBtn onClick={insertImageLayout} title="Chèn nhiều ảnh / layout lưới">
-          ⊞🖼
-        </ToolbarBtn>
+        <ToolbarButton onClick={insertImageLayout} title="Chèn nhiều ảnh / layout lưới">
+          <LayoutGrid className="h-4 w-4" />
+        </ToolbarButton>
       )}
       {onOpenMediaPickerCompare && (
-        <ToolbarBtn onClick={insertImageCompare} title="Chèn ảnh so sánh Trước / Sau">
-          ◧🖼
-        </ToolbarBtn>
+        <ToolbarButton onClick={insertImageCompare} title="Chèn ảnh so sánh Trước / Sau">
+          <Split className="h-4 w-4" />
+        </ToolbarButton>
       )}
 
       <Divider />
 
-      {/* Undo / Redo */}
-      <ToolbarBtn onClick={() => editor.chain().focus().undo().run()} title="Undo (Ctrl+Z)">
-        ↩
-      </ToolbarBtn>
-      <ToolbarBtn onClick={() => editor.chain().focus().redo().run()} title="Redo (Ctrl+Y)">
-        ↪
-      </ToolbarBtn>
+      {/* Utility */}
+      <ToolbarButton onClick={() => editor.chain().focus().clearNodes().unsetAllMarks().run()} title="Xóa định dạng">
+        <RemoveFormatting className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo (Ctrl+Z)">
+        <Undo className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Redo (Ctrl+Y)">
+        <Redo className="h-4 w-4" />
+      </ToolbarButton>
 
       <Divider />
 
       {/* Fullscreen */}
-      <ToolbarBtn onClick={() => setIsFullscreen((v) => !v)} title={isFullscreen ? "Thu nhỏ (ESC)" : "Toàn màn hình"}>
-        {isFullscreen ? "⊡" : "⊞"}
-      </ToolbarBtn>
+      <ToolbarButton onClick={() => setIsFullscreen((v) => !v)} title={isFullscreen ? "Thu nhỏ (ESC)" : "Toàn màn hình"}>
+        {isFullscreen ? <Minimize className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
+      </ToolbarButton>
     </div>
   );
 
   const editorArea = (
     <div
       className={cn(
-        "tiptap-editor-content overflow-y-auto",
+        "tiptap-editor-content relative overflow-y-auto",
         isFullscreen ? "tiptap-editor-fullscreen flex-1" : "min-h-[300px]"
       )}
       onClick={() => editor.commands.focus()}
     >
+      {isEmpty && (
+        <div className="pointer-events-none absolute top-4 left-4 text-sm text-gray-400 select-none">
+          {placeholder}
+        </div>
+      )}
       <EditorContent editor={editor} />
     </div>
   );
@@ -395,28 +439,35 @@ export default function TiptapEditor({
   // Link input popup
   const linkInput = showLinkInput && (
     <div className="flex items-center gap-2 px-2 py-1.5 bg-yellow-50 border-b border-yellow-200">
-      <input
+      <Input
         type="url"
         value={linkUrl}
         onChange={(e) => setLinkUrl(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && insertLink()}
         placeholder="https://..."
-        className="flex-1 text-sm border rounded px-2 py-1 outline-none focus:ring-1 focus:ring-blue-400"
+        className="h-8 flex-1 text-sm"
         autoFocus
       />
-      <button type="button" onClick={insertLink} className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+      <Button type="button" size="sm" onClick={insertLink}>
         Chèn
-      </button>
-      <button type="button" onClick={() => setShowLinkInput(false)} className="text-sm text-gray-500 hover:text-gray-700">
+      </Button>
+      <Button type="button" size="sm" variant="ghost" onClick={() => setShowLinkInput(false)}>
         Hủy
-      </button>
+      </Button>
     </div>
   );
 
   if (isFullscreen) {
     return (
-      <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-2xl w-[90vw] h-[90vh] flex flex-col overflow-hidden">
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        style={{ backdropFilter: "blur(8px)" }}
+        onClick={() => setIsFullscreen(false)}
+      >
+        <div
+          className="bg-white rounded-xl shadow-2xl w-[90vw] h-[90vh] flex flex-col overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
           {toolbar}
           {linkInput}
           {editorArea}
