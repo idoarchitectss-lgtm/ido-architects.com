@@ -46,8 +46,8 @@ function ServicesPageInner() {
             {isFetching && !isLoading
               ? 'Đang cập nhật...'
               : search
-              ? `${total} kết quả cho "${search}"`
-              : `${total} dịch vụ`}
+                ? `${total} kết quả cho "${search}"`
+                : `${total} dịch vụ`}
           </p>
         </div>
         <Link href="/dashboard/admin/services/new">
@@ -117,11 +117,10 @@ function ServicesPageInner() {
                   </td>
                   <td className="px-4 py-3.5 text-gray-500 text-xs">{svc.sortOrder}</td>
                   <td className="px-4 py-3.5">
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium border ${
-                      svc.isPublished
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium border ${svc.isPublished
                         ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         : 'bg-amber-50 text-amber-700 border-amber-200'
-                    }`}>
+                      }`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${svc.isPublished ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                       {svc.isPublished ? 'Công khai' : 'Nháp'}
                     </span>

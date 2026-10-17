@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef, useState } from "react";
 import {
   ServiceCreateSchema,
   ServiceUpdateSchema,
@@ -15,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { MediaSelector } from "@/components/custom/media/media-selector";
+import MediaPicker from "@/app/dashboard/admin/_components/MediaPicker";
 import TiptapEditor from "@/components/custom/tiptap/tiptap-editor";
 import "@/components/custom/tiptap/tiptap-editor-styles.css";
 import { z } from "zod";
@@ -42,6 +44,10 @@ export default function ServiceForm({ mode, service }: Props) {
   // ── Mutation hooks (goodseed pattern: useMutation + toast + invalidateQueries) ──
   const createMutation = useCreateService();
   const updateMutation = useUpdateService(service?.id ?? "");
+
+  // ── Media picker cho Tiptap (chèn ảnh từ thư viện thay vì nhập URL) ──
+  const [tiptapMediaOpen, setTiptapMediaOpen] = useState(false);
+  const tiptapInsertFnRef = useRef<((url: string) => void) | null>(null);
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
@@ -162,6 +168,10 @@ export default function ServiceForm({ mode, service }: Props) {
             <TiptapEditor
               content={content ?? ""}
               onChange={(val) => setValue("content", val)}
+              onOpenMediaPicker={(insertFn) => {
+                tiptapInsertFnRef.current = insertFn;
+                setTiptapMediaOpen(true);
+              }}
             />
           </div>
 
@@ -201,7 +211,8 @@ export default function ServiceForm({ mode, service }: Props) {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="flex flex-col items-start">
+              <div className="space-y-2">
               <Label htmlFor="sortOrder">Thứ tự hiển thị</Label>
               <Input
                 id="sortOrder"
@@ -212,13 +223,17 @@ export default function ServiceForm({ mode, service }: Props) {
             </div>
 
             <div className="pt-2">
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button 
+              type="submit" 
+              disabled={isLoading} 
+              className="w-full bg-black">
                 {isLoading
                   ? "Đang lưu..."
                   : mode === "create"
                   ? "Tạo dịch vụ"
                   : "Lưu thay đổi"}
               </Button>
+            </div>
             </div>
           </div>
 
@@ -247,6 +262,20 @@ export default function ServiceForm({ mode, service }: Props) {
           </div>
         </div>
       </div>
+
+      <MediaPicker
+        open={tiptapMediaOpen}
+        initialMode="single"
+        onClose={() => {
+          setTiptapMediaOpen(false);
+          tiptapInsertFnRef.current = null;
+        }}
+        onSelect={(url) => {
+          tiptapInsertFnRef.current?.(url);
+          tiptapInsertFnRef.current = null;
+          setTiptapMediaOpen(false);
+        }}
+      />
     </form>
   );
 }
